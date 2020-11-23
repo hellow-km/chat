@@ -1,19 +1,23 @@
-# wechat
+# 类似微信聊天项目，项目刚开始阶段
 
-## Project setup
+### 装依赖
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### 运行
 ```
 npm run serve
 ```
 
-### Compiles and minifies for production
+### 打包
 ```
 npm run build
 ```
+### 后端随便写的,没用数据库，死数据，主要为了配合前端能跑。主学前端，还没到搞后端的时候。
+```
+cd server/wechat node app
+```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### app文件夹的架构来源
+[学习及参考的项目](https://gitee.com/oimchat/oim-e).
