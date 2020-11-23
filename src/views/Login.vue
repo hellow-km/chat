@@ -16,7 +16,7 @@
               type="text"
               v-model="loginForm.account"
               autocomplete="off"
-              placeholder="请输入用户名、手机、邮箱"
+              placeholder="请输入账号"
             ></el-input>
           </el-form-item>
           <el-form-item prop="password">
@@ -43,7 +43,10 @@
           class="control-register"
           @click="register"
         >立即注册</span>
-        <span class="control-repassword">忘记密码</span>
+        <span
+          class="control-repassword"
+          @click="toResetPassword"
+        >忘记密码</span>
       </div>
     </div>
   </div>
@@ -60,8 +63,8 @@ import LoginController from "@/app/com/main/controller/LoginController";
 @Component({})
 export default class Login extends Vue {
   private loginForm = {
-    account: "",
-    password: ""
+    account: "admin",
+    password: "123456"
   };
   private loginRules = {
     account: [
@@ -116,6 +119,11 @@ export default class Login extends Vue {
   }
   private register() {
     this.$router.push({ path: "/register" });
+  }
+  private toResetPassword() {
+    this.$router.push({
+      path: "/resetPassword"
+    });
   }
 }
 </script>

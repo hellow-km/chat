@@ -2,23 +2,13 @@ const express = require('express')
 const md5 = require('md5')
 const log = express.Router()
 const fs = require('fs')
-
-let userList = [{
-    account: 'admin',
-    nickName: '管理',
-    password: md5('123456')
-  },
-  {
-    account: 'aaa',
-    nickName: '小a',
-    password: md5('aaa')
-  },
-  {
-    account: 'abc',
-    nickName: '大abc',
-    password: md5('123')
-  },
-]
+const path = require('path')
+const {
+  cloneDeep
+} = require('lodash')
+let userList = []
+const userDataPath = path.join(__dirname, '../data/user.json')
+updateUserList()
 
 log.post('/login', (req, res) => {
   const body = req.body.body
@@ -39,11 +29,8 @@ log.post('/login', (req, res) => {
       body: {}
     })
   }
-  if (req.session.regList) {
-    addUserList(req.session.regList)
-  }
   let user = getUserByLogin(account, password)
-  if (user.length > 0) {
+  if (user) {
     sendData = {
       info: {
         success: true
@@ -99,21 +86,45 @@ log.post('/existAccount', (req, res) => {
 
 log.post('/register', (req, res) => {
   const body = req.body.body
-  req.session.regList = []
-  console.log(body);
+  let sendData = {}
   const user = body.user
   const questions = body.questions
-  user.questions = questions
-  res.send()
+  if (user.account && user.password && user.nickName) {
+    if (checkQuestions(questions)) {
+      user.questions = questions
+    } else {
+      return res.send({
+        info: {
+          success: false,
+          warnings: [{
+            text: '问题或者答案不能为空'
+          }],
+          body: {}
+        }
+      })
+    }
+    addUserList(user)
+    writeUser()
+    sendData = {
+      info: {
+        success: true
+      },
+      body: {
+        exist: false
+      }
+    }
+  }
+  res.send(sendData)
 })
 
 function addUserList(data) {
-  if (data) {
+  if (data && typeof data == 'object') {
     if (data.length) {
+      if (data.length == 0) return
       for (const value of data) {
         userList.push(value)
       }
-    } else if (typeof data == 'object') {
+    } else {
       userList.push(data)
     }
   } else {
@@ -127,7 +138,43 @@ function checkAccount(account) {
 
 function getUserByLogin(account, password) {
   let user = userList.filter(p => p.account == account && p.password == password)
-  delete user.password
-  return user
+  if (user.length > 0) {
+    user = cloneDeep(user[0])
+    delete user.password
+    return user
+  } else {
+    return null
+  }
 }
+
+function readUser() {
+  let data = ''
+  try {
+    data = fs.readFileSync(userDataPath)
+  } catch (e) {}
+  return JSON.parse(data)
+}
+
+function writeUser() {
+  try {
+    const data = JSON.stringify(userList)
+    fs.writeFileSync(userDataPath, data)
+  } catch (e) {
+    return
+  }
+}
+
+function updateUserList() {
+  let regUser = readUser()
+  userList.push(...regUser)
+}
+
+function checkQuestions(questions) {
+  if (questions.length > 0) {
+    return questions.every(q => q.question && q.answer)
+  } else {
+    return true
+  }
+}
+
 module.exports = log

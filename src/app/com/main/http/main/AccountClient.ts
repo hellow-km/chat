@@ -9,6 +9,15 @@ import AbstractMaterial from '@/app/base/AbstractMaterial';
 
 
 export default class AccountClient extends AbstractMaterial {
+
+  public getQustionList(account: string, password: string, back: (data: any) => void): void {
+    const body = {
+      account,
+      password
+    }
+
+  }
+
   public isExistAccount(value: string, back: (exist: boolean) => void): void {
     if (BaseUtil.isEmpty(value)) {
       back(false);

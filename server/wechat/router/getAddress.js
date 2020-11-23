@@ -31,8 +31,7 @@ address.post('/get_address', (req, res) => {
   // })
   res.send({
     info: {
-      success: true,
-      message: '12345',
+      success: true
     },
     body: {
       token: '1',

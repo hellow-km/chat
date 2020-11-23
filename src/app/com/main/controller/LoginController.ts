@@ -7,11 +7,11 @@ import PersonalBox from '@/app/com/main/box/PersonalBox';
 import PersonalClient from '@/app/com/main/http/main/PersonalClient';
 class LoginController extends AbstractMaterial {
 
-  public login(account: string, password: string, back: (success: Boolean, message?: string) => void) {
+  public login(account: string, password: string, back: (success: boolean, message?: string) => void) {
     const own = this
     password = Md5.init(password)
 
-    const authBack = (success: Boolean, message?: string) => {
+    const authBack = (success: boolean, message?: string) => {
       if (success) {
         Auth.setLogin(true)
         Auth.account = account
@@ -41,7 +41,8 @@ class LoginController extends AbstractMaterial {
         this.loadToken(account, password, loginBack);
       }
     };
-    this.loadServerAddress(addressBack);
+    addressBack(true)
+    //this.loadServerAddress(addressBack);
   }
 
   private loadServerAddress(back: (success: boolean, message?: string) => void) {

@@ -126,18 +126,20 @@
         >
           <el-col :span="20">
             <el-form-item
+              :key="'question'+index"
               :label="'问题'+(index+1)"
-              :rules="[{ required: true, message: '请输入问题', trigger: 'blur' }]"
+              :rules="{ required: true, message: '请输入问题', trigger: 'blur' }"
             >
               <el-input
                 type="text"
-                v-model="item.qustion"
+                v-model="item.question"
                 placeholder="请输入问题"
               ></el-input>
             </el-form-item>
             <el-form-item
+              :key="'answer'+index"
               :label="'答案'+(index+1)"
-              :rules="[{ required: true, message: '请输入答案', trigger: 'blur' }]"
+              :rules="{ required: true, message: '请输入答案', trigger: 'blur' }"
             >
               <el-input
                 type="text"
@@ -179,13 +181,14 @@
 import "../styles/register.css";
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
-
 import app from "@/app/App";
+import { cloneDeep } from "lodash";
 import RegisterRules from "@/app/com/bean/RegisterRules";
 import QuestionData from "@/app/com/data/QuestionData";
 import SecurityQuestion from "@/app/com/bean/SecurityQuestion";
 import RegisterData from "@/app/com/bean/RegisterData";
 import PersonalController from "@/app/com/main/controller/PersonalController";
+import BaseUtil from "@/app/lib/util/BaseUtil";
 
 @Component
 export default class Register extends Vue {
@@ -200,6 +203,7 @@ export default class Register extends Vue {
           title: "成功",
           message: "注册成功"
         });
+        this.toLogin();
       }
     };
     const pc: PersonalController = app.appContext.getMaterial(
@@ -207,7 +211,7 @@ export default class Register extends Vue {
     );
     const registerForm: any = this.$refs.registerForm;
     const questionForm: any = this.$refs.questionForm;
-    const user = this.registerForm;
+    const user = cloneDeep(this.registerForm);
     const questions = this.questionData.questions;
     const formValidate = (regValid: boolean): void => {
       if (regValid) {

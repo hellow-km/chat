@@ -6,7 +6,7 @@ import Message from '@/app/base/message/Message';
 class ServerClient {
 
   public getAddressList(back: (data: any) => void): void {
-    http.post('/get_address', {}, back, true);
+    //http.post('/get_address', {}, back, true);
   }
 }
 

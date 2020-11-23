@@ -15,6 +15,10 @@ const routes: Array<RouteConfig> = [
   {
     path: '/register',
     component: () => import('@/views/Register.vue')
+  },
+  {
+    path: '/resetPassword',
+    component: () => import('@/views/ResetPassword.vue')
   }
 ]
 
