@@ -163,6 +163,7 @@
           <el-button
             type="primary"
             size="mini"
+            @click="register"
           >注册</el-button>
           <el-button
             size="mini"
@@ -184,13 +185,53 @@ import RegisterRules from "@/app/com/bean/RegisterRules";
 import QuestionData from "@/app/com/data/QuestionData";
 import SecurityQuestion from "@/app/com/bean/SecurityQuestion";
 import RegisterData from "@/app/com/bean/RegisterData";
+import PersonalController from "@/app/com/main/controller/PersonalController";
 
 @Component
 export default class Register extends Vue {
   private registerForm: RegisterData = new RegisterData();
   private registerRules: RegisterRules = new RegisterRules();
   private questionData: QuestionData = new QuestionData();
-  private register() {}
+  private register(): void {
+    const back = (success: boolean): void => {
+      if (success) {
+        this.$notify({
+          type: "success",
+          title: "成功",
+          message: "注册成功"
+        });
+      }
+    };
+    const pc: PersonalController = app.appContext.getMaterial(
+      PersonalController
+    );
+    const registerForm: any = this.$refs.registerForm;
+    const questionForm: any = this.$refs.questionForm;
+    const user = this.registerForm;
+    const questions = this.questionData.questions;
+    const formValidate = (regValid: boolean): void => {
+      if (regValid) {
+        if (questions.length > 0) {
+          questionForm.validate(
+            (qusValid: boolean): void => {
+              if (qusValid) {
+                pc.register(user, questions, back);
+              }
+            }
+          );
+        } else {
+          pc.register(user, questions, back);
+        }
+      }
+    };
+    registerForm.validate(
+      (valid: boolean): void => {
+        if (valid) {
+          formValidate(valid);
+        }
+      }
+    );
+  }
 
   private back(): void {
     this.toLogin();
