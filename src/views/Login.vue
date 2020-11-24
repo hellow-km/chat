@@ -26,6 +26,7 @@
               placeholder="请输入密码"
               v-model="loginForm.password"
               autocomplete="off"
+              @keyup.native.enter="login"
             ></el-input>
           </el-form-item>
           <el-form-item>

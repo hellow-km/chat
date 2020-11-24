@@ -93,15 +93,7 @@ log.post('/register', (req, res) => {
     if (checkQuestions(questions)) {
       user.questions = questions
     } else {
-      return res.send({
-        info: {
-          success: false,
-          warnings: [{
-            text: '问题或者答案不能为空'
-          }],
-          body: {}
-        }
-      })
+      warningSend(res, '问题或者答案不能为空')
     }
     addUserList(user)
     writeUser()
@@ -122,29 +114,40 @@ log.post('/getQuestionList', (req, res) => {
     info: {
       success: false,
       warnings: [{
-        text: '用户名或密码错误'
-      }],
-      body: {}
-    }
+        text: '用户名不存在'
+      }]
+    },
+    body: {}
   }
   const body = req.body
   const params = body.body
-  const {
-    account,
-    password
-  } = params
-  const user = getUserByLogin(account, password)
-  if (user) {
+  const account = params.account
+  const questions = getUserQuestions(account)
+  if (questions) {
     sendData = {
       info: {
         success: true
       },
       body: {
-        user: user
+        userQuestions: questions
       }
     }
   }
   res.send(sendData)
+})
+
+log.post('/checkAnswer', (req, res) => {
+  const params = req.body.body
+  const account = params.account
+  const questions = params.questions
+  if (!account || !questions) {
+    warningSend(res, '错误参数')
+  }
+  if (checkQuestionAnswer(account, questions)) {
+    successSend(res, {})
+  } else {
+    warningSend(res, '答案错误')
+  }
 })
 
 function addUserList(data) {
@@ -160,6 +163,63 @@ function addUserList(data) {
   } else {
     return
   }
+}
+
+function checkQuestionAnswer(account, list) {
+  let s = true
+  const user = userList.filter(user => {
+    return user.account == account
+  })
+  if (user.length == 1) {
+    const questions = user[0].questions
+    for (let i = 0; i < questions.length; i++) {
+      if (questions[i].question == list[i].question && !(questions[i].answer == list[i].answer)) {
+        s = false
+      }
+    }
+    return s
+  } else {
+    return false
+  }
+}
+
+function successSend(res, body) {
+  res.send({
+    info: {
+      success: true
+    },
+    body: body
+  })
+}
+
+function warningSend(res, message) {
+  res.send({
+    info: {
+      success: false,
+      warnings: [{
+        text: message
+      }]
+    },
+    body: {}
+  })
+}
+
+function getUserQuestions(account) {
+  let data = []
+  const user = userList.filter(user => {
+    return user.account == account
+  })
+  if (user.length == 1) {
+    const questions = user[0].questions
+    for (const item of questions) {
+      const question = item.question
+      data.push({
+        question: question
+      })
+    }
+    return data
+  }
+  return false
 }
 
 function checkAccount(account) {

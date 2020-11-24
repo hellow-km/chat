@@ -15,11 +15,15 @@
         >
           <el-step
             title="步骤 1"
-            description="登录账号"
+            description="输入账号"
           ></el-step>
           <el-step
             title="步骤 2"
-            description="回答密保问题改密"
+            description="回答密保问题"
+          ></el-step>
+          <el-step
+            title="步骤 3"
+            description="修改密码"
           ></el-step>
         </el-steps>
       </div>
@@ -44,18 +48,7 @@
               <el-input
                 type="text"
                 v-model="accountForm.account"
-              ></el-input>
-            </el-form-item>
-            <el-form-item
-              label="密码"
-              prop="password"
-              :rules="[
-                { required: true, message: '密码不能为空',trigger:'blur'},
-              ]"
-            >
-              <el-input
-                type="password"
-                v-model="accountForm.password"
+                @keyup.native.enter="nextStep"
               ></el-input>
             </el-form-item>
             <el-form-item>
@@ -69,9 +62,60 @@
         </div>
         <div
           class="step-two"
-          v-if="active==1"
+          v-else-if="active==1"
         >
-          2
+          <el-form
+            :model="questionData"
+            ref="questionForm"
+            label-width="100px"
+            class="question-form"
+          >
+            <div v-for="(item,index) in questionData.questions">
+              <el-form-item :label="'问题'+(index+1)">
+                <el-input
+                  type="text"
+                  v-model="item.question"
+                  readonly
+                ></el-input>
+              </el-form-item>
+              <el-form-item
+                :label="'答案'+(index+1)"
+                :rules="{ required: true, message: '答案不能为空',trigger:'blur'},"
+              >
+                <el-input
+                  type="text"
+                  v-model="item.answer"
+                ></el-input>
+              </el-form-item>
+            </div>
+            <el-form-item>
+              <el-button
+                type="primary"
+                @click="toStepThree"
+                size="small"
+              >下一步</el-button>
+              <el-button
+                type="primary"
+                @click="active--"
+                size="small"
+              >上一步</el-button>
+            </el-form-item>
+          </el-form>
+        </div>
+        <div
+          class="step-three"
+          v-else
+        >
+          <el-button
+            type="primary"
+            @click="active--"
+            size="small"
+          >上一步</el-button>
+          <el-button
+            type="primary"
+            @click=""
+            size="small"
+          >确认修改</el-button>
         </div>
       </div>
     </div>
@@ -106,6 +150,7 @@ export default class ResetPassword extends Vue {
       callback();
     }
   };
+
   private validateRePassword = (
     rule: any,
     value: string,
@@ -118,17 +163,18 @@ export default class ResetPassword extends Vue {
       callback();
     }
   };
+
   private nextStep(): void {
     const accountForm: any = this.$refs.accountForm;
-    const { account, password } = this.accountForm;
+    const account = this.accountForm.account;
     const back = (data: any): void => {
       if (!BaseUtil.isEmpty(data)) {
         const info = data.info;
         const success = info.success;
         const body = data.body;
         if (success) {
-          const user = body.user;
-          this.questionData = user.questions ? user.questions : [];
+          const questions = body.userQuestions;
+          this.questionData.questions = questions;
           this.active = 1;
         }
       }
@@ -136,9 +182,31 @@ export default class ResetPassword extends Vue {
     const lg: AccountController = app.appContext.getMaterial(AccountController);
     accountForm.validate((valid: boolean) => {
       if (valid) {
-        lg.getQuestionList(account, password, back);
+        lg.getQuestionList(account, back);
       }
     });
+  }
+
+  private toStepThree() {
+    const questions = this.questionData.questions;
+    const account = this.accountForm.account;
+    if (BaseUtil.isEmpty(questions)) {
+      return (this.active = 2);
+    }
+    const questionForm: any = this.$refs.questionForm;
+    const qc: AccountController = app.appContext.getMaterial(AccountController);
+    const back = (success: boolean): void => {
+      if (success) {
+        this.active = 2;
+      }
+    };
+    questionForm.validate(
+      (valid: boolean): void => {
+        if (valid) {
+          qc.submitAnswer(account,questions, back);
+        }
+      }
+    );
   }
 
   private back(): void {

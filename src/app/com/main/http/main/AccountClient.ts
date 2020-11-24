@@ -11,11 +11,9 @@ import { Md5 } from 'md5-typescript';
 
 export default class AccountClient extends AbstractMaterial {
 
-  public getQustionList(account: string, password: string, back: (data: any) => void): void {
-    password = Md5.init(password)
+  public getQustionList(account: string, back: (data: any) => void): void {
     const body = {
-      account,
-      password
+      account
     }
     const m = Message.build('post', '/client/getQuestionList')
     m.body = body
@@ -46,11 +44,21 @@ export default class AccountClient extends AbstractMaterial {
     this.post(m, existBack, true);
   }
 
+  public submitAnswer(account: string, list: SecurityQuestion[], back: (data: any) => void): void {
+    const body = {
+      account: account,
+      questions: list
+    }
+    const m = Message.build('post', '/client/checkAnswer')
+    m.body = body
+    this.post(m, back, true)
+  }
+
   private post(m: any, back: (data: any) => void, prompt?: boolean | null) {
     const method = m.head.method
     const name = m.head.name
     if (method == 'post') {
-      http.post(name, m, back, true);
+      http.post(name, m, back, prompt);
     }
   }
 }
