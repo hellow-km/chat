@@ -51,6 +51,8 @@
                 @keyup.native.enter="nextStep"
               ></el-input>
             </el-form-item>
+            <!-- 加个input防止enter刷新网页 -->
+            <el-input style="display:none"></el-input>
             <el-form-item>
               <el-button
                 type="primary"
@@ -67,19 +69,14 @@
           <el-form
             :model="questionData"
             ref="questionForm"
-            label-width="100px"
             class="question-form"
           >
             <div v-for="(item,index) in questionData.questions">
-              <el-form-item :label="'问题'+(index+1)">
-                <el-input
-                  type="text"
-                  v-model="item.question"
-                  readonly
-                ></el-input>
+              <el-form-item :label="'问题'+(index+1)+'：'">
+                <label style="color: #606266;">{{item.question}}</label>
               </el-form-item>
               <el-form-item
-                :label="'答案'+(index+1)"
+                :prop="'questions.'+index+'.answer'"
                 :rules="{ required: true, message: '答案不能为空',trigger:'blur'},"
               >
                 <el-input
@@ -88,17 +85,23 @@
                 ></el-input>
               </el-form-item>
             </div>
-            <el-form-item>
-              <el-button
-                type="primary"
-                @click="toStepThree"
-                size="small"
-              >下一步</el-button>
+            <div
+              v-if="questionData.questions.length==0"
+              class="step-nodata"
+            >
+              <p style="color:#909399">无密保问题</p>
+            </div>
+            <el-form-item class="step2-menu">
               <el-button
                 type="primary"
                 @click="active--"
                 size="small"
               >上一步</el-button>
+              <el-button
+                type="primary"
+                @click="toStepThree"
+                size="small"
+              >下一步</el-button>
             </el-form-item>
           </el-form>
         </div>
@@ -106,16 +109,46 @@
           class="step-three"
           v-else
         >
-          <el-button
-            type="primary"
-            @click="active--"
-            size="small"
-          >上一步</el-button>
-          <el-button
-            type="primary"
-            @click=""
-            size="small"
-          >确认修改</el-button>
+          <el-form
+            :model="passwordForm"
+            ref="passwordForm"
+            class="password-form"
+            label-width="100px"
+          >
+            <el-form-item
+              label="密码"
+              prop="password"
+              :rules="{ required: true, validator:validatePassword,trigger:'blur'},"
+            >
+              <el-input
+                type="password"
+                v-model="passwordForm.password"
+              ></el-input>
+            </el-form-item>
+            <el-form-item
+              label="确认密码"
+              prop="rePassword"
+              :rules="{ required: true, validator:validateRePassword,trigger:'blur'},"
+            >
+              <el-input
+                type="password"
+                v-model="passwordForm.rePassword"
+              ></el-input>
+            </el-form-item>
+            <el-form-item class="step3-menu">
+              <el-button
+                type="primary"
+                @click="active--"
+                size="small"
+              >上一步</el-button>
+              <el-button
+                type="primary"
+                @click="changePassword"
+                size="small"
+              >确认修改</el-button>
+            </el-form-item>
+          </el-form>
+
         </div>
       </div>
     </div>
@@ -132,12 +165,14 @@ import BaseUtil from "@/app/lib/util/BaseUtil";
 import QuestionData from "@/app/com/data/QuestionData";
 import SecurityQuestion from "@/app/com/bean/SecurityQuestion";
 import AccountController from "@/app/com/main/controller/AccountController";
+import PersonalController from "@/app/com/main/controller/PersonalController";
 
 @Component
 export default class ResetPassword extends Vue {
   private accountForm: RegisterData = new RegisterData();
   private active: number = 0;
   private questionData: QuestionData = new QuestionData();
+  private passwordForm: RegisterData = new RegisterData();
 
   private validatePassword = (
     rule: any,
@@ -156,7 +191,7 @@ export default class ResetPassword extends Vue {
     value: string,
     callback: (data?: any) => any
   ): void => {
-    const password = this.accountForm.password;
+    const password = this.passwordForm.password;
     if (value !== password) {
       return callback(new Error("两次密码输入不一致"));
     } else {
@@ -203,7 +238,33 @@ export default class ResetPassword extends Vue {
     questionForm.validate(
       (valid: boolean): void => {
         if (valid) {
-          qc.submitAnswer(account,questions, back);
+          qc.submitAnswer(account, questions, back);
+        }
+      }
+    );
+  }
+
+  private changePassword(): void {
+    const passwordForm: any = this.$refs.passwordForm;
+    const newPassword = this.passwordForm.password;
+    const account = this.accountForm.account;
+    const cp: PersonalController = app.appContext.getMaterial(
+      PersonalController
+    );
+    const back = (success: boolean): void => {
+      if (success) {
+        this.$notify({
+          title: "成功",
+          type: "success",
+          message: "修改成功"
+        });
+        this.back();
+      }
+    };
+    passwordForm.validate(
+      (valid: boolean): void => {
+        if (valid) {
+          cp.changePassword(account, newPassword, back);
         }
       }
     );

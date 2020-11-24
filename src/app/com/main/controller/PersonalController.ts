@@ -11,7 +11,7 @@ export default class PersonalController extends AbstractMaterial {
    * list：问题数据,
    * back：回调,
    */
-  public register(u: RegisterData, list: SecurityQuestion[], back: (success: boolean) => void) {
+  public register(u: RegisterData, list: SecurityQuestion[], back: (success: boolean) => void): void {
     u.password = Md5.init(u.password)
     const registerBack = (data: any): void => {
       let mark = false
@@ -25,5 +25,20 @@ export default class PersonalController extends AbstractMaterial {
     }
     const client: PersonalClient = this.appContext.getMaterial(PersonalClient)
     client.register(u, list, registerBack)
+  }
+
+  public changePassword(account: string, newPassword: string, back: (success: boolean) => void): void {
+    newPassword = Md5.init(newPassword)
+    const changeBack = (data: any) => {
+      if (BaseUtil.isNotEmpty(data)) {
+        const info = data.info
+        if (info.success) {
+          back(true)
+        }
+        back(false)
+      }
+    }
+    const client: PersonalClient = this.appContext.getMaterial(PersonalClient)
+    client.changePassword(account, newPassword, changeBack)
   }
 }

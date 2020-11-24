@@ -150,6 +150,19 @@ log.post('/checkAnswer', (req, res) => {
   }
 })
 
+log.post('/changePassword', (req, res) => {
+  const params = req.body.body
+  const {
+    account,
+    newPassword
+  } = params
+  if (changePassword(account, newPassword)) {
+    successSend(res, {})
+  } else {
+    warningSend(res, '参数错误')
+  }
+})
+
 function addUserList(data) {
   if (data && typeof data == 'object') {
     if (data.length) {
@@ -162,6 +175,21 @@ function addUserList(data) {
     }
   } else {
     return
+  }
+}
+
+function changePassword(account, password) {
+  try {
+    userList.map(user => {
+      if (user.account == account) {
+        user.password = password
+      }
+      return user
+    })
+    writeUser()
+    return true
+  } catch (e) {
+    return false
   }
 }
 
@@ -210,7 +238,7 @@ function getUserQuestions(account) {
     return user.account == account
   })
   if (user.length == 1) {
-    const questions = user[0].questions
+    const questions = user[0].questions || []
     for (const item of questions) {
       const question = item.question
       data.push({

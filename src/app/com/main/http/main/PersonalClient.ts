@@ -9,6 +9,7 @@ export default class PersonalClient extends AbstractMaterial {
   private method: string = 'post'
   private loginUrl: string = "/client/login"
   private registerUrl: string = "/client/register"
+
   public login(account: string, password: string, back: (data: any) => void) {
     const body: object = {
       account: account,
@@ -25,6 +26,16 @@ export default class PersonalClient extends AbstractMaterial {
       questions: list
     }
     const m = Message.build(this.method, this.registerUrl)
+    m.body = body
+    this.post(m, back, true)
+  }
+
+  public changePassword(account: string, newPassword: string, back: (data: any) => void): void {
+    const body = {
+      account: account,
+      newPassword: newPassword
+    }
+    const m = Message.build('post', '/client/changePassword')
     m.body = body
     this.post(m, back, true)
   }

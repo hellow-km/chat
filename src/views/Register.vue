@@ -127,6 +127,7 @@
         >
           <el-col :span="20">
             <el-form-item
+              :prop="'questions.'+index+'.question'"
               :key="'question'+index"
               :label="'问题'+(index+1)"
               :rules="{ required: true, message: '请输入问题', trigger: 'blur' }"
@@ -138,6 +139,7 @@
               ></el-input>
             </el-form-item>
             <el-form-item
+              :prop="'questions.'+index+'.answer'"
               :key="'answer'+index"
               :label="'答案'+(index+1)"
               :rules="{ required: true, message: '请输入答案', trigger: 'blur' }"
