@@ -4,6 +4,7 @@ import User from '@/app/com/bean/User';
 import SecurityQuestion from '@/app/com/bean/SecurityQuestion';
 import BaseUtil from '@/app/lib/util/BaseUtil';
 import AbstractMaterial from '@/app/base/AbstractMaterial';
+import { Md5 } from 'md5-typescript';
 
 
 
@@ -11,11 +12,14 @@ import AbstractMaterial from '@/app/base/AbstractMaterial';
 export default class AccountClient extends AbstractMaterial {
 
   public getQustionList(account: string, password: string, back: (data: any) => void): void {
+    password = Md5.init(password)
     const body = {
       account,
       password
     }
-
+    const m = Message.build('post', '/client/getQuestionList')
+    m.body = body
+    this.post(m, back, true)
   }
 
   public isExistAccount(value: string, back: (exist: boolean) => void): void {

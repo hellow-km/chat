@@ -123,6 +123,7 @@
         <el-row
           :gutter="20"
           v-for="(item,index) in questionData.questions"
+          :key="item.question"
         >
           <el-col :span="20">
             <el-form-item

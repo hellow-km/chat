@@ -117,6 +117,36 @@ log.post('/register', (req, res) => {
   res.send(sendData)
 })
 
+log.post('/getQuestionList', (req, res) => {
+  let sendData = {
+    info: {
+      success: false,
+      warnings: [{
+        text: '用户名或密码错误'
+      }],
+      body: {}
+    }
+  }
+  const body = req.body
+  const params = body.body
+  const {
+    account,
+    password
+  } = params
+  const user = getUserByLogin(account, password)
+  if (user) {
+    sendData = {
+      info: {
+        success: true
+      },
+      body: {
+        user: user
+      }
+    }
+  }
+  res.send(sendData)
+})
+
 function addUserList(data) {
   if (data && typeof data == 'object') {
     if (data.length) {

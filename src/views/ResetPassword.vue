@@ -121,16 +121,29 @@ export default class ResetPassword extends Vue {
   private nextStep(): void {
     const accountForm: any = this.$refs.accountForm;
     const { account, password } = this.accountForm;
-    const lg: AccountController = app.appContext.getMaterial(AccountController);
-    const back = (success: boolean, message?: string | undefined): void => {
-      if (success) {
-        this.active = 1;
+    const back = (data: any): void => {
+      if (!BaseUtil.isEmpty(data)) {
+        const info = data.info;
+        const success = info.success;
+        const body = data.body;
+        if (success) {
+          const user = body.user;
+          this.questionData = user.questions ? user.questions : [];
+          this.active = 1;
+        }
       }
     };
-    lg.get(account, password, back);
+    const lg: AccountController = app.appContext.getMaterial(AccountController);
     accountForm.validate((valid: boolean) => {
       if (valid) {
+        lg.getQuestionList(account, password, back);
       }
+    });
+  }
+
+  private back(): void {
+    this.$router.push({
+      path: "/login"
     });
   }
 }

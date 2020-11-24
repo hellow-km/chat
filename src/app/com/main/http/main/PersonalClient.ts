@@ -33,7 +33,7 @@ export default class PersonalClient extends AbstractMaterial {
     const method = m.head.method
     const name = m.head.name
     if (method == 'post') {
-      http.post(name, m, back, true);
+      http.post(name, m, back, prompt);
     }
   }
 }
