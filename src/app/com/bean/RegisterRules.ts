@@ -37,9 +37,8 @@ export default class RegisterRules {
         callback(new Error('手机格式不正确！'));
         return;
       }
-    } else {
-      callback();
     }
+    callback();
   }
 
   private isExistAccount(rule: any, value: string, callback: (data?: any) => any): void {

@@ -83,7 +83,7 @@
         </el-form-item>
         <el-form-item
           prop="name"
-          label="昵称"
+          label="姓名"
           label-width="100px"
         >
           <el-input
@@ -123,7 +123,7 @@
         <el-row
           :gutter="20"
           v-for="(item,index) in questionData.questions"
-          :key="item.question"
+          :key="'q'+index"
         >
           <el-col :span="20">
             <el-form-item
@@ -216,6 +216,7 @@ export default class Register extends Vue {
     const questionForm: any = this.$refs.questionForm;
     const user = cloneDeep(this.registerForm);
     const questions = this.questionData.questions;
+
     const formValidate = (regValid: boolean): void => {
       if (regValid) {
         if (questions.length > 0) {
@@ -233,6 +234,8 @@ export default class Register extends Vue {
     };
     registerForm.validate(
       (valid: boolean): void => {
+        console.log(valid);
+
         if (valid) {
           formValidate(valid);
         }

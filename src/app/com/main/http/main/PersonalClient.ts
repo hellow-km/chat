@@ -4,6 +4,7 @@ import ServerBox from '@/app/com/main/box/ServerBox';
 import http from '@/app/lib/http/HttpClient';
 import User from '@/app/com/bean/User';
 import SecurityQuestion from '@/app/com/bean/SecurityQuestion';
+import RegisterData from '@/app/com/bean/RegisterData';
 
 export default class PersonalClient extends AbstractMaterial {
   private method: string = 'post'
@@ -20,13 +21,15 @@ export default class PersonalClient extends AbstractMaterial {
     this.post(m, back, true)
   }
 
-  public register(u: User, list: SecurityQuestion[], back: (data: any) => void) {
+  public register(u: RegisterData, list: SecurityQuestion[], back: (data: any) => void) {
     const body = {
       user: u,
       questions: list
     }
     const m = Message.build(this.method, this.registerUrl)
     m.body = body
+    console.log(m);
+
     this.post(m, back, true)
   }
 
