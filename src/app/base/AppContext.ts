@@ -1,5 +1,5 @@
 import AbstractMaterial from './AbstractMaterial'
-
+import View from '@/app/com/main/view/View';
 type Material<T extends AbstractMaterial> = new (AppContext: AppContext) => T
 
 class AppContext {
@@ -16,6 +16,14 @@ class AppContext {
       const ab = o as AbstractMaterial;
     }
     return o;
+  }
+
+  public putViewObject(view: any, value: View): void {
+    this.putObject(view, value);
+  }
+
+  public putObject(key: any, value: any): void {
+    this.objectMap.set(key, value);
   }
 
 }

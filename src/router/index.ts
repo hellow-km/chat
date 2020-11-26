@@ -19,6 +19,10 @@ const routes: Array<RouteConfig> = [
   {
     path: '/resetPassword',
     component: () => import('@/views/ResetPassword.vue')
+  },
+  {
+    path: '/main',
+    component: () => import('@/views/Main.vue')
   }
 ]
 

@@ -19,7 +19,7 @@ npm run build
 cd server/wechat node app
 ```
 
-### app文件夹的架构来源
-[学习及参考的项目](https://gitee.com/oimchat/oim-e).
+### app文件夹和架构，有很多复制的，能看懂写法，不一定能写。
+[学习及参考的项目](https://gitee.com/oimchat/oim-e) 
 
 ### 后端没用数据库，会一点mysql和mongedb，不想定模板，用的json文件，为了配合前端能跑。主学前端，先找到前端工作，以后再学后端。
