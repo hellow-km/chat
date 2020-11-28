@@ -113,3 +113,160 @@ summary {
 }
 
 /***************侧边 end*******************/
+.clearfix::after {
+  content: '.';
+  visibility: hidden;
+  display: block;
+  height: 0;
+  clear: both;
+}
+
+/*******************panel start**********************/
+.panel {
+  width: 300px;
+  background-color: #3c5574;
+  height: 100%;
+  overflow: hidden;
+}
+
+.user-avatar {
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  vertical-align: middle;
+}
+
+.opt {
+  color: #f4f4f475;
+}
+
+.user-add {
+  font-size: 22px;
+  float: right;
+  margin-right: 15px;
+  margin-top: 5px;
+}
+
+.panel-head {
+  margin: 45px 0 0 15px;
+}
+
+.panel-user {
+  float: left;
+}
+
+.user-name {
+  display: inline-block;
+  margin-left: 10px;
+  color: #f4f4f4;
+  font-size: 20px;
+  transform: translateY(5px)
+}
+
+.search-bar {
+  position: relative;
+}
+
+.search {
+  position: relative;
+  margin: 20px 0 25px 0;
+  text-align: center;
+}
+
+.search-icon {
+  position: absolute;
+  top: 8px;
+  left: 22px;
+}
+
+.search-input {
+  height: 32px;
+  width: 90%;
+  border-radius: 3px;
+  border: 0;
+  background-color: #26292e;
+  color: #fff;
+  text-indent: 32px;
+  font-size: 12px;
+}
+
+.search-close {
+  position: absolute;
+  top: 8px;
+  right: 26px;
+}
+
+/*****searchList****/
+.search-pop {
+  position: absolute;
+  max-height: 400px;
+  overflow-y: auto;
+  width: 90%;
+  background-color: #33363b;
+  margin-left: 5%;
+  top: 36px;
+  border-radius: 3px;
+}
+
+.pop-contain>div {
+  background-color: #393c43;
+  margin-top: 10px;
+}
+
+.pop-contain div {
+  font-size: 14px;
+  color: #787b87;
+}
+
+.pop-contain h4 {
+  margin-left: 10px;
+}
+
+.pop-contain div:first-child {
+  margin-top: 0px;
+}
+
+.pane .pane-item {
+  background-color: #393c43;
+  border-bottom: 1px solid #33363b;
+  height: 55px;
+  line-height: 55px;
+}
+
+.pane-avatar img {
+  vertical-align: middle;
+  margin-left: 10px;
+}
+
+.pane-active {
+  background-color: rgba(250, 250, 250, 0.3) !important;
+}
+
+.pane-item .pane-name h4 {
+  color: #eeeeee;
+  font-weight: normal;
+}
+
+.pane-avatar .gray {
+  -webkit-filter: grayscale(100%);
+  /*兼容google、opera*/
+  -moz-filter: grayscale(100%);
+  /*FF下不生效*/
+  -ms-filter: grayscale(100%);
+  /*IE下不生效*/
+  -o-filter: grayscale(100%);
+  /*opera下不生效*/
+
+  filter: grayscale(100%);
+  /*无效*/
+  filter: gray;
+  /*兼容IE7-IE9，IE10不支持*/
+}
+
+.left {
+  float: left;
+}
+
+/*****searchList****/
+
+/*******************panel end**********************/

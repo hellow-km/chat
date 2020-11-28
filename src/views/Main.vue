@@ -4,31 +4,60 @@
       :tabsData="sideTabInfos"
       :box="sideTabBox"
     ></SideBar>
+    <div class="panel">
+      <div class="panel-head clearfix">
+        <div class="panel-user">
+          <img
+            :src="PersonalData.avatar"
+            class="user-avatar"
+          >
+          <span class="user-name">{{PersonalData.name}}</span>
+        </div>
+        <div class="user-add">
+          <a
+            @click="onDownMenu($event,$root)"
+            class="opt"
+            href="javascript:;"
+          ><i class="el-icon-s-unfold"></i></a>
+        </div>
+      </div>
+      <SearchBar></SearchBar>
+      <hr style="border:0;border-bottom:1px solid #777;margin:10px 0">
+    </div>
     <SoundHandlerPane ref="mainSound"></SoundHandlerPane>
+
   </div>
 </template>
 
 <script lang="ts">
 import "../styles/layout.css";
 import "../styles/main.css";
+
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
+
 import SoundHandlerPane from "@/views/main/SoundHandlerPane.vue";
+import SearchBar from "@/views/main/SearchBar.vue";
+
 import SoundType from "@/app/com/main/component/SoundType";
 import SideBar from "@/views/main/SideBar.vue";
 import SideTabData from "@/views/main/SideTabData";
 import SideTabBox from "@/views/main/SideTabBox";
+import PersonalDataBox from "@/impl/PersonalDataBox";
+import PersonalData from "@/views/common/data/PersonalData";
+
 @Component({
   components: {
     SoundHandlerPane,
-    SideBar
+    SideBar,
+    SearchBar
   }
 })
 export default class Main extends Vue {
   private sideTabInfos: SideTabData[] = new Array<SideTabData>();
   private sideTabBox: SideTabBox = new SideTabBox();
   private currentTab: string = "";
-
+  private PersonalData: PersonalData = PersonalDataBox.personalData;
   public mounted() {
     this.init();
   }
