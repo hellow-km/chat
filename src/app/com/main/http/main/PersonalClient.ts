@@ -28,8 +28,6 @@ export default class PersonalClient extends AbstractMaterial {
     }
     const m = Message.build(this.method, this.registerUrl)
     m.body = body
-    console.log(m);
-
     this.post(m, back, true)
   }
 

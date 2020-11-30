@@ -5,6 +5,7 @@ import ServerService from '@/app/com/main/service/ServerService';
 import BaseUtil from '@/app/lib/util/BaseUtil';
 import PersonalBox from '@/app/com/main/box/PersonalBox';
 import PersonalClient from '@/app/com/main/http/main/PersonalClient';
+import ConnectService from '@/app/com/main/service/ConnectService';
 class LoginController extends AbstractMaterial {
 
   public login(account: string, password: string, back: (success: boolean, message?: string) => void) {
@@ -45,11 +46,6 @@ class LoginController extends AbstractMaterial {
     //this.loadServerAddress(addressBack);
   }
 
-  private loadServerAddress(back: (success: boolean, message?: string) => void) {
-    const serverService: ServerService = this.appContext.getMaterial(ServerService)
-    serverService.loadServerAddress(back);
-  }
-
   private loadToken(account: string, password: string, back: (success: boolean, message?: string) => void): void {
     const loginBack = (data: any) => {
       let mark = false;
@@ -77,7 +73,8 @@ class LoginController extends AbstractMaterial {
   }
 
   private connect(back: (success: boolean, message?: string) => void): void {
-    back(true)
+    const connectService: ConnectService = this.appContext.getMaterial(ConnectService);
+    connectService.connect('ws://localhost:3001', back);
   }
 
   private auth(back: (success: boolean, message?: string) => void): void {

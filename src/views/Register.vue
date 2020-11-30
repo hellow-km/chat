@@ -234,8 +234,6 @@ export default class Register extends Vue {
     };
     registerForm.validate(
       (valid: boolean): void => {
-        console.log(valid);
-
         if (valid) {
           formValidate(valid);
         }

@@ -6,6 +6,10 @@ const path = require('path')
 const {
   cloneDeep
 } = require('lodash')
+const {
+  registerBack
+} = require('./model.js')
+
 let userList = []
 const userDataPath = path.join(__dirname, '../data/user.json')
 updateUserList()
@@ -97,6 +101,7 @@ log.post('/register', (req, res) => {
     }
     addUserList(user)
     writeUser()
+    registerBack()
     sendData = {
       info: {
         success: true

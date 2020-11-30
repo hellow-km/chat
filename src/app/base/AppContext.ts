@@ -1,8 +1,10 @@
 import AbstractMaterial from './AbstractMaterial'
 import View from '@/app/com/main/view/View';
+import NetServer from '@/app/base/net/NetServer';
 type Material<T extends AbstractMaterial> = new (AppContext: AppContext) => T
 
 class AppContext {
+  public readonly netServer: NetServer = new NetServer();
   private objectMap: Map<any, any> = new Map<any, any>();
 
   public getMaterial<T>(clazz: Material<AbstractMaterial>): T {
@@ -26,6 +28,10 @@ class AppContext {
     this.objectMap.set(key, value);
   }
 
+  public connect(socketHost: string, onOpen?: () => void): boolean {
+    const mark: boolean = this.netServer.connect(socketHost, onOpen);
+    return mark;
+  }
 }
 
 export default AppContext

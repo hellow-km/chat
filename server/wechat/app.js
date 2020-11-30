@@ -37,3 +37,17 @@ app.use('/', address)
 app.use('/client', log)
 
 app.listen(3000)
+
+var ws = require('nodejs-websocket');
+var server = ws.createServer(function (conn) {
+  conn.on("text", function (str) {
+    console.log("Received " + str)
+    conn.sendText(str.toUpperCase() + "!!!")
+  })
+  conn.on("close", function (code, reason) {
+    console.log("Connection closed")
+  })
+  conn.on("error", function (code, reason) {
+    console.log("异常关闭")
+  });
+}).listen(3001)

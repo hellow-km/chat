@@ -46,36 +46,58 @@
             ></ItemPane>
           </div>
         </div>
-        <div
-          v-show="showFindUserList"
-          class=""
-        >
+        <div v-show="showFindUserList">
           <div>
             <h4>查到的用户</h4>
           </div>
-          <div v-for="(item,index) in findUserList">
+          <div
+            v-for="(item,index) in findUserList"
+            style="position:relative"
+          >
             <ItemPane
               :data="item"
               :box="itemBox"
             ></ItemPane>
+            <div class="pane-option">
+              <i
+                class="el-icon-s-custom"
+                @click="handleShowUser(item.key)"
+              ></i>
+              <i
+                class="el-icon-plus"
+                @click="handleAddUser(item.key)"
+              ></i>
+            </div>
           </div>
         </div>
-        <div
-          v-show="showFindGroupList"
-          class=""
-        >
+        <div v-show="showFindGroupList">
           <div>
             <h4>查到的群</h4>
           </div>
-          <div v-for="(item,index) in findGroupList">
+          <div
+            v-for="(item,index) in findGroupList"
+            style="position:relative"
+          >
             <ItemPane
               :data="item"
               :box="itemBox"
             ></ItemPane>
+            <div class="pane-option">
+              <i
+                class="el-icon-s-order"
+                @click="handleShowGroup(item.key)"
+              ></i>
+              <i
+                class="el-icon-plus"
+                @click="handleJoinGroup(item.key)"
+              ></i>
+            </div>
           </div>
         </div>
       </div>
     </div>
+    <userDia ref="userDia">
+    </userDia>
   </div>
 </template>
 
@@ -85,15 +107,17 @@ import { Component } from "vue-property-decorator";
 import ItemData from "@/views/common/list/ItemData";
 import ItemPane from "@/views/common/list/ItemPane.vue";
 import ItemBox from "@/views/common/list/ItemBox";
-import { cloneDeep } from "lodash";
+import userDia from "@/views/find/AddUser.vue";
+
 @Component({
   components: {
-    ItemPane
+    ItemPane,
+    userDia
   }
 })
 export default class SearchBar extends Vue {
   private text: string = "";
-  private showPane: boolean = true;
+  private showPane: boolean = false;
   private showUserList: boolean = true;
   private showGroupList: boolean = true;
   private showFindUserList: boolean = true;
@@ -106,7 +130,7 @@ export default class SearchBar extends Vue {
 
   public mounted() {
     const a: ItemData = new ItemData();
-    a.active = false;
+    a.active = false; 
     a.name = "123";
     const u: ItemData = new ItemData();
     u.active = false;
@@ -121,6 +145,8 @@ export default class SearchBar extends Vue {
     this.userList.push(a);
     this.groupList.push(u);
     this.findUserList.push(u1);
+    this.findUserList.push(u1);
+    this.findGroupList.push(u2);
     this.findGroupList.push(u2);
   }
 
@@ -137,6 +163,15 @@ export default class SearchBar extends Vue {
     this.text = "";
     this.showPane = false;
   }
+
+  private handleShowUser(): void {}
+  private handleAddUser(userId: string): void {
+    const userDia: any = this.$refs.userDia;
+    userDia.openDia(true);
+    userDia.setUserId(userId);
+  }
+  private handleShowGroup(): void {}
+  private handleJoinGroup(): void {}
 }
 </script>
 
