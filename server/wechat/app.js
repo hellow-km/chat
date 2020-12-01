@@ -5,7 +5,8 @@ const session = require('express-session')
 
 const {
   log,
-  address
+  address,
+  userSetting
 } = require('./router')
 
 app.use(bodyParser.json());
@@ -35,19 +36,26 @@ app.use((req, res, next) => {
 })
 app.use('/', address)
 app.use('/client', log)
+app.use('/setting', userSetting)
 
 app.listen(3000)
 
 var ws = require('nodejs-websocket');
+const {
+  userStatus
+} = require('./models/model.js')
 var server = ws.createServer(function (conn) {
+  const account = global.account || ''
   conn.on("text", function (str) {
-    console.log("Received " + str)
-    conn.sendText(str.toUpperCase() + "!!!")
+    if (str === 'open') {
+
+    }
   })
   conn.on("close", function (code, reason) {
-    console.log("Connection closed")
+    userStatus.setUserIsLogin(account, false)
   })
   conn.on("error", function (code, reason) {
+    userStatus.setUserIsLogin(account, false)
     console.log("异常关闭")
   });
 }).listen(3001)

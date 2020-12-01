@@ -20,21 +20,20 @@ export default class NetServer {
     const own = this;
     const handler = {
       onOpen(): void {
-        console.log('open');
-
+        own.onOpen()
       },
       onMessage(data: any): void {
         try {
+          own.onMessage(data)
         } catch (e) {
           // console.log(e);
         }
       },
       onClose(e: CloseEvent): void {
-        console.log(e);
-
+        own.onClose(e)
       },
       onError(): void {
-
+        own.onError()
       },
     } as Handler;
     this.netSocket = new NetSocket(handler);
@@ -53,6 +52,18 @@ export default class NetServer {
     console.log(value);
   }
 
+  private onOpen(): void {
+    this.netSocket.send('open', '')
+  }
+
+  private onClose(e: CloseEvent): void {
+
+  }
+
+  private onError(): void {
+
+  }
+
   private prompt(message: string): void {
     if (typeof (this.promptMessage) === 'function') {
       this.promptMessage(message);
@@ -62,6 +73,15 @@ export default class NetServer {
   private promptMessage(message: string): void {
     this.promptHandler.prompt(message);
   }
+
+  public setPromptHandler(promptHandler: PromptHandler): void {
+    this.promptHandler = promptHandler;
+  }
+
+  public setConnectHandler(connectHandler: ConnectHandler): void {
+    this.connectHandler = connectHandler;
+  }
+
 
   private showErrorMessage(data: any): void {
     if (data && data.head) {

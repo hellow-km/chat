@@ -7,145 +7,105 @@ const {
   cloneDeep
 } = require('lodash')
 const {
-  registerBack
-} = require('./model.js')
+  registerBack,
+  userStatus
+} = require('../models/model')
+const {
+  successSend,
+  warningSend
+} = require('../util/util')
 
 let userList = []
 const userDataPath = path.join(__dirname, '../data/user.json')
 updateUserList()
 
 log.post('/login', (req, res) => {
-  const body = req.body.body
-  const {
-    account,
-    password
-  } = body
-
-  let sendData = {}
+  const params = req.body
+  const body = params.body || {}
+  const account = body.account || ''
+  const password = body.password || ''
   if (account.trim() == '' || password.trim() == '') {
-    return res.send({
-      info: {
-        success: false,
-        warnings: [{
-          text: '用户名密码不能为空'
-        }]
-      },
-      body: {}
-    })
+    warningSend(res, '用户名和密码不能为空')
   }
   let user = getUserByLogin(account, password)
   if (user) {
-    sendData = {
-      info: {
-        success: true
-      },
-      body: {
-        token: '123456',
-        user: user
-      }
+    userStatus.setUserIsLogin(account, true)
+    global.account = account
+    //todo token 
+    const data = {
+      token: '123456',
+      user: user
     }
+    successSend(res, data)
   } else {
-    sendData = {
-      info: {
-        success: false,
-        warnings: [{
-          text: '用户名或密码错误'
-        }],
-      },
-      body: {}
-    }
+    warningSend(res, '用户名或密码错误')
   }
-  res.send(sendData)
 })
 
 log.post('/existAccount', (req, res) => {
-  const body = req.body.body
-  const account = body.account
-  let sendData = {}
+  const body = req.body.body || {}
+  const account = body.account || ''
+  if (!account) {
+    warningSend(res, '参数错误')
+  }
   const hasUserAccount = checkAccount(account)
   if (hasUserAccount) {
-    sendData = {
-      info: {
-        success: false,
-        warnings: [{
-          text: '用户名已存在'
-        }],
-      },
-      body: {
-        exist: true
-      }
+    const data = {
+      exist: true
     }
+    warningSend(res, '用户名已存在', data)
   } else {
-    sendData = {
-      info: {
-        success: true
-      },
-      body: {
-        exist: false
-      }
+    const data = {
+      exist: false
     }
+    successSend(res, data)
   }
-  res.send(sendData)
 })
 
 log.post('/register', (req, res) => {
-  const body = req.body.body
-  let sendData = {}
-  const user = body.user
-  const questions = body.questions
+  const body = req.body.body || {}
+  const user = body.user || {}
+  const questions = body.questions || []
   if (user.account && user.password && user.nickName) {
     if (checkQuestions(questions)) {
       user.questions = questions
     } else {
       warningSend(res, '问题或者答案不能为空')
     }
+    const id = ('00000' + (userList.length + 1)).slice(-6);
+    user.id = id
     addUserList(user)
     writeUser()
     registerBack()
-    sendData = {
-      info: {
-        success: true
-      },
-      body: {
-        exist: false
-      }
+    const data = {
+      exist: false
     }
+    successSend(res, data)
+  } else {
+    warningSend(res, '参数错误')
   }
-  res.send(sendData)
 })
 
 log.post('/getQuestionList', (req, res) => {
-  let sendData = {
-    info: {
-      success: false,
-      warnings: [{
-        text: '用户名不存在'
-      }]
-    },
-    body: {}
-  }
   const body = req.body
   const params = body.body
   const account = params.account
   const questions = getUserQuestions(account)
   if (questions) {
-    sendData = {
-      info: {
-        success: true
-      },
-      body: {
-        userQuestions: questions
-      }
+    const data = {
+      userQuestions: questions
     }
+    successSend(res, data)
+  } else {
+    warningSend(res, '用户不存在')
   }
-  res.send(sendData)
 })
 
 log.post('/checkAnswer', (req, res) => {
-  const params = req.body.body
-  const account = params.account
-  const questions = params.questions
-  if (!account || !questions) {
+  const params = req.body.body || {}
+  const account = params.account || ''
+  const questions = params.questions || []
+  if (!account || questions.length == 0) {
     warningSend(res, '错误参数')
   }
   if (checkQuestionAnswer(account, questions)) {
@@ -156,15 +116,16 @@ log.post('/checkAnswer', (req, res) => {
 })
 
 log.post('/changePassword', (req, res) => {
-  const params = req.body.body
-  const {
-    account,
-    newPassword
-  } = params
+  const params = req.body.body || {}
+  const account = params.account || ''
+  const newPassword = params.newPassword || ''
+  if (!account || !newPassword) {
+    warningSend(res, '参数错误')
+  }
   if (changePassword(account, newPassword)) {
     successSend(res, {})
   } else {
-    warningSend(res, '参数错误')
+    warningSend(res, '找不到用户')
   }
 })
 
@@ -214,27 +175,6 @@ function checkQuestionAnswer(account, list) {
   } else {
     return false
   }
-}
-
-function successSend(res, body) {
-  res.send({
-    info: {
-      success: true
-    },
-    body: body
-  })
-}
-
-function warningSend(res, message) {
-  res.send({
-    info: {
-      success: false,
-      warnings: [{
-        text: message
-      }]
-    },
-    body: {}
-  })
 }
 
 function getUserQuestions(account) {

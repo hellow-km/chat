@@ -1,10 +1,9 @@
 import AbstractMaterial from '@/app/base/AbstractMaterial';
-import ContactSender from '@/app/com/main/sender/ContactSender';
-import DataBackAction from '@/app/base/net/DataBackAction';
+import ContactClient from '@/app/com/main/http/main/ContactClient';
 
 export default class ContactController extends AbstractMaterial {
-  public getContactAddVerifySetting(userId: string, back?: DataBackAction, parallel?: boolean): void {
-    const contactSender: ContactSender = this.appContext.getMaterial(ContactSender);
-    contactSender.getContactAddVerifySetting(userId, back, parallel);
+  public getContactAddVerifySetting(userId: string, back?: (data: any) => void, prompt?: boolean): void {
+    const contactClient: ContactClient = this.appContext.getMaterial(ContactClient);
+    contactClient.getContactAddVerifySetting(userId, back, prompt);
   }
 }

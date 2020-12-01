@@ -64,6 +64,43 @@ class HttpClient {
     });
   }
 
+  public get(url: string, data: object, back?: (data: any) => void, prompt?: boolean | null): void {
+    // url = AppSetting.SERVER_URL + url;
+    // TODO
+    // 同步方式 var res =  await axios.post('')// 这里的res就是你axios请求回来的结果了
+    LogHandler.debug('request:' + BaseUtil.objectToJson(data));
+    this.client.get(url, data).then((response) => {
+      const value = response.data;
+      LogHandler.debug('response:' + BaseUtil.objectToJson(value));
+      if (typeof (back) === 'function') {
+        back(value);
+      }
+
+      if (prompt) {
+        if (!BaseUtil.isEmpty(value)) {
+          const head = value.head;
+          const info = value.info;
+          if (info && prompt) {
+            if (!info.success) {
+              const error = this.getDefaultErrorText(info);
+              Vue.prototype.$notify({
+                title: '警告',
+                message: error,
+                type: 'warning'
+              });
+            }
+          }
+        }
+      }
+    }).catch((error: any) => {
+      const serverHead: ServerHead = ServerHead.buildResult('0', '请求失败！');
+      const message: Message<ServerHead> = new Message<ServerHead>();
+      message.head = serverHead;
+      if (typeof (back) === 'function') {
+        back(message);
+      }
+    });
+  }
 
   public getDefaultErrorText(info: any): string {
     let text = '';

@@ -106,28 +106,20 @@ export default class Adduser extends Vue {
 
   private loadSetting(userId: string) {
     const own = this;
-    const back: DataBackAction = {
-      back(data: any): void {
-        if (data) {
-          const info = data.info;
-          if (info) {
-            if (info.success && data.body) {
-              const questionList: ContactVerifyQuestion[] =
-                data.body.questionList;
-              const verifySetting: ContactAddVerifySetting =
-                data.body.verifySetting;
-              own.setSetting(verifySetting, questionList);
-            }
+    const back = (data: any): void => {
+      if (data) {
+        const info = data.info;
+        if (info) {
+          if (info.success && data.body) {
+            const questionList: ContactVerifyQuestion[] =
+              data.body.questionList;
+            const verifySetting: ContactAddVerifySetting =
+              data.body.verifySetting;
+            own.setSetting(verifySetting, questionList);
           }
         }
-      },
-      lost(data: any): void {
-        Prompt.notice("请求失败！");
-      },
-      timeOut(data: any): void {
-        Prompt.notice("请求超时！");
       }
-    } as DataBackAction;
+    };
     const contactController: ContactController = app.appContext.getMaterial(
       ContactController
     );
