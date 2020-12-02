@@ -48,14 +48,15 @@ var server = ws.createServer(function (conn) {
   const account = global.account || ''
   conn.on("text", function (str) {
     if (str === 'open') {
-
+      conn.sendText('连接成功');
     }
   })
   conn.on("close", function (code, reason) {
     userStatus.setUserIsLogin(account, false)
+    conn.sendText('连接已断开');
   })
   conn.on("error", function (code, reason) {
     userStatus.setUserIsLogin(account, false)
-    console.log("异常关闭")
+    conn.sendText('连接已断开');
   });
 }).listen(3001)

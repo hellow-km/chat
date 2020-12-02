@@ -7,7 +7,7 @@ export default class UserInfoUtil {
     let showName = '';
     if (user) {
 
-      const nickname = user.nickname;
+      const nickname = user.nickName;
       const account = user.account;
       const id = user.id;
 

@@ -17,6 +17,7 @@ class LoginController extends AbstractMaterial {
         Auth.setLogin(true)
         Auth.account = account
         Auth.password = password
+        this.initializeApp();
       }
       back(success, message)
     }
@@ -79,6 +80,11 @@ class LoginController extends AbstractMaterial {
 
   private auth(back: (success: boolean, message?: string) => void): void {
     back(true)
+  }
+
+  //获取数据
+  private initializeApp(): void {
+
   }
 }
 
