@@ -84,7 +84,7 @@ class LoginController extends AbstractMaterial {
 
   //获取数据
   private initializeApp(): void {
-
+    
   }
 }
 

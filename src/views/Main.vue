@@ -22,7 +22,24 @@
         </div>
       </div>
       <SearchBar></SearchBar>
-      <hr style="border:0;border-bottom:1px solid #777;margin:10px 0">
+      <div style="border:0;height:1px;background-color:#777"></div>
+      <div v-show="currentTab=='user_tab'">
+        <UserListPane
+          @on-node-context-menu='onUserNodeContextMenu'
+          @on-item-selected="onUserSelected"
+          @on-item-context-menu='onUserItemContextMenu'
+        ></UserListPane>
+      </div>
+      <div v-show="currentTab=='group_tab'">
+        <GroupListPane
+          @on-node-context-menu='onGroupNodeContextMenu'
+          @on-item-selected="onGroupSelected"
+          @on-item-context-menu='onGroupItemContextMenu'
+        ></GroupListPane>
+      </div>
+      <div v-show="currentTab=='module_tab'">
+        <ModuleMenu></ModuleMenu>
+      </div>
     </div>
     <SoundHandlerPane ref="mainSound"></SoundHandlerPane>
 
@@ -37,20 +54,28 @@ import Vue from "vue";
 import { Component } from "vue-property-decorator";
 
 import SoundHandlerPane from "@/views/main/SoundHandlerPane.vue";
+import SideBar from "@/views/main/SideBar.vue";
 import SearchBar from "@/views/main/SearchBar.vue";
+import UserListPane from "./main/list/UserListPane.vue";
+import GroupListPane from "./main/list/GroupListPane.vue";
+import ModuleMenu from "@/views/main/ModuleMenu.vue";
 
 import SoundType from "@/app/com/main/component/SoundType";
-import SideBar from "@/views/main/SideBar.vue";
 import SideTabData from "@/views/main/SideTabData";
 import SideTabBox from "@/views/main/SideTabBox";
 import PersonalDataBox from "@/impl/PersonalDataBox";
 import PersonalData from "@/views/common/data/PersonalData";
+import ItemData from "@/views/common/list/ItemData";
+import NodeData from "@/views/common/list/NodeData";
 
 @Component({
   components: {
     SoundHandlerPane,
     SideBar,
-    SearchBar
+    SearchBar,
+    UserListPane,
+    GroupListPane,
+    ModuleMenu
   }
 })
 export default class Main extends Vue {
@@ -115,6 +140,61 @@ export default class Main extends Vue {
 
   private onTabSelected(key: string): void {
     this.currentTab = key;
+  }
+
+  private onUserItemContextMenu(e: MouseEvent, data: ItemData) {
+    // if (data) {
+    //   const userId = data.key;
+    //   const menuName = "userContextMenu";
+    //   const menu: any = this.$refs[menuName];
+    //   menu.show(e, userId);
+    // }
+  }
+
+  private onUserSelected(data: ItemData) {
+    // if (data) {
+    //   const userId = data.key;
+    //   const userInfoPaneName = "userInfoPane";
+    //   const userInfoPane: any = this.$refs[userInfoPaneName];
+    //   userInfoPane.setUserId(userId);
+    // }
+  }
+
+  private onUserNodeContextMenu(e: MouseEvent, data: ItemData) {
+    // if (data) {
+    //   const id = data.key;
+    //   const menuName = "userNodeContextMenu";
+    //   const menu: any = this.$refs[menuName];
+    //   menu.show(e, id);
+    // }
+  }
+  private onGroupItemContextMenu(e: MouseEvent, data: ItemData) {
+    // if (data) {
+    //   const groupId = data.key;
+    //   const groupContextMenuName = "groupContextMenu";
+    //   const groupContextMenu: any = this.$refs[groupContextMenuName];
+    //   groupContextMenu.show(e, groupId);
+    // }
+  }
+  private onGroupSelected(data: ItemData) {
+    // if (data) {
+    //   const groupId = data.key;
+    //   const groupInfoPaneName = "groupInfoPane";
+    //   const groupInfoPane: any = this.$refs[groupInfoPaneName];
+    //   groupInfoPane.setGroupId(groupId);
+    //   const groupMemberListController: GroupMemberListController = app.appContext.getMaterial(
+    //     GroupMemberListController
+    //   );
+    //   groupMemberListController.loadMemberListByGroupId(groupId);
+    // }
+  }
+  private onGroupNodeContextMenu(e: MouseEvent, data: NodeData) {
+    // if (data) {
+    //   const id = data.key;
+    //   const menuName = "groupNodeContextMenu";
+    //   const menu: any = this.$refs[menuName];
+    //   menu.show(e, id);
+    // }
   }
 }
 </script>

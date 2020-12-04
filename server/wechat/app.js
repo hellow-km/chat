@@ -53,10 +53,8 @@ var server = ws.createServer(function (conn) {
   })
   conn.on("close", function (code, reason) {
     userStatus.setUserIsLogin(account, false)
-    conn.sendText('连接已断开');
   })
   conn.on("error", function (code, reason) {
     userStatus.setUserIsLogin(account, false)
-    conn.sendText('连接已断开');
   });
 }).listen(3001)

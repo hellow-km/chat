@@ -206,6 +206,7 @@ summary {
   margin-left: 5%;
   top: 36px;
   border-radius: 3px;
+  z-index: 999;
 }
 
 .pop-contain>div {
@@ -240,8 +241,6 @@ summary {
 }
 
 .pane .pane-item {
-  background-color: #393c43;
-  border-bottom: 1px solid #33363b;
   height: 55px;
   line-height: 55px;
   cursor: pointer;
@@ -261,6 +260,7 @@ summary {
 }
 
 .pane-item .pane-name h4 {
+  margin-left: 10px;
   color: #eee;
   font-weight: normal;
 }
@@ -287,4 +287,37 @@ summary {
 
 /*****searchList****/
 
+
+
+/********************/
+.contact-group-list {
+  line-height: 50px;
+  cursor: pointer;
+  padding-left: 15px;
+  color: #f4f4f4;
+}
+
+.contact-group-list:hover {
+  background-color: #515a6e;
+}
+
+.el-submenu__title:hover {
+  color: #fff !important;
+  background-color: #515a6e !important;
+}
+
+.el-menu-item {
+  background-color: #2a323a !important;
+}
+
+.el-menu-item:hover {
+  color: #fff !important;
+  background-color: #3c5574 !important;
+}
+
+.is-active {
+  background-color: #3c5574 !important;
+}
+
+/********************/
 /*******************panel end**********************/

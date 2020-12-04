@@ -1,35 +1,41 @@
 import Vue from 'vue'
-import VueRouter, { RouteConfig } from 'vue-router'
-
+import VueRouter, { RouteConfig, RouterOptions } from 'vue-router'
+import RouteConfigBox from './RouteConfigBox'
+import Auth from '@/app/common/auth/Auth';
+import { Dictionary } from 'vue-router/types/router';
+import Prompt from '@/components/common/Prompt';
 Vue.use(VueRouter)
 
-const routes: Array<RouteConfig> = [
-  {
-    path: '/',
-    redirect: '/login'
-  },
-  {
-    path: '/login',
-    component: () => import('@/views/Login.vue')
-  },
-  {
-    path: '/register',
-    component: () => import('@/views/Register.vue')
-  },
-  {
-    path: '/resetPassword',
-    component: () => import('@/views/ResetPassword.vue')
-  },
-  {
-    path: '/main',
-    component: () => import('@/views/Main.vue')
-  }
-]
-
-const router = new VueRouter({
+const options: RouterOptions = {
   mode: 'history',
   base: process.env.BASE_URL,
-  routes
-})
+  routes: RouteConfigBox.getRoutes()
+}
 
+const router = new VueRouter(options)
+const whiteList = ['login', 'register', 'resetPassword']
+
+router.beforeEach((to, from, next) => {
+  const isLogin = true
+  const token = Auth.getToken()
+  const name: string = to.name || ''
+  const isWhiteList = whiteList.includes(name)
+  if (!isWhiteList) {
+    const data: Dictionary<string> = { to: to.name + '', from: from.name + '' };
+    const route = { name: 'login', params: data };
+    if (isLogin) {
+      if (token) {
+        next()
+      } else {
+        // Prompt.notice('没有权限', '警告', 'warn')
+        // next(route);
+        next()
+      }
+    } else {
+      next(route);
+    }
+  } else {
+    next()
+  }
+})
 export default router

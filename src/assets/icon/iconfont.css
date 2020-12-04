@@ -1,0 +1,43 @@
+@font-face {
+  font-family: "iconfont";
+  src: url('iconfont.eot?t=1607071720508');
+  /* IE9 */
+  src: url('iconfont.eot?t=1607071720508#iefix') format('embedded-opentype'),
+    /* IE6-IE8 */
+    url('data:application/x-font-woff2;charset=utf-8;base64,d09GMgABAAAAAAQ0AAsAAAAACDQAAAPmAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHEIGVgCCcAqEQINaATYCJAMICwYABCAFhG0HMBsAB8iusClj9lgLzIvg1Kl7vTEYfRzPBSMe/lnHd9/MfAFp9/dlIprctq0jmMAIhQSdbiQhbZ2hPPRSI6ksPsF9d/9rbc4l3sFEkkYxz//tzorNrVhJ4CnA61cCJfAIcRNucGGWwCzL4oHsOtFc4gShJ5Ixt89zOb2W+PxAOa256F58GGC8NcA9bS3hAsWAe4i3y7XD2k6gVCce0Ey1szuoykC/QGzzVAVUU2ZZDTkUC4UlUzNxHLri5ECyg2P+9+OnSVFMoiAFRQs27Muw9WURCwrOzcYlSMZzQpxFinFARiwpdc9TCNPjUJXq6aJeYF3k4Mv9/9wVr/aHRxCFQF3OsNrF5ySxpaeqTlxtxjY/wOdeS5NNUdpE2XlycpfA28tJXlpb00HWMsHCvOFEoqQGVLB2np4esmefi6+zt1MlUlXBU3tsWp9tcFlXXT2CdPP3Q4kvuZYczs8fV09hKOw7oajoISMrISNPYJVsPaVL99bWgoSBmQ2WlZM9nJWXB21be19R90obV4Tah8oR6EQjXNZHVXXmXN3NOrrLedj7HDwlZCXkpZycrbOcnae0DScqWW1VidXtuO3XqBP74LI5Nrky97+jqkqsp+4ehuouwF1qF/ssg6oYXQGI7Tk75hnjozlzh5i6WelSA2pU+jrXGgYAzSp9GF1oWDDhXpwokceNlrSukKKnW4MlPvunCTGf3jiXZ3yLWYBcf1V96wfsODwUkhWsmCxlPvJaZUEUs2u6o4+ZCCr6P3brjfBfT1Lm5Sd5hTOoxAA3pqNdv3iP1z5y2KJtKWIJx7MyRB1z1HTtLEP6+6f05XfL7cSpDb+JUcd5OgwXbo4wZzIadngMz65aOqOUozblRJ0QjdzM/94cmnTP52au6oiNhB28PXwqYxEYiA8wFciTn82gdN2v3c81sY+BlVUyfyzLwLt/FPvydl5Q/AI8wY9UZaMQudyQgTnJNHMeNpJ4YFBnAiOUfHKAv9ZdX33DW8uHYg3vzlukI0aqWD8tY42jQJkJFCo2BaXGqM8uUydIQWQlGJVKEKr1I1HpLlLVdmkZ6xYFGr2hUHWkKLUsSJcsMxibcZSDSAQko1OKnhI7CrUF9YB8Q2poCS8p89kP5Pl6DAX5BLK5Q3LIG2NEcKQuhwQKunlsoxrZjSyLMcBjg6Rg3iMIJiv8/G5lN5p3ZhvqZvAQIUBkyEkKeZIwh+KWD9Rzn79BVCGL4NVQ6oIPiMent44E8RFoQTtUO60o13JIsIhqWYiAArnxMBtSI05iYZqhgPJOBiIJzPPokZxYwc+Wcmurnp9faz/dCigFhiSwXapwXSh75AAAAAA=') format('woff2'),
+    url('iconfont.woff?t=1607071720508') format('woff'),
+    url('iconfont.ttf?t=1607071720508') format('truetype'),
+    /* chrome, firefox, opera, Safari, Android, iOS 4.2+ */
+    url('iconfont.svg?t=1607071720508#iconfont') format('svg');
+  /* iOS 4.1- */
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-duoren:before {
+  content: "\e6c1";
+}
+
+[class^="icon-duoren"],
+[class*=" icon-duoren"]
+/*这里有空格*/
+
+  {
+  font-family: "iconfont" !important;
+
+  font-size: 16px;
+
+  font-style: normal;
+
+  -webkit-font-smoothing: antialiased;
+
+  -moz-osx-font-smoothing: grayscale;
+
+  margin: 0 10px 0 5px;
+}
