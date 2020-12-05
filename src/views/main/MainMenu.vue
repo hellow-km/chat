@@ -27,6 +27,7 @@
       title="新建群分组"
       @on-submit="addGroupCategory"
     ></OneItemForm>
+    <AddGroup ref="addGroup"></AddGroup>
 
   </div>
 </template>
@@ -34,13 +35,18 @@
 <script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
 import DataBackAction from "@/app/base/net/DataBackAction";
-import OneItemForm from "@/views/common/form/OneItemForm.vue";
 import Prompt from "@/components/common/Prompt";
 import App from "@/app/App";
 import ContactCategoryController from "@/app/com/main/controller/ContactCategoryController";
+
+import OneItemForm from "@/views/common/form/OneItemForm.vue";
+import AddGroup from "@/views/module/AddGroup.vue";
+import Group from "@/app/com/bean/Group";
+
 @Component({
   components: {
-    OneItemForm
+    OneItemForm,
+    AddGroup
   }
 })
 export default class MainMenu extends Vue {
@@ -61,7 +67,10 @@ export default class MainMenu extends Vue {
     },
     {
       text: "新建群",
-      click: () => {}
+      click: () => {
+        const addGroup: any = this.$refs.addGroup;
+        addGroup.openDia();
+      }
     },
     {
       text: "修改资料",

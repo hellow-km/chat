@@ -133,7 +133,6 @@ input::-moz-focus-inner {
 textarea {
   overflow: auto;
   vertical-align: top;
-  resize: none
 }
 
 input:-webkit-autofill,
