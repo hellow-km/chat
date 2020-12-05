@@ -132,7 +132,6 @@ export default class NetServer {
   }
 
   private requestBack(data: any, back?: DataBackAction): void {
-    //http那边有处理了
     if (back && typeof back.back == 'function') {
       back.back(data)
     }

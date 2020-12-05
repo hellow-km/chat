@@ -5,6 +5,10 @@ class RouteConfigBox {
   constructor() {
     this.routes = [
       {
+        path: '/',
+        redirect: '/login'
+      },
+      {
         path: '/login',
         name: 'login',
         component: () => import('@/views/Login.vue')
@@ -37,25 +41,25 @@ class RouteConfigBox {
   }
 
   public initialize(): void {
-    // const routeConfig: RouteConfig = {
-    //   path: '/module',
-    //   name: 'module',
-    //   component: () => import('@/views/Main.vue'),
-    //   children: [{
-    //     path: 'findUser',
-    //     name: 'findUser',
-    //     component: () => import('@/views/find/FindUser.vue'),
-    //   }, {
-    //     path: 'findGroup',
-    //     name: 'findGroup',
-    //     //component: () => import('@/views/find/FindGroup.vue'),
-    //   }, {
-    //     path: 'notice',
-    //     name: 'notice',
-    //     component: () => import('@/views/notice/ApplyHandleNotice.vue')
-    //   }]
-    // }
-    // this.add(routeConfig)
+    const routeConfig: RouteConfig = {
+      path: '/module',
+      name: 'module',
+      component: () => import('@/views/Main.vue'),
+      children: [{
+        path: 'findUser',
+        name: 'findUser',
+        component: () => import('@/views/find/FindUser.vue'),
+      }, {
+        path: 'findGroup',
+        name: 'findGroup',
+        component: () => import('@/views/find/FindGroup.vue'),
+      }, {
+        path: 'notice',
+        name: 'notice',
+        component: () => import('@/views/notice/ApplyHandleNotice.vue')
+      }]
+    }
+    this.add(routeConfig)
   }
 }
 

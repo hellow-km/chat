@@ -6,17 +6,4 @@ export default interface DataBackAction {
    */
   back(data: any): void;
 
-  /**
-   * 发送失败执行
-   *
-   * @param data
-   */
-  lost(data: any): void;
-
-  /**
-   * 发送超时执行
-   *
-   * @param data
-   */
-  timeOut(data: any): void;
 }

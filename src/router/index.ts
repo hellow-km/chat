@@ -16,6 +16,7 @@ const router = new VueRouter(options)
 const whiteList = ['login', 'register', 'resetPassword']
 
 router.beforeEach((to, from, next) => {
+  //const isLogin=Auth.isLogin()
   const isLogin = true
   const token = Auth.getToken()
   const name: string = to.name || ''

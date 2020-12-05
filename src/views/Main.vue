@@ -4,7 +4,7 @@
       :tabsData="sideTabInfos"
       :box="sideTabBox"
     ></SideBar>
-    <div class="panel">
+    <div class="panel left">
       <div class="panel-head clearfix">
         <div class="panel-user">
           <img
@@ -14,11 +14,7 @@
           <span class="user-name">{{PersonalData.name}}</span>
         </div>
         <div class="user-add">
-          <a
-            @click="onDownMenu($event,$root)"
-            class="opt"
-            href="javascript:;"
-          ><i class="el-icon-s-unfold"></i></a>
+          <MainMenu></MainMenu>
         </div>
       </div>
       <SearchBar></SearchBar>
@@ -41,6 +37,14 @@
         <ModuleMenu></ModuleMenu>
       </div>
     </div>
+    <div class="left">
+      <div
+        class="box"
+        v-if="currentTab=='module_tab'"
+      >
+        <router-view></router-view>
+      </div>
+    </div>
     <SoundHandlerPane ref="mainSound"></SoundHandlerPane>
 
   </div>
@@ -59,6 +63,7 @@ import SearchBar from "@/views/main/SearchBar.vue";
 import UserListPane from "./main/list/UserListPane.vue";
 import GroupListPane from "./main/list/GroupListPane.vue";
 import ModuleMenu from "@/views/main/ModuleMenu.vue";
+import MainMenu from "@/views/main/MainMenu.vue";
 
 import SoundType from "@/app/com/main/component/SoundType";
 import SideTabData from "@/views/main/SideTabData";
@@ -75,7 +80,8 @@ import NodeData from "@/views/common/list/NodeData";
     SearchBar,
     UserListPane,
     GroupListPane,
-    ModuleMenu
+    ModuleMenu,
+    MainMenu
   }
 })
 export default class Main extends Vue {
@@ -101,8 +107,8 @@ export default class Main extends Vue {
 
     let data: SideTabData = new SideTabData();
     data.key = "message_tab";
-    data.normalImage = "assets/images/main/tab/message_normal.png";
-    data.selectedImage = "assets/images/main/tab/message_selected.png";
+    data.normalImage = "/assets/images/main/tab/message_normal.png";
+    data.selectedImage = "/assets/images/main/tab/message_selected.png";
     data.prompt = "消息列表";
     data.selected = true;
     // data.red = true;
@@ -112,8 +118,8 @@ export default class Main extends Vue {
 
     data = new SideTabData();
     data.key = "user_tab";
-    data.normalImage = "assets/images/main/tab/user_normal.png";
-    data.selectedImage = "assets/images/main/tab/user_selected.png";
+    data.normalImage = "/assets/images/main/tab/user_normal.png";
+    data.selectedImage = "/assets/images/main/tab/user_selected.png";
     data.image = data.normalImage;
     data.prompt = "联系人";
     data.setOnSelected(onTabSelected);
@@ -121,8 +127,8 @@ export default class Main extends Vue {
 
     data = new SideTabData();
     data.key = "group_tab";
-    data.normalImage = "assets/images/main/tab/group_normal.png";
-    data.selectedImage = "assets/images/main/tab/group_selected.png";
+    data.normalImage = "/assets/images/main/tab/group_normal.png";
+    data.selectedImage = "/assets/images/main/tab/group_selected.png";
     data.image = data.normalImage;
     data.prompt = "组群";
     data.setOnSelected(onTabSelected);
@@ -130,8 +136,8 @@ export default class Main extends Vue {
 
     data = new SideTabData();
     data.key = "module_tab";
-    data.normalImage = "assets/images/main/tab/app_normal.png";
-    data.selectedImage = "assets/images/main/tab/app_selected.png";
+    data.normalImage = "/assets/images/main/tab/app_normal.png";
+    data.selectedImage = "/assets/images/main/tab/app_selected.png";
     data.image = data.normalImage;
     data.prompt = "更多";
     data.setOnSelected(onTabSelected);

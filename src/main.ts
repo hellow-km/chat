@@ -8,7 +8,7 @@ import '@/assets/icon/iconfont.css'
 
 Vue.use(ElementUI);
 Vue.config.productionTip = false
-Vue.config.silent = true
+//Vue.config.silent = true
 new Vue({
   router,
   store,

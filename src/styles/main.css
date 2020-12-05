@@ -141,10 +141,13 @@ summary {
 }
 
 .user-add {
-  font-size: 22px;
   float: right;
   margin-right: 15px;
   margin-top: 5px;
+}
+
+.user-add .opt {
+  font-size: 22px;
 }
 
 .panel-head {

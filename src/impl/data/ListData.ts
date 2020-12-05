@@ -12,7 +12,7 @@ class ListData {
         active: false,
         key: "",
         name: "123",
-        avatar: "assets/images/common/head/user/1.png",
+        avatar: "/assets/images/common/head/user/1.png",
         gray: true,
         red: false,
         redCount: 0
@@ -21,7 +21,7 @@ class ListData {
         active: false,
         key: "",
         name: "1234",
-        avatar: "assets/images/common/head/user/1.png",
+        avatar: "/assets/images/common/head/user/1.png",
         gray: true,
         red: false,
         redCount: 0
@@ -40,7 +40,7 @@ class ListData {
         active: false,
         key: "",
         name: "123",
-        avatar: "assets/images/common/head/user/1.png",
+        avatar: "/assets/images/common/head/user/1.png",
         gray: true,
         red: false,
         redCount: 0
@@ -49,7 +49,7 @@ class ListData {
         active: false,
         key: "",
         name: "1234",
-        avatar: "assets/images/common/head/user/1.png",
+        avatar: "/assets/images/common/head/user/1.png",
         gray: true,
         red: false,
         redCount: 0
@@ -69,7 +69,7 @@ class ListData {
         active: false,
         key: "",
         name: "123",
-        avatar: "assets/images/common/head/user/1.png",
+        avatar: "/assets/images/common/head/user/1.png",
         gray: true,
         red: false,
         redCount: 0
@@ -78,7 +78,7 @@ class ListData {
         active: false,
         key: "",
         name: "456",
-        avatar: "assets/images/common/head/user/1.png",
+        avatar: "/assets/images/common/head/user/1.png",
         gray: true,
         red: false,
         redCount: 0
@@ -97,7 +97,7 @@ class ListData {
         active: false,
         key: "",
         name: "423",
-        avatar: "assets/images/common/head/user/1.png",
+        avatar: "/assets/images/common/head/user/1.png",
         gray: true,
         red: false,
         redCount: 0
@@ -106,7 +106,7 @@ class ListData {
         active: false,
         key: "",
         name: "524",
-        avatar: "assets/images/common/head/user/1.png",
+        avatar: "/assets/images/common/head/user/1.png",
         gray: true,
         red: false,
         redCount: 0
