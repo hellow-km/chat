@@ -7,11 +7,12 @@
     <div class="panel left">
       <div class="panel-head clearfix">
         <div class="panel-user">
-          <img
+          <el-avatar
             :src="PersonalData.avatar"
             class="user-avatar"
           >
-          <span class="user-name">{{PersonalData.name}}</span>
+          </el-avatar>
+          <span class="user-name">{{PersonalData.nickName}}</span>
         </div>
         <div class="user-add">
           <MainMenu></MainMenu>
@@ -68,10 +69,11 @@ import MainMenu from "@/views/main/MainMenu.vue";
 import SoundType from "@/app/com/main/component/SoundType";
 import SideTabData from "@/views/main/SideTabData";
 import SideTabBox from "@/views/main/SideTabBox";
-import PersonalDataBox from "@/impl/PersonalDataBox";
-import PersonalData from "@/views/common/data/PersonalData";
 import ItemData from "@/views/common/list/ItemData";
 import NodeData from "@/views/common/list/NodeData";
+import PersonalBox from "@/app/com/main/box/PersonalBox";
+import User from "@/app/com/bean/User";
+import App from "@/app/App";
 
 @Component({
   components: {
@@ -88,7 +90,7 @@ export default class Main extends Vue {
   private sideTabInfos: SideTabData[] = new Array<SideTabData>();
   private sideTabBox: SideTabBox = new SideTabBox();
   private currentTab: string = "";
-  private PersonalData: PersonalData = PersonalDataBox.personalData;
+  private PersonalData: User = new User();
   public mounted() {
     this.init();
   }
@@ -142,6 +144,8 @@ export default class Main extends Vue {
     data.prompt = "更多";
     data.setOnSelected(onTabSelected);
     this.sideTabInfos.push(data);
+    const dc: PersonalBox = App.appContext.getMaterial(PersonalBox);
+    this.PersonalData = dc.getUser();
   }
 
   private onTabSelected(key: string): void {

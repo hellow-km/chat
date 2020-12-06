@@ -28,7 +28,7 @@
       @on-submit="addGroupCategory"
     ></OneItemForm>
     <AddGroup ref="addGroup"></AddGroup>
-
+    <UpdateUser ref="updateUser"></UpdateUser>
   </div>
 </template>
 
@@ -38,15 +38,17 @@ import DataBackAction from "@/app/base/net/DataBackAction";
 import Prompt from "@/components/common/Prompt";
 import App from "@/app/App";
 import ContactCategoryController from "@/app/com/main/controller/ContactCategoryController";
+import Group from "@/app/com/bean/Group";
 
 import OneItemForm from "@/views/common/form/OneItemForm.vue";
 import AddGroup from "@/views/module/AddGroup.vue";
-import Group from "@/app/com/bean/Group";
+import UpdateUser from "@/views/main/personal/UpdateUser.vue";
 
 @Component({
   components: {
     OneItemForm,
-    AddGroup
+    AddGroup,
+    UpdateUser
   }
 })
 export default class MainMenu extends Vue {
@@ -74,7 +76,10 @@ export default class MainMenu extends Vue {
     },
     {
       text: "修改资料",
-      click: () => {}
+      click: () => {
+        const updateUser: any = this.$refs.updateUser;
+        updateUser.openDia();
+      }
     },
     {
       text: "修改密码",

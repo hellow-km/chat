@@ -4,6 +4,9 @@ import SecurityQuestion from '@/app/com/bean/SecurityQuestion';
 import PersonalClient from '@/app/com/main/http/main/PersonalClient';
 import BaseUtil from '@/app/lib/util/BaseUtil';
 import { Md5 } from 'md5-typescript';
+import DataBackAction from '@/app/base/net/DataBackAction';
+import User from '@/app/com/bean/User';
+import Message from '@/app/base/message/Message';
 
 export default class PersonalController extends AbstractMaterial {
   /**
@@ -40,5 +43,11 @@ export default class PersonalController extends AbstractMaterial {
     }
     const client: PersonalClient = this.appContext.getMaterial(PersonalClient)
     client.changePassword(account, newPassword, changeBack)
+  }
+
+  public updateUser(user: User, back: DataBackAction): void {
+    const m = Message.build('post', '/module/updateUser')
+    m.body = user
+    this.appContext.netServer.request(m, back)
   }
 }

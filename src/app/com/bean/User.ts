@@ -9,10 +9,10 @@ export default class User {
 
   // /基本信息
   public head: string = ''; // 照片
-  public avatar: string = ''; // 自定义照片，（当用户选择系统头像时为空）
+  public avatar: string = '/assets/images/common/head/user/1.png'; // 自定义照片，（当用户选择系统头像时为空）
   public nickName: string = ''; // 昵称
   public gender: string = '3'; // 性别 1:男 2：女 3：保密 4:男->女过程中 5：女->男过程中
-  public introduce: string = ""
+  public introduce: string = "" // 介绍
   public QQ: string = ''; // qq
   public nation: string = ''; // 民族
   public birthDate: string = ''; // 出生日期
@@ -32,4 +32,6 @@ export default class User {
   public remark: string = ''; // 备注
   public constellation: string = ''; // 星座
   public blood: string = ''; // 血型
+  public signature: string = ""; // 签名
+  public name: string = ""; // 姓名
 }
