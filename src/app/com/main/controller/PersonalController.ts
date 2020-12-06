@@ -46,8 +46,14 @@ export default class PersonalController extends AbstractMaterial {
   }
 
   public updateUser(user: User, back: DataBackAction): void {
-    const m = Message.build('post', '/module/updateUser')
+    const m = Message.build('post', '/menu/updateUser')
     m.body = user
+    this.appContext.netServer.request(m, back)
+  }
+
+  public loginChangePassword(data: any, back: DataBackAction): void {
+    const m = Message.build('post', '/menu/changePassword')
+    m.body = data
     this.appContext.netServer.request(m, back)
   }
 }

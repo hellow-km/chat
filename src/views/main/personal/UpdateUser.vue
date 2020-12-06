@@ -14,7 +14,10 @@
       >
         <el-form-item prop="avatar">
           <div>
-            <div @click="">
+            <div
+              @click="openChangeHead"
+              style="cursor:pointer"
+            >
               <el-avatar
                 :src="user.avatar"
                 style="vertical-align: middle;margin-right:5px;"
@@ -115,20 +118,25 @@
         >确 定</el-button>
       </span>
     </el-dialog>
+    <UpdateHead ref="updateHead"></UpdateHead>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import User from "@/app/com/bean/User";
+import UpdateHead from "./UpdateHead.vue";
 
+import User from "@/app/com/bean/User";
 import RegisterRules from "@/app/com/bean/RegisterRules";
 import PersonalBox from "@/app/com/main/box/PersonalBox";
 import App from "@/app/App";
 import PersonalController from "@/app/com/main/controller/PersonalController";
-import DataUtil from "@/app/lib/util/DataUtil";
 import Prompt from "@/components/common/Prompt";
-@Component
+@Component({
+  components: {
+    UpdateHead
+  }
+})
 export default class UpdateUser extends Vue {
   private user: User = new User();
   private rules: RegisterRules = new RegisterRules();
@@ -156,21 +164,28 @@ export default class UpdateUser extends Vue {
 
   private submit(): void {
     const userForm: any = this.$refs.userForm;
-    const back = {
-      back: (data: any) => {
-        if (DataUtil.isSuccess(data)) {
-          Prompt.notice("创建成功", "成功", "success");
-        }
-      }
-    };
     const pc: PersonalController = App.appContext.getMaterial(
       PersonalController
     );
+    const user: PersonalBox = App.appContext.getMaterial(PersonalBox);
+    const back = {
+      back: (data: any) => {
+        if (data && data.info) {
+          const info = data.info;
+          Prompt.message(info, "添加成功", "");
+        }
+      }
+    };
     userForm.validate((valid: boolean) => {
       if (valid) {
         pc.updateUser(this.user, back);
       }
     });
+  }
+
+  private openChangeHead(): void {
+    const updateHead: any = this.$refs.updateHead;
+    updateHead.openDia();
   }
 }
 </script>

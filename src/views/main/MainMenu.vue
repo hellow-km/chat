@@ -29,6 +29,7 @@
     ></OneItemForm>
     <AddGroup ref="addGroup"></AddGroup>
     <UpdateUser ref="updateUser"></UpdateUser>
+    <UpdatePassword ref="updatePassword"></UpdatePassword>
   </div>
 </template>
 
@@ -43,12 +44,14 @@ import Group from "@/app/com/bean/Group";
 import OneItemForm from "@/views/common/form/OneItemForm.vue";
 import AddGroup from "@/views/module/AddGroup.vue";
 import UpdateUser from "@/views/main/personal/UpdateUser.vue";
+import UpdatePassword from "@/views/main/personal/UpdatePassword.vue";
 
 @Component({
   components: {
     OneItemForm,
     AddGroup,
-    UpdateUser
+    UpdateUser,
+    UpdatePassword
   }
 })
 export default class MainMenu extends Vue {
@@ -83,11 +86,16 @@ export default class MainMenu extends Vue {
     },
     {
       text: "修改密码",
-      click: () => {}
+      click: () => {
+        const updatePassword: any = this.$refs.updatePassword;
+        updatePassword.openDia();
+      }
     },
     {
       text: "退出",
-      click: () => {}
+      click: () => {
+        this.logout();
+      }
     }
   ];
 
@@ -127,6 +135,12 @@ export default class MainMenu extends Vue {
     if (value) {
       ac.addGroupCategory(value, back);
     }
+  }
+  private logout(): void {
+    this.$store.commit("logout");
+    this.$router.push({
+      name: "login"
+    });
   }
 }
 </script>

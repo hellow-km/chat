@@ -58,7 +58,6 @@ import App from "@/app/App";
 import GroupInfoController from "@/app/com/main/controller/GroupInfoController";
 import DataBackAction from "@/app/base/net/DataBackAction";
 import Prompt from "@/components/common/Prompt";
-import DataUtil from "@/app/lib/util/DataUtil";
 @Component
 export default class AddGroup extends Vue {
   private group: Group = new Group();
@@ -77,8 +76,9 @@ export default class AddGroup extends Vue {
   private submit(): void {
     const back: DataBackAction = {
       back: (data: any) => {
-        if (DataUtil.isSuccess(data)) {
-          Prompt.notice("创建成功", "成功", "success");
+        if (data && data.info) {
+          const info = data.info;
+          Prompt.message(info, "添加成功", "");
         }
       }
     };

@@ -216,7 +216,7 @@ export default class Register extends Vue {
     const questionForm: any = this.$refs.questionForm;
     const user = cloneDeep(this.registerForm);
     const questions = this.questionData.questions;
-
+    delete user.rePassword;
     const formValidate = (regValid: boolean): void => {
       if (regValid) {
         if (questions.length > 0) {
