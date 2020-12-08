@@ -2,11 +2,13 @@ const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
 const session = require('express-session')
-
+const path = require('path')
+var multer = require('multer')
 const {
   log,
   address,
-  userSetting
+  userSetting,
+  menu
 } = require('./router')
 
 app.use(bodyParser.json());
@@ -14,7 +16,11 @@ app.use(bodyParser.urlencoded({
   extended: false
 }))
 
-app.use(express.static('public'));
+app.use('/public', express.static(path.join(__dirname, './public')));
+
+const upload = multer({
+  dest: __dirname + './upload'
+})
 
 app.use(session({
   secret: 'secret key',
@@ -37,6 +43,7 @@ app.use((req, res, next) => {
 app.use('/', address)
 app.use('/client', log)
 app.use('/setting', userSetting)
+app.use('/menu', menu)
 
 app.listen(3000)
 

@@ -118,7 +118,10 @@
         >确 定</el-button>
       </span>
     </el-dialog>
-    <UpdateHead ref="updateHead"></UpdateHead>
+    <UpdateHead
+      @get-url="getUrl"
+      ref="updateHead"
+    ></UpdateHead>
   </div>
 </template>
 
@@ -132,6 +135,7 @@ import PersonalBox from "@/app/com/main/box/PersonalBox";
 import App from "@/app/App";
 import PersonalController from "@/app/com/main/controller/PersonalController";
 import Prompt from "@/components/common/Prompt";
+import PersonalViewImpl from "@/impl/view/PersonalViewImpl";
 @Component({
   components: {
     UpdateHead
@@ -168,11 +172,13 @@ export default class UpdateUser extends Vue {
       PersonalController
     );
     const user: PersonalBox = App.appContext.getMaterial(PersonalBox);
+    const pvi: PersonalViewImpl = App.appContext.getMaterial(PersonalViewImpl);
     const back = {
       back: (data: any) => {
         if (data && data.info) {
           const info = data.info;
-          Prompt.message(info, "添加成功", "");
+          Prompt.message(info, "修改成功", "");
+          pvi.setUser(this.user);
         }
       }
     };
@@ -186,6 +192,12 @@ export default class UpdateUser extends Vue {
   private openChangeHead(): void {
     const updateHead: any = this.$refs.updateHead;
     updateHead.openDia();
+  }
+
+  private getUrl(url: string) {
+    this.user.avatar = url;
+    const ub: PersonalBox = App.appContext.getMaterial(PersonalBox);
+    ub.setUser(this.user);
   }
 }
 </script>

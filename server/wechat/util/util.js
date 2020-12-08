@@ -1,7 +1,10 @@
-function successSend(res, body) {
+function successSend(res, body, message) {
   res.send({
     info: {
-      success: true
+      success: true,
+      prompts: [{
+        text: message
+      }]
     },
     body: body
   })

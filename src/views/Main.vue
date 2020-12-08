@@ -146,7 +146,7 @@ export default class Main extends Vue {
     data.prompt = "更多";
     data.setOnSelected(onTabSelected);
     this.sideTabInfos.push(data);
-    const dc: PersonalBox = App.appContext.getMaterial(PersonalBox);
+    const db: PersonalBox = App.appContext.getMaterial(PersonalBox);
   }
 
   private onTabSelected(key: string): void {
