@@ -322,5 +322,17 @@ summary {
   background-color: #3c5574 !important;
 }
 
+.setting-ipt:first-child {
+  margin-top: 10px;
+}
+
+.setting-ipt {
+  margin-top: 5px;
+}
+
+.setting-ipt:last-child {
+  margin-bottom: 10px;
+}
+
 /********************/
 /*******************panel end**********************/

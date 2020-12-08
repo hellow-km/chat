@@ -3,6 +3,7 @@
     <SideBar
       :tabsData="sideTabInfos"
       :box="sideTabBox"
+      @on-button-click="handleSetting"
     ></SideBar>
     <div class="panel left">
       <div class="panel-head clearfix">
@@ -47,7 +48,7 @@
       </div>
     </div>
     <SoundHandlerPane ref="mainSound"></SoundHandlerPane>
-
+    <SettingPane ref="settingPane"></SettingPane>
   </div>
 </template>
 
@@ -65,6 +66,7 @@ import UserListPane from "./main/list/UserListPane.vue";
 import GroupListPane from "./main/list/GroupListPane.vue";
 import ModuleMenu from "@/views/main/ModuleMenu.vue";
 import MainMenu from "@/views/main/MainMenu.vue";
+import SettingPane from "@/views/main/setting/SettingPane.vue";
 
 import SoundType from "@/app/com/main/component/SoundType";
 import SideTabData from "@/views/main/SideTabData";
@@ -85,7 +87,8 @@ import personalDataBox from "@/impl/PersonalDataBox";
     UserListPane,
     GroupListPane,
     ModuleMenu,
-    MainMenu
+    MainMenu,
+    SettingPane
   }
 })
 export default class Main extends Vue {
@@ -206,6 +209,11 @@ export default class Main extends Vue {
     //   const menu: any = this.$refs[menuName];
     //   menu.show(e, id);
     // }
+  }
+
+  private handleSetting() {
+    const settingPane: any = this.$refs.settingPane;
+    settingPane.setShow(true);
   }
 }
 </script>

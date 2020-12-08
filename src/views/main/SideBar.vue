@@ -10,7 +10,10 @@
         </li>
       </ul>
     </div>
-    <div class="sidebar-more">
+    <div
+      class="sidebar-more"
+      @click="onMenuClick"
+    >
       <img
         class="sidebar-more-icon"
         src="/assets/images/main/tab/button_menu.png"

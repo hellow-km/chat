@@ -71,7 +71,7 @@ export default class Adduser extends Vue {
   private dialogVisible: boolean = false;
   private apply: ContactAddApplyData = new ContactAddApplyData();
   private categoryList: ContactCategory[] = [];
-  private answerList: ContactVerifyAnswer[] = []; 
+  private answerList: ContactVerifyAnswer[] = [];
   private verifyType: string = "0";
   private userId: string = "";
   private isBlocked: boolean = false;

@@ -13,6 +13,7 @@
         :show-file-list="false"
         :on-success="handleAvatarSuccess"
         :before-upload="beforeAvatarUpload"
+        accept="image/*"
       >
         <img
           v-if="imageUrl"
@@ -24,11 +25,6 @@
           class="el-icon-plus avatar-uploader-icon"
         ></i>
       </el-upload>
-      <span
-        slot="footer"
-        class="dialog-footer"
-      >
-      </span>
     </el-dialog>
   </div>
 </template>
