@@ -5,13 +5,13 @@ import Message from '@/app/base/message/Message';
 
 export default class ContactSettingController extends AbstractMaterial {
   public updateSetting(setting: ContactHarassSetting, back: DataBackAction) {
-    const m = Message.build('post', '/menu/updateSetting')
+    const m = Message.build('post', '/addUserSetting/updateSetting')
     m.body = setting
     this.appContext.netServer.request(m, back)
   }
 
   public getSetting(userId: string, back: DataBackAction) {
-    const m: any = Message.build('get', '/menu/getSetting')
+    const m: any = Message.build('get', '/addUserSetting/getSetting')
     m.params = {
       userId: userId
     }

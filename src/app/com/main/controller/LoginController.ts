@@ -7,6 +7,8 @@ import PersonalBox from '@/app/com/main/box/PersonalBox';
 import PersonalClient from '@/app/com/main/http/main/PersonalClient';
 import ConnectService from '@/app/com/main/service/ConnectService';
 import store from '@/store/index'
+import InitializeData from '@/impl/initialize/InitializeData'
+import User from '@/app/com/bean/User';
 class LoginController extends AbstractMaterial {
 
   public login(account: string, password: string, back: (success: boolean, message?: string) => void) {
@@ -18,7 +20,6 @@ class LoginController extends AbstractMaterial {
         Auth.setLogin(true)
         Auth.account = account
         Auth.password = password
-        this.initializeApp();
       }
       back(success, message)
     }
@@ -65,8 +66,7 @@ class LoginController extends AbstractMaterial {
             }
             const pb: PersonalBox = this.appContext.getMaterial(PersonalBox);
             pb.setUser(user);
-            console.log(user.id);
-
+            this.setData(user);
             store.commit('setUserId', user.id)
           }
         }
@@ -86,9 +86,9 @@ class LoginController extends AbstractMaterial {
     back(true)
   }
 
-  //获取数据
-  private initializeApp(): void {
-
+  private setData(user: User): void {
+    InitializeData.setPersonalData(user)
+    InitializeData.setListData(user)
   }
 }
 

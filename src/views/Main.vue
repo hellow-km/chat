@@ -39,7 +39,10 @@
         <ModuleMenu></ModuleMenu>
       </div>
     </div>
-    <div class="left">
+    <div
+      class="left"
+      style="width:55%;margin:5% 0 0 5%"
+    >
       <div
         class="box"
         v-if="currentTab=='module_tab'"

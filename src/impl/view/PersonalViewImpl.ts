@@ -1,9 +1,8 @@
 import User from '@/app/com/bean/User';
 import personalDataBox from '@/impl/PersonalDataBox';
 import UserInfoUtil from '@/app/com/main/util/UserInfoUtil';
-import AbstractMaterial from '@/app/base/AbstractMaterial';
 
-export default class PersonalViewImpl extends AbstractMaterial {
+class PersonalViewImpl {
   public setUser(user: User): void {
     const key: string = user.id;
     const name = UserInfoUtil.getShowName(user);
@@ -13,3 +12,5 @@ export default class PersonalViewImpl extends AbstractMaterial {
     personalDataBox.personalData.avatar = avatar;
   }
 }
+
+export default new PersonalViewImpl()

@@ -8,7 +8,8 @@ const {
   log,
   address,
   userSetting,
-  menu
+  menu,
+  userList
 } = require('./router')
 
 app.use(bodyParser.json());
@@ -42,8 +43,9 @@ app.use((req, res, next) => {
 })
 app.use('/', address)
 app.use('/client', log)
-app.use('/setting', userSetting)
+app.use('/addUserSetting', userSetting)
 app.use('/menu', menu)
+app.use('/user', userList)
 
 app.listen(3000)
 

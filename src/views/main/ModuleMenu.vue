@@ -5,7 +5,6 @@
       text-color="rgba(255, 255, 255, 0.7)"
       active-text-color="rgba(255, 255, 255, 0.7)"
       router
-      default-active=""
     >
       <el-submenu index="1">
         <template slot="title">
