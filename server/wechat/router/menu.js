@@ -6,6 +6,9 @@ const {
   successSend,
   warningSend
 } = require('../util/util')
+const {
+  addUserSetting
+} = require('../models/model')
 const fs = require('fs')
 const dir = path.resolve(__dirname, '../public/img');
 const storage = multer.diskStorage({
@@ -52,4 +55,36 @@ menu.post('/updateHead', upload.single('file'), (req, res) => {
   successSend(res, file, '上传成功')
 })
 
+menu.get('/getSetting', (req, res) => {
+  const query = req.query || {}
+  const userId = query.userId || ""
+  if (userId == "") {
+    return warningSend(res, "参数错误")
+  }
+  const data = addUserSetting.getSettingByUserId(userId)
+  if (data) {
+    successSend(res, {
+      setting: data
+    })
+  } else {
+    warningSend(res, "错误")
+  }
+})
+
+menu.post('/updateSetting', (req, res) => {
+  const body = req.body.body || {}
+  const userId = body.userId || ""
+  console.log(body, userId);
+
+  if (userId && JSON.stringify(body) !== '{}') {
+    try {
+      addUserSetting.updateDataById(userId, body)
+      successSend(res, {}, "保存成功")
+    } catch (e) {
+      warningSend(res, '服务器错误')
+    }
+  } else {
+    warningSend(res, '参数错误')
+  }
+})
 module.exports = menu

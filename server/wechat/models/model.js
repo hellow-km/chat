@@ -2,7 +2,7 @@ const path = require('path')
 const User = require('./User')
 const UserStatus = require('./UserStatus')
 const UserGrounps = require('./UserGrounps')
-const UserSetting = require('./UserSetting')
+const AddUserSetting = require('./menu/setting')
 
 let user = new User()
 const data = user.getData()
@@ -13,8 +13,8 @@ let userStatus = new UserStatus(data, userStatusPath)
 const userGrounpsPath = getPath('userGrounps')
 let userGrounps = new UserGrounps(data, userGrounpsPath)
 
-const userSettingPath = getPath('userSetting')
-let userSetting = new UserSetting(data, userSettingPath)
+const addUserSettingPath = getPath('addUserSetting')
+let addUserSetting = new AddUserSetting(data, addUserSettingPath)
 
 function getPath(name) {
   return path.join(__dirname, '../data/' + name + '.json')
@@ -27,7 +27,7 @@ function registerBack() {
   const data = user.getData()
   userStatus = new UserStatus(data, userStatusPath)
   userGrounps = new UserGrounps(data, userGrounpsPath)
-  userSetting = new UserSetting(data, userSettingPath)
+  addUserSetting = new AddUserSetting(data, addUserSettingPath)
 }
 
 module.exports = {
@@ -35,5 +35,5 @@ module.exports = {
   userStatus,
   userGrounps,
   registerBack,
-  userSetting
+  addUserSetting
 }

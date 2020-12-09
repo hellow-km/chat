@@ -48,8 +48,21 @@ class UserAccount {
     }
   }
 
+  writeFile(data) {
+    try {
+      fs.writeFileSync(this.path, JSON.stringify(data))
+    } catch (e) {
+
+    }
+  }
+
   getData() {
     return this.readFile()
+  }
+
+  update(data) {
+    this.list = data
+    this.writeFile(data)
   }
 }
 

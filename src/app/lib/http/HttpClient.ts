@@ -64,12 +64,12 @@ class HttpClient {
     });
   }
 
-  public get(url: string, data: object, back?: (data: any) => void, prompt?: boolean | null): void {
+  public get(url: string, params: object, back?: (data: any) => void, prompt?: boolean | null): void {
     // url = AppSetting.SERVER_URL + url;
     // TODO
     // 同步方式 var res =  await axios.post('')// 这里的res就是你axios请求回来的结果了
-    LogHandler.debug('request:' + BaseUtil.objectToJson(data));
-    this.client.get(url, data).then((response) => {
+    LogHandler.debug('request:' + BaseUtil.objectToJson(params));
+    this.client.get(url, { params: params }).then((response) => {
       const value = response.data;
       LogHandler.debug('response:' + BaseUtil.objectToJson(value));
       if (typeof (back) === 'function') {

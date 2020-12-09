@@ -140,8 +140,9 @@ export default class NetServer {
   private $http(m: any, back: (data: any) => void, prompt?: boolean | null) {
     const method = m.head.method
     const name = m.head.name
+    const params = m.params
     if (method == 'get') {
-      http.get(name, m, back, prompt);
+      http.get(name, params, back, prompt);
     } else if (method == 'post') {
       http.post(name, m, back, prompt);
     }

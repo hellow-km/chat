@@ -6,11 +6,15 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    app: App
+    app: App,
+    userId: ""
   },
   mutations: {
     logout(state) {
       state.app.logout()
+    },
+    setUserId(state, id) {
+      state.userId = id
     }
   },
   actions: {

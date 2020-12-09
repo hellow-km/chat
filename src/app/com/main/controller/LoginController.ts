@@ -6,6 +6,7 @@ import BaseUtil from '@/app/lib/util/BaseUtil';
 import PersonalBox from '@/app/com/main/box/PersonalBox';
 import PersonalClient from '@/app/com/main/http/main/PersonalClient';
 import ConnectService from '@/app/com/main/service/ConnectService';
+import store from '@/store/index'
 class LoginController extends AbstractMaterial {
 
   public login(account: string, password: string, back: (success: boolean, message?: string) => void) {
@@ -64,6 +65,9 @@ class LoginController extends AbstractMaterial {
             }
             const pb: PersonalBox = this.appContext.getMaterial(PersonalBox);
             pb.setUser(user);
+            console.log(user.id);
+
+            store.commit('setUserId', user.id)
           }
         }
       }
@@ -84,7 +88,7 @@ class LoginController extends AbstractMaterial {
 
   //获取数据
   private initializeApp(): void {
-    
+
   }
 }
 

@@ -17,7 +17,7 @@
           style="margin-left:20px;"
         >
           <div v-show="tab==1">
-            <ContactHarassSettingPane></ContactHarassSettingPane>
+            <ContactHarassSettingPane ref="settingPane"></ContactHarassSettingPane>
           </div>
         </div>
       </div>
@@ -41,8 +41,11 @@
 
 <script lang="ts">
 import ContactHarassSettingPane from "@/views/module/contact/ContactHarassSettingPane.vue";
-
+import ContactSettingController from "@/app/com/main/controller/ContactSettingController";
 import { Vue, Component } from "vue-property-decorator";
+import App from "@/app/App";
+import Prompt from "@/components/common/Prompt";
+import ContactHarassSetting from "@/app/com/bean/ContactHarassSetting";
 @Component({
   components: {
     ContactHarassSettingPane
@@ -51,18 +54,69 @@ import { Vue, Component } from "vue-property-decorator";
 export default class SettingPane extends Vue {
   private dialogVisible: boolean = false;
   private tab: number = 1;
+
   public setShow(is: boolean) {
     this.dialogVisible = is;
   }
 
-  private handleClose() {}
+  private handleClose(done: Function) {
+    done();
+  }
 
   private submit() {
-    this.dialogVisible = false;
+    const back = {
+      back: (data: any) => {
+        if (data && data.info) {
+          Prompt.message(data.info, "", "");
+          this.dialogVisible = false;
+        }
+      }
+    };
+    const settingPane: any = this.$refs.settingPane;
+    const setting: ContactHarassSetting = settingPane.getSetting();
+    const userId = this.$store.state.userId;
+    setting.userId = userId;
+    const sc: ContactSettingController = App.appContext.getMaterial(
+      ContactSettingController
+    );
+    const valid = this.validate(setting);
+    if (valid) {
+      sc.updateSetting(setting, back);
+    }
   }
 
   private cancel() {
+    const settingPane: any = this.$refs.settingPane;
+    const setting = settingPane.loadSetting();
     this.dialogVisible = false;
+  }
+
+  private validate(setting: ContactHarassSetting): boolean {
+    switch (setting.verifyType) {
+      case 3:
+        if (setting.question.trim() == "" || setting.answer == "") {
+          Prompt.notice("问题和答案必填");
+          return false;
+        } else {
+          return true;
+        }
+      case 4:
+        const onlyQuestions = setting.onlyQuestions;
+        if (onlyQuestions.length == 0) {
+          Prompt.notice("请添加问题");
+          return false;
+        } else {
+          const hasNull = onlyQuestions.some(p => p.question.trim() == "");
+          if (hasNull) {
+            Prompt.notice("问题不能为空");
+            return false;
+          } else {
+            return true;
+          }
+        }
+      default:
+        return true;
+    }
   }
 }
 </script>
