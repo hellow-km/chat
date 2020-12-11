@@ -7,10 +7,9 @@ class InitializeData {
     PersonalViewImpl.setUser(user)
   }
 
-  public setListData(user: User) {
-    const userId = user.id
+  public setListData(userId: string, addBack?: () => void) {
     const pd: PersonalListData = App.appContext.getMaterial(PersonalListData)
-    pd.getListData(userId)
+    pd.getListData(userId, addBack)
   }
 }
 

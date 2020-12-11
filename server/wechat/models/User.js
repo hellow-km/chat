@@ -4,49 +4,36 @@ const fs = require('fs')
 class User {
   constructor() {
     this.userDataPath = path.join(__dirname, '../data/user.json')
+    this.data = this.getData()
+  }
+
+  getData() {
+    return this.readFile()
+  }
+
+  readFile() {
     try {
-      const data = fs.readFileSync(this.userDataPath)
-      this.data = JSON.parse(data)
+      let data = fs.readFileSync(this.userDataPath)
+      data = JSON.parse(data)
+      return data
     } catch (e) {
       return new Error('获取失败')
     }
   }
 
-  getData() {
-    return this.data
-  }
-
-  push(...obj) {
-    if (arguments.length > 1) {
-      for (const value of arguments) {
-        if (isObj(value)) {
-          this.data.push(value)
-        }
+  getSearchUser(text) {
+    const list = this.getData()
+    const data = list.filter(p => {
+      if (p.account == text || p.nickName == text) {
+        return true
+      } else {
+        return false
       }
-    } else {
-      const d = arguments[0]
-      if (isObj(d)) {
-        this.data.push(d)
-      }
-    }
+    })
+    return data
   }
 
-  save() {
-    try {
-      fs.writeFileSync(this.userDataPath, this.data)
-    } catch (e) {
-      return new Error('保存失败')
-    }
-  }
 
-  changeData(data) {
-    try {
-      fs.writeFileSync(this.userDataPath, data)
-      this.data = data
-    } catch (e) {
-      return new Error('修改失败')
-    }
-  }
 }
 
 function isObj(d) {

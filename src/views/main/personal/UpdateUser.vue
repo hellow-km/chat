@@ -172,13 +172,12 @@ export default class UpdateUser extends Vue {
       PersonalController
     );
     const user: PersonalBox = App.appContext.getMaterial(PersonalBox);
-    const pvi: PersonalViewImpl = App.appContext.getMaterial(PersonalViewImpl);
     const back = {
       back: (data: any) => {
         if (data && data.info) {
           const info = data.info;
           Prompt.message(info, "修改成功", "");
-          pvi.setUser(this.user);
+          PersonalViewImpl.setUser(this.user);
         }
       }
     };

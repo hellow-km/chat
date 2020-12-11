@@ -65,9 +65,9 @@ class LoginController extends AbstractMaterial {
               Auth.setToken(token);
             }
             const pb: PersonalBox = this.appContext.getMaterial(PersonalBox);
+            store.commit('setUserId', user.id)
             pb.setUser(user);
             this.setData(user);
-            store.commit('setUserId', user.id)
           }
         }
       }
@@ -88,7 +88,7 @@ class LoginController extends AbstractMaterial {
 
   private setData(user: User): void {
     InitializeData.setPersonalData(user)
-    InitializeData.setListData(user)
+    InitializeData.setListData(user.id)
   }
 }
 

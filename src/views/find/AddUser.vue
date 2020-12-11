@@ -4,7 +4,6 @@
       title="添加联系人"
       :visible.sync="dialogVisible"
       width="600px"
-      :before-close="handleClose"
     >
       <el-card class="box-card">
         <el-form :model="apply">
@@ -43,7 +42,7 @@
       >
         <el-button
           type="primary"
-          @click="dialogVisible = false"
+          @click="submit"
           size="small"
         >确 定</el-button>
       </span>
@@ -76,73 +75,12 @@ export default class Adduser extends Vue {
   private userId: string = "";
   private isBlocked: boolean = false;
 
-  private handleClose(): void {
-    this.dialogVisible = false;
-  }
-
-  public openDia(is: boolean): void {
-    this.dialogVisible = is;
+  public openDia(): void {
+    this.dialogVisible = true;
   }
 
   public setUserId(userId: string) {
     this.userId = userId;
-    this.initialize();
-    this.loadSetting(userId);
-  }
-
-  private initialize(): void {
-    this.apply = new ContactAddApplyData();
-    this.answerList = [];
-    this.verifyType = "0";
-    const contactListBox: ContactListBox = app.appContext.getMaterial(
-      ContactListBox
-    );
-    const list: ContactCategory[] = contactListBox.getCategoryList();
-    if (list.length > 0) {
-      this.categoryList = list;
-      this.apply.categoryId = list[0].id;
-    }
-  }
-
-  private loadSetting(userId: string) {
-    const own = this;
-    const back = (data: any): void => {
-      if (data) {
-        const info = data.info;
-        if (info) {
-          if (info.success && data.body) {
-            const questionList: ContactVerifyQuestion[] =
-              data.body.questionList;
-            const verifySetting: ContactAddVerifySetting =
-              data.body.verifySetting;
-            own.setSetting(verifySetting, questionList);
-          }
-        }
-      }
-    };
-    const contactController: ContactController = app.appContext.getMaterial(
-      ContactController
-    );
-    contactController.getContactAddVerifySetting(userId, back);
-  }
-
-  private setSetting(
-    verifySetting: ContactAddVerifySetting,
-    questionList: ContactVerifyQuestion[]
-  ) {
-    if (verifySetting) {
-      this.verifyType = verifySetting.verifyType;
-      this.apply.question = verifySetting.question;
-    }
-
-    if (questionList) {
-      for (const q of questionList) {
-        const a: ContactVerifyAnswer = new ContactVerifyAnswer();
-        a.questionId = q.id;
-        a.question = q.question;
-        this.answerList.push(a);
-      }
-    }
   }
 }
 </script>

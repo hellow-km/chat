@@ -28,7 +28,14 @@ export default class UserListPane extends Vue {
   public nodes: NodeData[] = ListData.userNodes;
   private box: ItemBox = new ItemBox();
 
-  mounted() {}
+  mounted() {
+    const _this: any = this;
+    const bus: any = _this.$bus;
+    bus.$on("addContactCategory", () => {
+      this.nodes = ListData.userNodes;
+      bus.$off("addContactCategory");
+    });
+  }
 
   @Emit("on-node-context-menu")
   private onNodeContextMenu(e: MouseEvent, data: NodeData) {

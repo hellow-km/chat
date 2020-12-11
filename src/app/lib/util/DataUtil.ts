@@ -11,5 +11,13 @@ class DataUtil {
     }
   }
 
+  public getBody(data: any) {
+    if (data && data.body) {
+      const body = data.body
+      return body
+    } else {
+      return data
+    }
+  }
 }
 export default new DataUtil()

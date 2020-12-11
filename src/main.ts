@@ -8,6 +8,21 @@ import '@/assets/icon/iconfont.css'
 
 Vue.use(ElementUI);
 Vue.config.productionTip = false
+
+Vue.filter('gender', function (v: string) {
+  if (!v) return ''
+  switch (v) {
+    case "1":
+      return "男";
+    case "2":
+      return "女";
+    default:
+      return "保密";
+  }
+})
+
+Vue.prototype.$bus = new Vue()
+
 //Vue.config.silent = true
 new Vue({
   router,

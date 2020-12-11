@@ -4,14 +4,17 @@ import DataUtil from '@/app/lib/util/DataUtil';
 import ListData from '@/impl/data/ListData';
 
 export default class PersonalListData extends AbstractMaterial {
-  public getListData(userId: string) {
+  public getListData(userId: string, addBack?: () => void) {
     const back = {
       back: (data: any) => {
         if (DataUtil.isSuccess(data)) {
           if (data.body) {
             const body = data.body
-            ListData.userNodes = body.userList
-            ListData.groupNodes = body.groupList
+            const userList = body.userList
+            const groupList = body.groupList
+            ListData.userNodes = userList
+            ListData.groupNodes = groupList
+            addBack && addBack()
           }
         }
       }

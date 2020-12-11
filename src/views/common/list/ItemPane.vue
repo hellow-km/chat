@@ -17,7 +17,7 @@
         >
       </div>
       <div class="pane-name left">
-        <h4>{{data.name}}</h4>
+        <h4>{{data.nickName}}</h4>
       </div>
     </div>
   </div>

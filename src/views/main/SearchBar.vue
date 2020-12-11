@@ -96,8 +96,8 @@
         </div>
       </div>
     </div>
-    <userDia ref="userDia">
-    </userDia>
+    <addUser ref="addUser">
+    </addUser>
   </div>
 </template>
 
@@ -107,12 +107,16 @@ import { Component } from "vue-property-decorator";
 import ItemData from "@/views/common/list/ItemData";
 import ItemPane from "@/views/common/list/ItemPane.vue";
 import ItemBox from "@/views/common/list/ItemBox";
-import userDia from "@/views/find/AddUser.vue";
+import addUser from "@/views/find/AddUser.vue";
+import DataBackAction from "@/app/base/net/DataBackAction";
+import DataUtil from "@/app/lib/util/DataUtil";
+import FindController from "@/app/com/main/controller/FindController";
+import App from "@/app/App";
 
 @Component({
   components: {
     ItemPane,
-    userDia
+    addUser
   }
 })
 export default class SearchBar extends Vue {
@@ -128,32 +132,11 @@ export default class SearchBar extends Vue {
   private findGroupList: ItemData[] = [];
   private itemBox: ItemBox = new ItemBox();
 
-  public mounted() {
-    const a: ItemData = new ItemData();
-    a.active = false; 
-    a.name = "123";
-    const u: ItemData = new ItemData();
-    u.active = false;
-    u.name = "123";
-    const u1: ItemData = new ItemData();
-    u1.active = false;
-    u1.name = "123";
-    const u2: ItemData = new ItemData();
-    u2.active = false;
-    u2.name = "123";
-
-    this.userList.push(a);
-    this.groupList.push(u);
-    this.findUserList.push(u1);
-    this.findUserList.push(u1);
-    this.findGroupList.push(u2);
-    this.findGroupList.push(u2);
-  }
-
   private onSearchChange(): void {
     const text = this.text;
     if (text) {
       this.showPane = true;
+      this.querySearchUser();
     } else {
       this.showPane = false;
     }
@@ -164,11 +147,27 @@ export default class SearchBar extends Vue {
     this.showPane = false;
   }
 
+  private querySearchUser() {
+    const text = this.text;
+    const userId = this.$store.state.userId;
+    const back: DataBackAction = {
+      back: (data: any) => {
+        if (DataUtil.isSuccess(data)) {
+          const body = DataUtil.getBody(data);
+          this.findUserList = body;
+        }
+      }
+    };
+    const fdu: FindController = App.appContext.getMaterial(FindController);
+    fdu.searchUser(userId, text, back);
+  }
+
   private handleShowUser(): void {}
+
   private handleAddUser(userId: string): void {
-    const userDia: any = this.$refs.userDia;
-    userDia.openDia(true);
-    userDia.setUserId(userId);
+    const addUser: any = this.$refs.addUser;
+    addUser.openDia();
+    addUser.setUserId(userId);
   }
   private handleShowGroup(): void {}
   private handleJoinGroup(): void {}

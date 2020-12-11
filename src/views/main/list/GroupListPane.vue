@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Emit } from "vue-property-decorator";
+import { Vue, Component, Emit, Watch } from "vue-property-decorator";
 import RootPane from "../../common/list/RootPane.vue";
 import ItemBox from "@/views/common/list/ItemBox";
 import ItemData from "@/views/common/list/ItemData";
@@ -25,6 +25,16 @@ import ListData from "@/impl/data/ListData";
 export default class GroupListPane extends Vue {
   public nodes: NodeData[] = ListData.groupNodes;
   private box: ItemBox = new ItemBox();
+
+  mounted() {
+    const _this: any = this;
+    const bus: any = _this.$bus;
+    bus.$on("addGroupCategory", () => {
+      this.nodes = ListData.groupNodes;
+      bus.$off("addGroupCategory");
+    });
+  }
+
   @Emit("on-node-context-menu")
   private onNodeContextMenu(e: MouseEvent, data: NodeData) {
     // 菜单

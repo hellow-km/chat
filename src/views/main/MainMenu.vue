@@ -45,6 +45,7 @@ import OneItemForm from "@/views/common/form/OneItemForm.vue";
 import AddGroup from "@/views/module/AddGroup.vue";
 import UpdateUser from "@/views/main/personal/UpdateUser.vue";
 import UpdatePassword from "@/views/main/personal/UpdatePassword.vue";
+import InitializeData from "@/impl/initialize/InitializeData";
 
 @Component({
   components: {
@@ -100,12 +101,19 @@ export default class MainMenu extends Vue {
   ];
 
   private addContactCategory(value: string): void {
+    const userId = this.$store.state.userId;
     const back: DataBackAction = {
       back: (data: any) => {
         if (data && data.info) {
           const info = data.info;
           if (info && info.success) {
             Prompt.notice("创建成功", "成功", "success");
+            const addBack = () => {
+              const _this: any = this;
+              const bus: any = _this.$bus;
+              bus.$emit("addContactCategory");
+            };
+            InitializeData.setListData(userId, addBack);
           }
         }
       }
@@ -114,17 +122,24 @@ export default class MainMenu extends Vue {
       ContactCategoryController
     );
     if (value) {
-      ac.addContactCategory(value, back);
+      ac.addContactCategory(userId, value, back);
     }
   }
 
   private addGroupCategory(value: string): void {
+    const userId = this.$store.state.userId;
     const back: DataBackAction = {
       back: (data: any) => {
         if (data && data.info) {
           const info = data.info;
           if (info && info.success) {
             Prompt.notice("创建成功", "成功", "success");
+            const addBack = () => {
+              const _this: any = this;
+              const bus: any = _this.$bus;
+              bus.$emit("addGroupCategory");
+            };
+            InitializeData.setListData(userId, addBack);
           }
         }
       }
@@ -133,7 +148,7 @@ export default class MainMenu extends Vue {
       ContactCategoryController
     );
     if (value) {
-      ac.addGroupCategory(value, back);
+      ac.addGroupCategory(userId, value, back);
     }
   }
   private logout(): void {

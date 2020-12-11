@@ -9,7 +9,9 @@ const {
   address,
   userSetting,
   menu,
-  userList
+  userList,
+  find,
+  modules
 } = require('./router')
 
 app.use(bodyParser.json());
@@ -46,6 +48,8 @@ app.use('/client', log)
 app.use('/addUserSetting', userSetting)
 app.use('/menu', menu)
 app.use('/user', userList)
+app.use('/find', find)
+app.use('/modules', modules)
 
 app.listen(3000)
 

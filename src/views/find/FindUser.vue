@@ -1,6 +1,21 @@
 <template>
   <div style="width: 100%">
     <el-card class="box-card">
+      <div style="margin-bottom:5px">
+        <el-input
+          size="small"
+          v-model="searchText"
+          style="width:50%;margin-right:10px;"
+          placeholder="输入昵称或账号搜索"
+          @keyup.native.enter="search"
+        >
+        </el-input>
+        <el-button
+          type="primary"
+          size="small"
+          @click="search"
+        >搜索</el-button>
+      </div>
       <el-table
         :data="list"
         border
@@ -20,10 +35,12 @@
           </template>
         </el-table-column>
         <el-table-column
-          prop="gender"
           label="性别"
           width="180"
         >
+          <template slot-scope="scope">
+            <span>{{ scope.row.gender|gender }}</span>
+          </template>
         </el-table-column>
         <el-table-column
           prop="nativePlace"
@@ -47,17 +64,32 @@
 <script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
 import User from "@/app/com/bean/User";
-@Component
+import DataUtil from "@/app/lib/util/DataUtil";
+import DataBackAction from "@/app/base/net/DataBackAction";
+import FindController from "@/app/com/main/controller/FindController";
+import App from "@/app/App";
+@Component({})
 export default class FindUser extends Vue {
-  private list: User[] = [
-    {
-      id: "1",
-      gender: "男",
-      nickName: "423",
-      avatar: "/assets/images/common/head/user/1.png",
-      nativePlace: "广西"
-    } as User
-  ];
+  private searchText: string = "";
+  private list: User[] = [];
+
+  private search() {
+    const text = this.searchText;
+    const userId = this.$store.state.userId;
+    if (text.trim() == "") {
+      this.list = [];
+    }
+    const back: DataBackAction = {
+      back: (data: any) => {
+        if (DataUtil.isSuccess(data)) {
+          const body = DataUtil.getBody(data);
+          this.list = body;
+        }
+      }
+    };
+    const fdu: FindController = App.appContext.getMaterial(FindController);
+    fdu.searchUser(userId, text, back);
+  }
 }
 </script>
 
