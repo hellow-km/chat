@@ -64,7 +64,10 @@ import Prompt from "@/components/common/Prompt";
 import ContactVerifyQuestion from "@/app/com/data/ContactVerifyQuestion";
 import ContactAddVerifySetting from "@/app/com/data/ContactAddVerifySetting";
 import ContactController from "@/app/com/main/controller/ContactController";
-
+import SelectController from "@/app/com/main/controller/SelectController";
+import App from "@/app/App";
+import DataUtil from "@/app/lib/util/DataUtil";
+import store from "@/store";
 @Component
 export default class Adduser extends Vue {
   private dialogVisible: boolean = false;
@@ -72,15 +75,29 @@ export default class Adduser extends Vue {
   private categoryList: ContactCategory[] = [];
   private answerList: ContactVerifyAnswer[] = [];
   private verifyType: string = "0";
-  private userId: string = "";
+  private addUserId: string = "";
+  private userId: string = store.state.userId;
   private isBlocked: boolean = false;
 
   public openDia(): void {
     this.dialogVisible = true;
   }
 
-  public setUserId(userId: string) {
-    this.userId = userId;
+  public setUserId(addUserId: string) {
+    this.addUserId = addUserId;
+    this.getCategoryList();
+  }
+
+  private getCategoryList() {
+    const back: DataBackAction = {
+      back: (data: any) => {
+        if (DataUtil.isSuccess(data)) {
+          this.categoryList = DataUtil.getBody(data);
+        }
+      }
+    };
+    const scl: SelectController = App.appContext.getMaterial(SelectController);
+    scl.getUserCategory(this.userId, back);
   }
 }
 </script>

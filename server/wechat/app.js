@@ -11,7 +11,8 @@ const {
   menu,
   userList,
   find,
-  modules
+  modules,
+  getSelect
 } = require('./router')
 
 app.use(bodyParser.json());
@@ -50,6 +51,7 @@ app.use('/menu', menu)
 app.use('/user', userList)
 app.use('/find', find)
 app.use('/modules', modules)
+app.use('/getSelect', getSelect)
 
 app.listen(3000)
 

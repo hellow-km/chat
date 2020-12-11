@@ -5,6 +5,8 @@ const menu = require('./menu')
 const userList = require('./userAndGoupList')
 const find = require('./find')
 const modules = require('./modules')
+const getSelect = require('./getSelect')
+
 module.exports = {
   log,
   address,
@@ -12,5 +14,6 @@ module.exports = {
   menu,
   userList,
   find,
-  modules
+  modules,
+  getSelect
 }

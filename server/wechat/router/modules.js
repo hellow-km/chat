@@ -12,7 +12,6 @@ modules.post('/addContactCategory', (req, res) => {
   const body = req.body.body || {}
   const userId = body.userId || ""
   const name = body.name || ""
-
   if (!userId || !name) {
     warningSend(res, "参数错误")
   }

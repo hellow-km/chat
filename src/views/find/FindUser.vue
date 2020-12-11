@@ -53,22 +53,31 @@
             <el-button
               type="primary"
               size="small"
+              @click="addUser(scope.row.id)"
             >添加好友</el-button>
           </template>
         </el-table-column>
       </el-table>
     </el-card>
+    <addUser ref="addUser"></addUser>
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
+
+import addUser from "@/views/find/AddUser.vue";
+
 import User from "@/app/com/bean/User";
 import DataUtil from "@/app/lib/util/DataUtil";
 import DataBackAction from "@/app/base/net/DataBackAction";
 import FindController from "@/app/com/main/controller/FindController";
 import App from "@/app/App";
-@Component({})
+@Component({
+  components: {
+    addUser
+  }
+})
 export default class FindUser extends Vue {
   private searchText: string = "";
   private list: User[] = [];
@@ -89,6 +98,12 @@ export default class FindUser extends Vue {
     };
     const fdu: FindController = App.appContext.getMaterial(FindController);
     fdu.searchUser(userId, text, back);
+  }
+
+  private addUser(id: string) {
+    const addUser: any = this.$refs.addUser;
+    addUser.openDia();
+    addUser.setUserId(id);
   }
 }
 </script>

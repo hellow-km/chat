@@ -61,11 +61,11 @@
             <div class="pane-option">
               <i
                 class="el-icon-s-custom"
-                @click="handleShowUser(item.key)"
+                @click="handleShowUser(item.id)"
               ></i>
               <i
                 class="el-icon-plus"
-                @click="handleAddUser(item.key)"
+                @click="handleAddUser(item.id)"
               ></i>
             </div>
           </div>

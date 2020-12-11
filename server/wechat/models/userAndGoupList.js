@@ -75,6 +75,36 @@ class UserAndGoupList extends UserAccount {
     this.save()
   }
 
+  getUserNameList(userId) {
+    let list = this.getData()
+    const item = this.getItemById(list, userId)[0]
+    const userList = item.userList
+    return userList.map(p => {
+      const item = {
+        name: p.name,
+        rank: p.rank,
+        id: p.key,
+        userId: userId
+      }
+      return item
+    })
+  }
+
+  getGroupNameList(userId) {
+    let list = this.getData()
+    const item = this.getItemById(list, userId)[0]
+    const groupList = item.groupList
+    return groupList.map(p => {
+      const item = {
+        name: p.name,
+        rank: p.rank,
+        id: p.key,
+        userId: userId
+      }
+      return item
+    })
+  }
+
   getItemById(list, userId) {
     const data = list.filter(p => p.userId == userId)
     return data
