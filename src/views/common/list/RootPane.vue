@@ -31,7 +31,7 @@ export default class RootPane extends Vue {
     required: false,
     default: () => new Array<NodeData>()
   })
-  private items!: Array<NodeData>;
+  private items!: Array<any>;
 
   @Prop({
     type: ItemBox,

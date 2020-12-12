@@ -99,6 +99,7 @@ export default class Adduser extends Vue {
     const scl: SelectController = App.appContext.getMaterial(SelectController);
     scl.getUserCategory(this.userId, back);
   }
+  private submit() {}
 }
 </script>
 

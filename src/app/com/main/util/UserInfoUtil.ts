@@ -1,7 +1,7 @@
 import BaseUtil from '@/app/lib/util/BaseUtil';
 import User from '@/app/com/bean/User';
 export default class UserInfoUtil {
-  public static USER_HEAD_IMAGES: string = 'assets/images/common/head/user/';
+  public static USER_HEAD_IMAGES: string = '/assets/images/main/pane/';
 
   public static getShowName(user: User): string {
     let showName = '';
@@ -25,7 +25,7 @@ export default class UserInfoUtil {
   }
 
   public static getHeadImage(user: User): string {
-    let image = UserInfoUtil.USER_HEAD_IMAGES + '1.png';
+    let image = UserInfoUtil.USER_HEAD_IMAGES + 'no-user.png';
     if (user) {
       const head = user.head;
       const avatar = user.avatar;
@@ -36,7 +36,7 @@ export default class UserInfoUtil {
         image = avatar;
       }
       if (BaseUtil.isEmpty(image)) {
-        image = UserInfoUtil.USER_HEAD_IMAGES + '1.png';
+        image = UserInfoUtil.USER_HEAD_IMAGES + 'no-user.png';
       }
     }
     return image;
@@ -53,6 +53,6 @@ export default class UserInfoUtil {
   }
 
   public static getDefaultAvatar() {
-    return UserInfoUtil.USER_HEAD_IMAGES + '1.png';
+    return UserInfoUtil.USER_HEAD_IMAGES + 'no-user.png';
   }
 }

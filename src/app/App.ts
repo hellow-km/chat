@@ -2,6 +2,9 @@ import auth from '@/app/common/auth/Auth';
 import AppContext from '@/app/base/AppContext';
 import Prompt from '@/components/common/Prompt';
 import PromptHandler from '@/app/base/net/PromptHandler';
+import ListData from '@/impl/data/ListData';
+import PersonalDataBox from '@/impl/PersonalDataBox';
+import PersonalData from '@/views/common/data/PersonalData';
 
 class App {
   public appContext: AppContext = new AppContext()

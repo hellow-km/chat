@@ -46,8 +46,10 @@ export default class OneItemForm extends Vue {
 
   @Emit("on-submit")
   private submit() {
+    const text = this.text;
     this.dialogVisible = false;
-    return this.text || "";
+    this.text = "";
+    return text || "";
   }
 
   @Emit("on-cancel")

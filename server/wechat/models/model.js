@@ -3,6 +3,7 @@ const User = require('./User')
 const UserStatus = require('./UserStatus')
 const UserAndGoupList = require('./userAndGoupList')
 const AddUserSetting = require('./menu/setting')
+const groups = require('./groups/groups')
 
 let user = new User()
 const data = user.getData()
@@ -35,5 +36,6 @@ module.exports = {
   userStatus,
   userAndGoupList,
   registerBack,
-  addUserSetting
+  addUserSetting,
+  //groups
 }

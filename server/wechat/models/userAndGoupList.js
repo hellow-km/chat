@@ -1,5 +1,8 @@
 const UserAccount = require('./UserAccount')
-
+const {
+  m
+} = require('../util/util')
+const groups = require('./groups/groups')
 class UserAndGoupList extends UserAccount {
   constructor(list, path) {
     super(list, path)
@@ -15,7 +18,16 @@ class UserAndGoupList extends UserAccount {
         redCount: 0
       }];
       p.userList = userList;
-      p.groupList = []
+      p.groupList = [{
+        key: 0,
+        name: "默认分组",
+        rank: 0,
+        countText: "[0]",
+        items: [],
+        isOpen: false,
+        red: false,
+        redCount: 0
+      }]
       return p
     })
     this.save()
@@ -28,6 +40,27 @@ class UserAndGoupList extends UserAccount {
       return data[0]
     } else {
       return data
+    }
+  }
+
+  addGroup(group) {
+    this.list = this.getData()
+    const belongUserId = group.belongUserId
+    if (group) {
+      this.list.map(p => {
+        if (p.userId == belongUserId) {
+          const length = groups.getLength()
+          group.id = m.getId(length + 1)
+          group.number = m.getId(length)
+          const key = group.group
+          const count = p.groupList[key].items.length
+          p.groupList[key].countText = "[" + (count + 1) + "]"
+          p.groupList[key].items.push(group)
+          groups.addGroup(group)
+        }
+        return p
+      })
+      this.save()
     }
   }
 
@@ -62,7 +95,7 @@ class UserAndGoupList extends UserAccount {
           name: name,
           key: length,
           rank: length,
-          countText: "[0/0]",
+          countText: "[0]",
           items: [],
           isOpen: false,
           red: false,

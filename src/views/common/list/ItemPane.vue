@@ -17,7 +17,7 @@
         >
       </div>
       <div class="pane-name left">
-        <h4>{{data.nickName}}</h4>
+        <h4>{{data.name}}</h4>
       </div>
     </div>
   </div>
@@ -35,7 +35,7 @@ export default class ItemPane extends Vue {
     required: false,
     default: new ItemData()
   })
-  private data!: ItemData;
+  private data!: any;
 
   @Prop({
     type: ItemBox,

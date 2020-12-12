@@ -43,7 +43,7 @@ export default class NodePane extends Vue {
     required: false,
     default: () => new NodeData()
   })
-  private data!: NodeData;
+  private data!: any;
 
   @Prop({
     type: ItemBox,

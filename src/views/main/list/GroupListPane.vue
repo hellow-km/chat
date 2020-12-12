@@ -15,7 +15,7 @@ import { Vue, Component, Emit, Watch } from "vue-property-decorator";
 import RootPane from "../../common/list/RootPane.vue";
 import ItemBox from "@/views/common/list/ItemBox";
 import ItemData from "@/views/common/list/ItemData";
-import NodeData from "../../common/list/NodeData";
+import GroupNodeData from "../../common/list/GroupNodeData";
 import ListData from "@/impl/data/ListData";
 @Component({
   components: {
@@ -23,7 +23,7 @@ import ListData from "@/impl/data/ListData";
   }
 })
 export default class GroupListPane extends Vue {
-  public nodes: NodeData[] = ListData.groupNodes;
+  public nodes: GroupNodeData[] = ListData.groupNodes;
   private box: ItemBox = new ItemBox();
 
   mounted() {
@@ -31,12 +31,12 @@ export default class GroupListPane extends Vue {
     const bus: any = _this.$bus;
     bus.$on("addGroupCategory", () => {
       this.nodes = ListData.groupNodes;
-      bus.$off("addGroupCategory");
+      //bus.$off("addGroupCategory");
     });
   }
 
   @Emit("on-node-context-menu")
-  private onNodeContextMenu(e: MouseEvent, data: NodeData) {
+  private onNodeContextMenu(e: MouseEvent, data: any) {
     // 菜单
   }
 

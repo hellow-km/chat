@@ -33,7 +33,7 @@ export default class UserListPane extends Vue {
     const bus: any = _this.$bus;
     bus.$on("addContactCategory", () => {
       this.nodes = ListData.userNodes;
-      bus.$off("addContactCategory");
+      //bus.$off("addContactCategory");
     });
   }
 

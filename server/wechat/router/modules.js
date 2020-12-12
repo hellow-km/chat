@@ -30,4 +30,12 @@ modules.post('/addGroupCategory', (req, res) => {
   successSend(res, {}, "添加成功")
 })
 
+modules.post('/addGroup', (req, res) => {
+  const group = req.body.body || {}
+  if (JSON.stringify(group) == "{}" || !group.belongUserId || !group.name) {
+    warningSend(res, "参数错误")
+  }
+  userAndGoupList.addGroup(group)
+  successSend(res, {}, "创建成功")
+})
 module.exports = modules
