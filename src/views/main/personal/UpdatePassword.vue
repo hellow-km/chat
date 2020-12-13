@@ -61,6 +61,7 @@ import App from "@/app/App";
 import Prompt from "@/components/common/Prompt";
 import PersonalController from "@/app/com/main/controller/PersonalController";
 import PersonalBox from "@/app/com/main/box/PersonalBox";
+import DataUtil from "@/app/lib/util/DataUtil";
 
 @Component
 export default class UpdatePassword extends Vue {
@@ -92,11 +93,13 @@ export default class UpdatePassword extends Vue {
   private submit(): void {
     const rePasswordForm: any = this.$refs.rePasswordForm;
     const back = {
-      back: (success: boolean) => {
-        if (success) {
-          Prompt.notice("修改成功", "成功", "success");
-        } else {
-          Prompt.notice("修改失败", "警告", "warn");
+      back: (data: any) => {
+        if (data && data.info) {
+          const info = data.info;
+          Prompt.message(info, "", "");
+          if (info.success) {
+            this.dialogVisible = false;
+          }
         }
       }
     };
@@ -106,9 +109,7 @@ export default class UpdatePassword extends Vue {
     );
     rePasswordForm.validate((valid: boolean) => {
       if (valid) {
-        const pb: PersonalBox = App.appContext.getMaterial(PersonalBox);
-        const user = pb.getUser();
-        const id = user.id;
+        const id = this.$store.state.userId;
         if (id) {
           const password = this.rePasswordForm.password;
           const newPassword = this.rePasswordForm.newPassword;

@@ -52,6 +52,8 @@ export default class PersonalController extends AbstractMaterial {
   }
 
   public loginChangePassword(data: any, back: DataBackAction): void {
+    data.password = Md5.init(data.password)
+    data.newPassword = Md5.init(data.newPassword)
     const m = Message.build('post', '/menu/changePassword')
     m.body = data
     this.appContext.netServer.request(m, back)

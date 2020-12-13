@@ -51,6 +51,11 @@ class M {
   getId(id) {
     return ('000000000' + id).slice(-6)
   }
+
+  getBody(req) {
+    return req.body.body
+  }
+
 }
 
 const m = new M()

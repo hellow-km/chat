@@ -12,7 +12,8 @@ const {
 } = require('../models/model')
 const {
   successSend,
-  warningSend
+  warningSend,
+  m
 } = require('../util/util')
 
 let userList = []
@@ -130,6 +131,7 @@ log.post('/changePassword', (req, res) => {
 })
 
 function addUserList(data) {
+  userList = readUser()
   if (data && typeof data == 'object') {
     if (data.length) {
       if (data.length == 0) return
@@ -145,6 +147,7 @@ function addUserList(data) {
 }
 
 function changePassword(account, password) {
+  userList = readUser()
   try {
     userList.map(user => {
       if (user.account == account) {
@@ -160,6 +163,7 @@ function changePassword(account, password) {
 }
 
 function checkQuestionAnswer(account, list) {
+  userList = readUser()
   let s = true
   const user = userList.filter(user => {
     return user.account == account
@@ -178,6 +182,7 @@ function checkQuestionAnswer(account, list) {
 }
 
 function getUserQuestions(account) {
+  userList = readUser()
   let data = []
   const user = userList.filter(user => {
     return user.account == account
@@ -196,10 +201,12 @@ function getUserQuestions(account) {
 }
 
 function checkAccount(account) {
+  userList = readUser()
   return userList.some(p => p.account == account)
 }
 
 function getUserByLogin(account, password) {
+  userList = readUser()
   let user = userList.filter(p => p.account == account && p.password == password)
   if (user.length > 0) {
     user = cloneDeep(user[0])
@@ -211,20 +218,11 @@ function getUserByLogin(account, password) {
 }
 
 function readUser() {
-  let data = ''
-  try {
-    data = fs.readFileSync(userDataPath)
-  } catch (e) {}
-  return JSON.parse(data)
+  return m.readFile(userDataPath)
 }
 
 function writeUser() {
-  try {
-    const data = JSON.stringify(userList)
-    fs.writeFileSync(userDataPath, data)
-  } catch (e) {
-    return
-  }
+  m.writeFile(userDataPath, userList)
 }
 
 function updateUserList() {

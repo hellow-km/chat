@@ -4,8 +4,13 @@ var multer = require('multer')
 const path = require('path')
 const {
   successSend,
-  warningSend
+  warningSend,
+  m
 } = require('../util/util')
+
+const {
+  user
+} = require('../models/model')
 
 const fs = require('fs')
 const dir = path.resolve(__dirname, '../public/img');
@@ -53,5 +58,30 @@ menu.post('/updateHead', upload.single('file'), (req, res) => {
   successSend(res, file, '上传成功')
 })
 
+menu.post('/updateUser', (req, res) => {
+  const body = req.body.body || {}
+  if (body && body.id) {
+    user.updateUser(body)
+    successSend(res, body, "修改成功")
+  } else {
+    warningSend(res, "参数错误")
+  }
+})
+
+menu.post('/changePassword', (req, res) => {
+  const body = m.getBody(req)
+  const id = body.id || ""
+  const password = body.password
+  const newPassword = body.newPassword
+  if (!id || !password || !newPassword) {
+    warningSend(res, "参数错误")
+  }
+  const success = user.changePassWord(id, password, newPassword)
+  if (success) {
+    successSend(res, {}, "修改成功")
+  } else {
+    warningSend(res, "修改失败")
+  }
+})
 
 module.exports = menu

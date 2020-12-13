@@ -1,24 +1,16 @@
 const path = require('path')
 const fs = require('fs')
-
+const {
+  m
+} = require('../util/util')
 class User {
   constructor() {
-    this.userDataPath = path.join(__dirname, '../data/user.json')
+    this.path = m.getPath('user')
     this.data = this.getData()
   }
 
   getData() {
-    return this.readFile()
-  }
-
-  readFile() {
-    try {
-      let data = fs.readFileSync(this.userDataPath)
-      data = JSON.parse(data)
-      return data
-    } catch (e) {
-      return new Error('获取失败')
-    }
+    return m.readFile(this.path)
   }
 
   getSearchUser(text) {
@@ -33,7 +25,35 @@ class User {
     return data
   }
 
+  updateUser(user) {
+    this.data = this.getData()
+    const id = user.id
+    const index = this.data.findIndex(p => p.id == id)
+    if (index == -1) return
+    for (const key in user) {
+      if (user.hasOwnProperty(key)) {
+        this.data[index][key] = user[key]
+      }
+    }
+    m.writeFile(this.path, this.data)
+  }
 
+  changePassWord(id, password, newPassword) {
+    this.data = this.getData()
+    let mark = true
+    this.data = this.getData()
+    this.data.map(p => {
+      if (p.id == id) {
+        if (p.password == password) {
+          p.password = newPassword
+        } else {
+          mark = false
+        }
+      }
+      return p
+    })
+    return mark
+  }
 }
 
 function isObj(d) {

@@ -30,7 +30,10 @@
           prop="nickName"
           label="昵称"
         >
-          <el-input v-model="user.nickName"></el-input>
+          <el-input
+            @input="i"
+            v-model="user.nickName"
+          ></el-input>
         </el-form-item>
         <el-form-item
           prop="account"
@@ -136,6 +139,7 @@ import App from "@/app/App";
 import PersonalController from "@/app/com/main/controller/PersonalController";
 import Prompt from "@/components/common/Prompt";
 import PersonalViewImpl from "@/impl/view/PersonalViewImpl";
+import DataUtil from "@/app/lib/util/DataUtil";
 @Component({
   components: {
     UpdateHead
@@ -161,9 +165,14 @@ export default class UpdateUser extends Vue {
     };
   }
 
+  private i() {}
+
   private loadUser(): void {
-    const user: PersonalBox = App.appContext.getMaterial(PersonalBox);
-    this.user = user.getUser();
+    const ub: PersonalBox = App.appContext.getMaterial(PersonalBox);
+    const user: User = ub.getUser();
+    console.log(user);
+
+    this.user = user;
   }
 
   private submit(): void {
@@ -171,13 +180,14 @@ export default class UpdateUser extends Vue {
     const pc: PersonalController = App.appContext.getMaterial(
       PersonalController
     );
-    const user: PersonalBox = App.appContext.getMaterial(PersonalBox);
     const back = {
       back: (data: any) => {
         if (data && data.info) {
           const info = data.info;
           Prompt.message(info, "修改成功", "");
-          PersonalViewImpl.setUser(this.user);
+          this.setData();
+          //userForm.resetFields();
+          this.dialogVisible = false;
         }
       }
     };
@@ -188,6 +198,12 @@ export default class UpdateUser extends Vue {
     });
   }
 
+  private setData() {
+    PersonalViewImpl.setUser(this.user);
+    const ub: PersonalBox = App.appContext.getMaterial(PersonalBox);
+    ub.setUser(this.user);
+  }
+
   private openChangeHead(): void {
     const updateHead: any = this.$refs.updateHead;
     updateHead.openDia();
@@ -195,8 +211,6 @@ export default class UpdateUser extends Vue {
 
   private getUrl(url: string) {
     this.user.avatar = url;
-    const ub: PersonalBox = App.appContext.getMaterial(PersonalBox);
-    ub.setUser(this.user);
   }
 }
 </script>

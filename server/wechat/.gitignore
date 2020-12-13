@@ -3,7 +3,7 @@ node_modules
 /dist
 data
 router..
-
+public/img
 # local env files
 .env.local
 .env.*.local
