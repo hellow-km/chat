@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="module-menu">
     <el-menu
       background-color="#515a6e"
       text-color="rgba(255, 255, 255, 0.7)"
