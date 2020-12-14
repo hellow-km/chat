@@ -26,7 +26,7 @@ log.post('/login', (req, res) => {
   const account = body.account || ''
   const password = body.password || ''
   if (account.trim() == '' || password.trim() == '') {
-    warningSend(res, '用户名和密码不能为空')
+    return warningSend(res, '用户名和密码不能为空')
   }
   let user = getUserByLogin(account, password)
   if (user) {
@@ -39,7 +39,7 @@ log.post('/login', (req, res) => {
     }
     successSend(res, data)
   } else {
-    warningSend(res, '用户名或密码错误')
+    return warningSend(res, '用户名或密码错误')
   }
 })
 
@@ -47,14 +47,14 @@ log.post('/existAccount', (req, res) => {
   const body = req.body.body || {}
   const account = body.account || ''
   if (!account) {
-    warningSend(res, '参数错误')
+    return warningSend(res, '参数错误')
   }
   const hasUserAccount = checkAccount(account)
   if (hasUserAccount) {
     const data = {
       exist: true
     }
-    warningSend(res, '用户名已存在', data)
+    return warningSend(res, '用户名已存在', data)
   } else {
     const data = {
       exist: false
@@ -71,7 +71,7 @@ log.post('/register', (req, res) => {
     if (checkQuestions(questions)) {
       user.questions = questions
     } else {
-      warningSend(res, '问题或者答案不能为空')
+      return warningSend(res, '问题或者答案不能为空')
     }
     const id = ('00000' + (userList.length + 1)).slice(-6);
     user.id = id
@@ -83,7 +83,7 @@ log.post('/register', (req, res) => {
     }
     successSend(res, data)
   } else {
-    warningSend(res, '参数错误')
+    return warningSend(res, '参数错误')
   }
 })
 
@@ -98,7 +98,7 @@ log.post('/getQuestionList', (req, res) => {
     }
     successSend(res, data)
   } else {
-    warningSend(res, '用户不存在')
+    return warningSend(res, '用户不存在')
   }
 })
 
@@ -107,12 +107,12 @@ log.post('/checkAnswer', (req, res) => {
   const account = params.account || ''
   const questions = params.questions || []
   if (!account || questions.length == 0) {
-    warningSend(res, '错误参数')
+    return warningSend(res, '错误参数')
   }
   if (checkQuestionAnswer(account, questions)) {
     successSend(res, {})
   } else {
-    warningSend(res, '答案错误')
+    return warningSend(res, '答案错误')
   }
 })
 
@@ -121,12 +121,12 @@ log.post('/changePassword', (req, res) => {
   const account = params.account || ''
   const newPassword = params.newPassword || ''
   if (!account || !newPassword) {
-    warningSend(res, '参数错误')
+    return warningSend(res, '参数错误')
   }
   if (changePassword(account, newPassword)) {
     successSend(res, {})
   } else {
-    warningSend(res, '找不到用户')
+    return warningSend(res, '找不到用户')
   }
 })
 

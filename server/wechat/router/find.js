@@ -12,7 +12,7 @@ find.post('/searchUser', (req, res) => {
   const body = req.body.body || {}
   const text = body.text || ""
   if (text.trim() == "") {
-    warningSend(res, '参数错误')
+    return warningSend(res, '参数错误')
   }
   const data = user.getSearchUser(text)
   if (data) {

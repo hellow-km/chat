@@ -3,23 +3,26 @@
     <el-dialog
       title="设置"
       :visible.sync="dialogVisible"
-      width="60%"
+      width="35%"
       :before-close="handleClose"
     >
-      <div class="clearfix">
-        <div class="left">
-          <el-radio-group v-model="tab">
-            <el-radio :label="1">好有添加验证</el-radio>
-          </el-radio-group>
-        </div>
-        <div
-          class="left"
-          style="margin-left:20px;"
-        >
-          <div v-show="tab==1">
-            <ContactHarassSettingPane ref="settingPane"></ContactHarassSettingPane>
-          </div>
-        </div>
+      <div>
+        <el-row>
+          <el-col :span="8">
+            <div>
+              <el-radio-group v-model="tab">
+                <el-radio :label="1">好有添加验证</el-radio>
+              </el-radio-group>
+            </div>
+          </el-col>
+          <el-col :span="12">
+            <div>
+              <div v-show="tab==1">
+                <ContactHarassSettingPane ref="settingPane"></ContactHarassSettingPane>
+              </div>
+            </div>
+          </el-col>
+        </el-row>
       </div>
       <span
         slot="footer"

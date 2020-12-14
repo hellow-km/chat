@@ -4,7 +4,7 @@
       style="z-index:9999"
       :title="title"
       :visible.sync="dialogVisible"
-      width="50%"
+      width="30%"
       :show-close="false"
     >
       <el-input

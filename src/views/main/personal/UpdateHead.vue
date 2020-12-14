@@ -3,7 +3,7 @@
     <el-dialog
       title="上传头像"
       :visible.sync="dialogVisible"
-      width="50%"
+      width="30%"
       :before-close="beforeClose"
       :close-on-click-modal="false"
     >

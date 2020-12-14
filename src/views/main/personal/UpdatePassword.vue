@@ -3,7 +3,7 @@
     <el-dialog
       title="修改密码"
       :visible.sync="dialogVisible"
-      width="50%"
+      width="30%"
     >
       <el-form
         :model="rePasswordForm"

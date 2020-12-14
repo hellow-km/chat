@@ -2,7 +2,8 @@ const express = require('express')
 const settings = express.Router()
 const {
   successSend,
-  warningSend
+  warningSend,
+  m
 } = require('../util/util')
 
 const {
@@ -21,7 +22,7 @@ settings.get('/getSetting', (req, res) => {
       setting: data
     })
   } else {
-    warningSend(res, "错误")
+    return warningSend(res, "错误")
   }
 })
 
@@ -34,10 +35,10 @@ settings.post('/updateSetting', (req, res) => {
       addUserSetting.updateDataById(userId, body)
       successSend(res, {}, "保存成功")
     } catch (e) {
-      warningSend(res, '服务器错误')
+      return warningSend(res, '服务器错误')
     }
   } else {
-    warningSend(res, '参数错误')
+    return warningSend(res, '参数错误')
   }
 })
 
@@ -47,10 +48,21 @@ settings.get('/contactAddVerifySetting', (req, res) => {
   if (query.userId) {
     userId = query.userId
   } else {
-    warningSend(res, '参数错误')
+    return warningSend(res, '参数错误')
   }
   const sendBody = userSetting.getSettingByUserId(userId)
   successSend(res, sendBody)
+})
+
+settings.get('/getAddUserSetting', (req, res) => {
+  const query = req.query || {}
+  const userId = query.userId || ""
+  const hasEmpty = m.hasEmpty(userId)
+  if (hasEmpty) {
+    return warningSend(res, "参数错误")
+  }
+  const setting = addUserSetting.getAddUesrSettingByUserId(userId)
+  successSend(res, setting)
 })
 
 module.exports = settings

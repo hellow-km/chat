@@ -64,7 +64,7 @@ menu.post('/updateUser', (req, res) => {
     user.updateUser(body)
     successSend(res, body, "修改成功")
   } else {
-    warningSend(res, "参数错误")
+    return warningSend(res, "参数错误")
   }
 })
 
@@ -74,13 +74,13 @@ menu.post('/changePassword', (req, res) => {
   const password = body.password
   const newPassword = body.newPassword
   if (!id || !password || !newPassword) {
-    warningSend(res, "参数错误")
+    return warningSend(res, "参数错误")
   }
   const success = user.changePassWord(id, password, newPassword)
   if (success) {
     successSend(res, {}, "修改成功")
   } else {
-    warningSend(res, "修改失败")
+    return warningSend(res, "修改失败")
   }
 })
 

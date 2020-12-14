@@ -3,7 +3,7 @@
     <el-dialog
       title="修改信息"
       :visible.sync="dialogVisible"
-      width="50%"
+      width="40%"
       :close-on-click-modal="false"
     >
       <el-form

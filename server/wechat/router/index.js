@@ -6,6 +6,7 @@ const userList = require('./userAndGoupList')
 const find = require('./find')
 const modules = require('./modules')
 const getSelect = require('./getSelect')
+const noticeUser = require('./notice/user')
 
 module.exports = {
   log,
@@ -15,5 +16,6 @@ module.exports = {
   userList,
   find,
   modules,
-  getSelect
+  getSelect,
+  noticeUser
 }

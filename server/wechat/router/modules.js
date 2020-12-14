@@ -13,7 +13,7 @@ modules.post('/addContactCategory', (req, res) => {
   const userId = body.userId || ""
   const name = body.name || ""
   if (!userId || !name) {
-    warningSend(res, "参数错误")
+    return warningSend(res, "参数错误")
   }
   userAndGoupList.addUserListById(userId, name)
   successSend(res, {}, "添加成功")
@@ -24,7 +24,7 @@ modules.post('/addGroupCategory', (req, res) => {
   const userId = body.userId || ""
   const name = body.name || ""
   if (!userId || !name) {
-    warningSend(res, "参数错误")
+    return warningSend(res, "参数错误")
   }
   userAndGoupList.addGroupListById(userId, name)
   successSend(res, {}, "添加成功")
@@ -33,7 +33,7 @@ modules.post('/addGroupCategory', (req, res) => {
 modules.post('/addGroup', (req, res) => {
   const group = req.body.body || {}
   if (JSON.stringify(group) == "{}" || !group.belongUserId || !group.name) {
-    warningSend(res, "参数错误")
+    return warningSend(res, "参数错误")
   }
   userAndGoupList.addGroup(group)
   successSend(res, {}, "创建成功")

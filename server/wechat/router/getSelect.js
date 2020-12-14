@@ -12,7 +12,7 @@ getSelect.get('/getUserCategory', (req, res) => {
   const query = req.query || {}
   const userId = query.userId || ""
   if (!userId) {
-    warningSend(res, "参数错误")
+    return warningSend(res, "参数错误")
   }
   const data = userAndGoupList.getUserNameList(userId)
   successSend(res, data)
@@ -22,7 +22,7 @@ getSelect.get('/getGroupCategory', (req, res) => {
   const query = req.query || {}
   const userId = query.userId || ""
   if (!userId) {
-    warningSend(res, "参数错误")
+    return warningSend(res, "参数错误")
   }
   const data = userAndGoupList.getGroupNameList(userId)
   successSend(res, data)

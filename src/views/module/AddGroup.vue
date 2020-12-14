@@ -3,7 +3,7 @@
     <el-dialog
       title="新建群"
       :visible.sync="dialogVisible"
-      width="50%"
+      width="30%"
       :show-close="false"
     >
       <el-card>

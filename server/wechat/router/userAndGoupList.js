@@ -11,13 +11,13 @@ const {
 userList.get('/getUserList', (req, res) => {
   const userId = req.query.userId || ""
   if (userId == "") {
-    warningSend(res, "参数错误")
+    return warningSend(res, "参数错误")
   }
   const data = userAndGoupList.getListById(userId)
   if (data) {
     successSend(res, data)
   } else {
-    warningSend(res, "无数据")
+    return warningSend(res, "无数据")
   }
 })
 
