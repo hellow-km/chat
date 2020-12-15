@@ -2,7 +2,8 @@ const {
   m,
   j
 } = require('../../util/util')
-
+const User = require('../User')
+const user = new User()
 class UserAdd {
   constructor() {
     this.path = m.getPath('notice_userAdd')
@@ -16,14 +17,6 @@ class UserAdd {
   }
 
   getData() {
-    // const jsonD = m.readFile(this.path)
-    // let data = new Map()
-    // if (!jsonD) {
-    //   this.save()
-    // } else {
-    //   data = j._objToStrMap(jsonD)
-    // }
-    // return data
     return m.readFile(this.path)
   }
 
@@ -32,18 +25,10 @@ class UserAdd {
     const sendUserId = body.sendUserId || ""
     const targetUserId = body.targetUserId || ""
     const verifyType = body.verifyType || ""
-    // const hasKey = this.data.has(targetUserId)
-    // if (hasKey) {
-    //   let value = this.data.get(targetUserId)
-    //   body.id = value.length + 1
-    //   value.push(body)
-    //   this.data.set(targetUserId, value)
-    // } else {
-    //   body.id = 1
-    //   this.data.set(targetUserId, [body])
-    // }
     let hasKey = false
     for (const value of this.data) {
+      body.handleType = 1
+      body.handleTime = new Date().getTime()
       if (value[targetUserId]) {
         const item = value[targetUserId]
         const isSend = item.some(p => p.sendUserId == sendUserId && p.targetUserId == targetUserId)
@@ -65,9 +50,38 @@ class UserAdd {
     this.save()
   }
 
+  getUserAddNotice(userId, pageObj) {
+    const data = this.getData()
+    const pageSize = pageObj.pageSize || 10
+    const page = pageObj.page || 1
+    let noticeList = []
+    for (let i = 0; i < data.length; i++) {
+      if (data[i].hasOwnProperty(userId)) {
+        noticeList = data[i][userId]
+        break
+      }
+    }
+    const list = []
+    if (noticeList.length > 0) {
+      noticeList = noticeList.sort(m.compare('id', false))
+      const pageBegin = (page - 1) * pageSize
+      const pageEnd = page * pageSize - 1
+      noticeList.forEach((p, index) => {
+        if (index >= pageBegin && index <= pageEnd) {
+          const sendUserId = p.sendUserId
+          const userObj = user.getUserById(sendUserId)
+          list.push({
+            user: userObj,
+            apply: p,
+            answerList: p.answerList
+          })
+        }
+      })
+    }
+    return list
+  }
+
   save() {
-    //const json = j._mapToJson(this.data)
-    //m.writeFile(this.path, json)
     m.writeFile(this.path, this.data)
   }
 }

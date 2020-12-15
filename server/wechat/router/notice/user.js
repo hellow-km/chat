@@ -40,4 +40,22 @@ user.post('/sendAddUser', (req, res) => {
   }
 })
 
+user.get('/addUserNoctice', (req, res) => {
+  const query = req.query
+  const userId = query.userId || ""
+  const page = query.page || {}
+  if (m.hasEmpty(userId, page)) {
+    warningSend(res, "参数错误")
+  }
+  // try{
+  const data = userAdd.getUserAddNotice(userId, page)
+  successSend(res, {
+    list: data
+  })
+  // }
+  // catch(e){
+  //   warningSend(res,"请求失败")
+  // }
+})
+
 module.exports = user

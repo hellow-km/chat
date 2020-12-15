@@ -6,28 +6,33 @@ const groups = require('./groups/groups')
 class UserAndGoupList extends UserAccount {
   constructor(list, path) {
     super(list, path)
-    this.list.map(p => {
-      const userList = [{
-        key: 0,
-        name: "我的好友",
-        rank: 0,
-        countText: "[0/0]",
-        items: [],
-        isOpen: false,
-        red: false,
-        redCount: 0
-      }];
-      p.userList = userList;
-      p.groupList = [{
-        key: 0,
-        name: "默认分组",
-        rank: 0,
-        countText: "[0]",
-        items: [],
-        isOpen: false,
-        red: false,
-        redCount: 0
-      }]
+    const data = this.getData()
+    this.list = this.list.map((p, index) => {
+      if (!data[index]) {
+        const userList = [{
+          key: 0,
+          name: "我的好友",
+          rank: 0,
+          countText: "[0/0]",
+          items: [],
+          isOpen: false,
+          red: false,
+          redCount: 0
+        }];
+        p.userList = userList;
+        p.groupList = [{
+          key: 0,
+          name: "默认分组",
+          rank: 0,
+          countText: "[0]",
+          items: [],
+          isOpen: false,
+          red: false,
+          redCount: 0
+        }]
+      } else {
+        p = data[index]
+      }
       return p
     })
     this.save()

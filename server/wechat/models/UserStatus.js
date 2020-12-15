@@ -3,8 +3,14 @@ const UserAccount = require('./UserAccount')
 class UserStatus extends UserAccount {
   constructor(list, path) {
     super(list, path)
-    this.list.map(p => {
-      p.isLogin = false
+    const data = this.getData()
+    this.list = this.list.map((p, index) => {
+      if (!data[index]) {
+        p.isLogin = false
+      } else {
+        p = data[index]
+      }
+      return p
     })
     this.save()
   }

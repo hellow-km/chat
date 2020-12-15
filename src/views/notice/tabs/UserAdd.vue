@@ -7,6 +7,7 @@
           <el-button
             size="mini"
             style="float:right"
+            @click="refresh"
           >
             刷新
           </el-button>
@@ -79,9 +80,9 @@
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :current-page="currentPage4"
+        :current-page="page.page"
         :page-sizes="[10, 20, 50, 100]"
-        :page-size="10"
+        :page-size="page.pageSize"
         layout="total, sizes, prev, pager, next, jumper"
         :total="list.length"
       >
@@ -93,95 +94,51 @@
 <script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
 import ContactAddApplyDetail from "@/app/com/data/ContactAddApplyDetail";
+import Page from "@/app/com/data/Page";
+import store from "@/store";
+import NoticeController from "@/app/com/main/controller/NoticeController";
+import App from "@/app/App";
+import DataBackAction from "@/app/base/net/DataBackAction";
+import DataUtil from "@/app/lib/util/DataUtil";
 
 @Component
 export default class UserAdd extends Vue {
-  private list: ContactAddApplyDetail[] = [
-    {
-      apply: {
-        remark: "123",
-        question: "123",
-        answer: 555,
-        verifyType: 4,
-        handleType: "1"
-      },
-      user: {
-        nickName: "aaa"
-      },
-      answerList: [
-        {
-          question: "333",
-          answer: "444"
-        },
-        {
-          question: "333",
-          answer: "444"
-        },
-        {
-          question: "333",
-          answer: "444"
-        }
-      ]
-    },
-    {
-      apply: {
-        remark: "123",
-        question: "123",
-        answer: 555,
-        verifyType: 4,
-        handleType: "2"
-      },
-      user: {
-        nickName: "aaa"
-      },
-      answerList: [
-        {
-          question: "333",
-          answer: "444"
-        },
-        {
-          question: "333",
-          answer: "444"
-        },
-        {
-          question: "333",
-          answer: "444"
-        }
-      ]
-    },
-    {
-      apply: {
-        remark: "123",
-        question: "123",
-        answer: 555,
-        verifyType: 4,
-        handleType: "3"
-      },
-      user: {
-        nickName: "aaa"
-      },
-      answerList: [
-        {
-          question: "333",
-          answer: "444"
-        },
-        {
-          question: "333",
-          answer: "444"
-        },
-        {
-          question: "333",
-          answer: "444"
-        }
-      ]
-    }
-  ] as any;
+  private list: ContactAddApplyDetail[] = [];
+  private page: Page = new Page();
+  private userId: string = store.state.userId;
+
+  private mounted() {
+    this.getList();
+  }
 
   private handleSizeChange(val: string) {
-    console.log(`每页 ${val} 条`);
+    this.page.pageSize = Number(val);
+    this.getList();
   }
   private handleCurrentChange(val: string) {
-    console.log(`当前页: ${val}`);
+    this.page.page = Number(val);
+    this.getList();
+  }
+
+  private refresh() {
+    this.getList();
+  }
+
+  private getList() {
+    const back: DataBackAction = {
+      back: (data: any) => {
+        if (DataUtil.isSuccess(data)) {
+          const body = DataUtil.getBody(data);
+          this.list = body.list;
+        }
+      }
+    };
+    const ncl: NoticeController = App.appContext.getMaterial(NoticeController);
+    const params = {
+      userId: this.userId,
+      page: this.page
+    };
+    ncl.getAddUserNotice(params, back);
   }
 }
 </script>

@@ -10,7 +10,12 @@ class User {
   }
 
   getData() {
-    return m.readFile(this.path)
+    const data = m.readFile(this.path)
+    if (data) {
+      return data
+    } else {
+      return []
+    }
   }
 
   getSearchUser(text) {
@@ -53,6 +58,18 @@ class User {
       return p
     })
     return mark
+  }
+
+  getUserById(userId) {
+    this.data = this.getData()
+    let data = this.getUserObjById(this.data, userId)
+    delete data.password
+    return data
+  }
+
+  getUserObjById(list, userId) {
+    const data = list.filter(p => p.id == userId)
+    return data[0]
   }
 }
 

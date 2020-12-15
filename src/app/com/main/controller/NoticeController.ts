@@ -8,4 +8,10 @@ export default class NoticeController extends AbstractMaterial {
     m.body = body
     this.appContext.netServer.request(m, back)
   }
+
+  public getAddUserNotice(params: any, back: DataBackAction) {
+    const m: any = Message.build('get', '/notice/addUserNoctice')
+    m.params = params
+    this.appContext.netServer.request(m, back)
+  }
 }

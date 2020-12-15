@@ -165,6 +165,7 @@ export default class Adduser extends Vue {
       back: (data: any) => {
         if (data && data.info) {
           const info = data.info;
+          this.dialogVisible = false;
           Prompt.message(info, "", "");
         }
       }

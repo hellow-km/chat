@@ -3,9 +3,9 @@ const UserAccount = require('../UserAccount')
 class UserSetting extends UserAccount {
   constructor(list, path) {
     super(list, path)
-    this.list = this.getData()
-    this.list.map(u => {
-      if (!u.setting) {
+    const data = this.getData()
+    this.list = this.list.map((u, index) => {
+      if (!data[index]) {
         u.setting = {
           VERIFY_TYPE_ANY: 1,
           /*** 2：需要验证 **/
@@ -27,6 +27,8 @@ class UserSetting extends UserAccount {
           answer: '',
           onlyQuestions: []
         }
+      } else {
+        u = data[index]
       }
       return u
     })

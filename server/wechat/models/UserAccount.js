@@ -64,6 +64,11 @@ class UserAccount {
     this.list = data
     this.writeFile(data)
   }
+
+  getDataObjById(list, userId) {
+    const data = list.filter(p => p.userId == userId)
+    return data[0]
+  }
 }
 
 module.exports = UserAccount
