@@ -21,6 +21,10 @@ app.use(bodyParser.urlencoded({
   extended: false
 }))
 
+const {
+  resetJsonExUser
+} = require('./util/util')
+
 app.use('/public', express.static(path.join(__dirname, './public')));
 
 const upload = multer({
@@ -55,6 +59,10 @@ app.use('/modules', modules)
 app.use('/getSelect', getSelect)
 app.use('/notice', noticeUser)
 
+app.get('/resetJsonExUser', (req, res) => {
+  resetJsonExUser()
+  res.send('ok')
+})
 app.listen(3000)
 
 var ws = require('nodejs-websocket');

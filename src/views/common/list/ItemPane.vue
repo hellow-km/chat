@@ -61,12 +61,12 @@ export default class ItemPane extends Vue {
   }
 
   @Emit("on-selected")
-  private selected(data: ItemData) {
+  private selected(data: User) {
     // 选中
   }
 
   @Emit("on-context-menu")
-  private onContextMenu(e: MouseEvent, data: ItemData) {
+  private onContextMenu(e: MouseEvent, data: User) {
     // 菜单
   }
 }

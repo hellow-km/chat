@@ -218,7 +218,12 @@ function getUserByLogin(account, password) {
 }
 
 function readUser() {
-  return m.readFile(userDataPath)
+  const data = m.readFile(userDataPath)
+  if (data) {
+    return data
+  } else {
+    return []
+  }
 }
 
 function writeUser() {
@@ -227,7 +232,9 @@ function writeUser() {
 
 function updateUserList() {
   let regUser = readUser()
-  userList.push(...regUser)
+  if (regUser) {
+    userList.push(...regUser)
+  }
 }
 
 function checkQuestions(questions) {

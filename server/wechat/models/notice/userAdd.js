@@ -4,6 +4,7 @@ const {
 } = require('../../util/util')
 const User = require('../User')
 const user = new User()
+
 class UserAdd {
   constructor() {
     this.path = m.getPath('notice_userAdd')
@@ -24,6 +25,7 @@ class UserAdd {
     this.data = this.getData()
     const sendUserId = body.sendUserId || ""
     const targetUserId = body.targetUserId || ""
+    const key = body.categoryId
     const verifyType = body.verifyType || ""
     let hasKey = false
     body.handleType = "1"
@@ -33,7 +35,7 @@ class UserAdd {
         const item = value[targetUserId]
         const isSend = item.some(p => p.sendUserId == sendUserId && p.targetUserId == targetUserId)
         if (isSend) {
-          return true
+          return "你已经发送过请求"
         }
         body.id = item.length + 1
         item.push(body)

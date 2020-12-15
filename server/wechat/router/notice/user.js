@@ -2,7 +2,8 @@ const express = require('express')
 const user = express.Router()
 const {
   userAdd,
-  addUserSetting
+  addUserSetting,
+  userAndGoupList
 } = require('../../models/model')
 const {
   warningSend,
@@ -16,7 +17,8 @@ user.post('/sendAddUser', (req, res) => {
   const targetUserId = body.targetUserId || ""
   const verifyType = body.verifyType || ""
   const answer = body.answer || ""
-  const hasEmpty = m.hasEmpty(sendUserId, targetUserId, verifyType)
+  const categoryId = body.categoryId
+  const hasEmpty = m.hasEmpty(sendUserId, targetUserId, verifyType, categoryId)
   if (hasEmpty) {
     return warningSend(res, "参数错误")
   }
@@ -29,15 +31,19 @@ user.post('/sendAddUser', (req, res) => {
       return warningSend(res, "答案错误")
     }
   }
-  try {
-    const isSend = userAdd.addUserNotice(body)
-    if (isSend) {
-      return warningSend(res, "你已发送过请求，请勿重新发送")
-    }
-    successSend(res, {}, "请求成功")
-  } catch (e) {
-    warningSend(res, "请求失败")
+  const key = body.categoryId
+  if (userAndGoupList.checkIsAdded(sendUserId, targetUserId, key)) {
+    return warningSend(res, "他已经是你的好友")
   }
+  //try {
+  const txt = userAdd.addUserNotice(body)
+  if (txt) {
+    return warningSend(res, txt)
+  }
+  successSend(res, {}, "请求成功")
+  //} catch (e) {
+  warningSend(res, "请求失败")
+  //}
 })
 
 user.get('/addUserNoctice', (req, res) => {

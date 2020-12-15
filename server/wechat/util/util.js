@@ -92,6 +92,18 @@ class M {
   }
 }
 
+function resetJsonExUser() {
+  let o = [
+    m.getPath('addUserSetting'),
+    m.getPath('userAndGoupList'),
+    m.getPath('userStatus'),
+    m.getPath('notice_userAdd')
+  ]
+  for (const v of o) {
+    m.writeFile(v, [])
+  }
+}
+
 class J {
   _strMapToObj(strMap) {
     let obj = Object.create(null);
@@ -128,5 +140,6 @@ module.exports = {
   successSend,
   warningSend,
   m,
-  j
+  j,
+  resetJsonExUser
 }

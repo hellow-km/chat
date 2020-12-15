@@ -182,7 +182,7 @@ class UserAndGoupList extends UserAccount {
 
   addUser(userId, addId, noticeId, key, remark) {
     this.list = this.getData()
-    if (this.checkIsAdded(userId, addId)) {
+    if (this.checkIsAdded(userId, addId, key)) {
       return true
     }
     for (let i = 0; i < this.list.length; i++) {
@@ -232,12 +232,18 @@ class UserAndGoupList extends UserAccount {
     }
   }
 
-  checkIsAdded(id, targetId) {
+  checkIsAdded(id, targetId, key) {
     const list = this.getData()
-    const data = this.getItemById(list, id)
-    for (const value of data) {
-      if (value.id == targetId) {
-        return true
+    const data = this.getItemById(list, id)[0]
+    const userList = data.userList
+    for (const value of userList) {
+      if (value.key == key) {
+        const items = value.items
+        for (const item of items) {
+          if (item.id == targetId) {
+            return true
+          }
+        }
       }
     }
     return false
