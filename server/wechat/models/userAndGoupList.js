@@ -3,6 +3,14 @@ const {
   m
 } = require('../util/util')
 const groups = require('./groups/groups')
+const userAdd = require('./notice/userAdd')
+const User = require('./User')
+const user = new User()
+const {
+  userStatus
+} = require('./UserStatus.js')
+
+
 class UserAndGoupList extends UserAccount {
   constructor(list, path) {
     super(list, path)
@@ -42,10 +50,24 @@ class UserAndGoupList extends UserAccount {
     this.list = this.getData()
     const data = this.getItemById(this.list, userId)
     if (data.length == 1) {
-      return data[0]
+      return this.getUserStatusContext(data[0])
     } else {
       return data
     }
+  }
+
+  getUserStatusContext(data) {
+    const userList = data.userList
+    for (const value of userList) {
+      const items = value.items
+      for (const item of items) {
+        const isOnline = userStatus.getStatus(item.id)
+        item.gray = !isOnline
+      }
+      const onlineCount = this.getOnlineCount(data.userId, value.key)
+      value.countText = `[${onlineCount}/${items.length}]`
+    }
+    return data
   }
 
   addGroup(group) {
@@ -143,10 +165,96 @@ class UserAndGoupList extends UserAccount {
     })
   }
 
+  addUserToList(body) {
+    const sendRemark = body.sendRemark || ""
+    const sendUserId = body.sendUserId
+    const acceptRemark = body.acceptRemark || ""
+    const acceptUserId = body.acceptUserId
+    const acceptKey = body.acceptKey
+    const sendKey = body.sendKey
+    const noticeId = body.noticeId
+    const isAdded = this.addUser(acceptUserId, sendUserId, acceptKey, acceptRemark)
+    this.addUser(sendUserId, acceptUserId, noticeId, sendKey, sendRemark)
+    this.save()
+    if (isAdded) {
+      return isAdded
+    }
+  }
+
+  addUser(userId, addId, noticeId, key, remark) {
+    this.list = this.getData()
+    if (this.checkIsAdded(userId, addId)) {
+      return true
+    }
+    for (let i = 0; i < this.list.length; i++) {
+      let item = this.list[i]
+      if (item.userId == userId) {
+        let userList = item.userList
+        for (let value of userList) {
+          if (value.key == key) {
+            const userObj = user.getUserById(addId)
+            userObj.remark = remark
+            const isLogin = userStatus.getStatus(userObj.id)
+            userObj.gray = !isLogin
+            userAdd.setNoticeHandle(addId, noticeId, "2")
+            const items = value.items
+            items.push(userObj)
+            const onLineCounts = this.getOnlineCount(userId, key)
+            value.countText = `[${onLineCounts}/${items.length}]`
+          }
+        }
+      }
+    }
+  }
+
+  getOnlineCount(userId, key) {
+    let count = 0
+    const items = this.getUserListItems(userId, key)
+    for (const value of items) {
+      if (!value.gray) {
+        count++
+      }
+    }
+    return count
+  }
+
+  getUserListItems(userId, key) {
+    for (let i = 0; i < this.list.length; i++) {
+      let item = this.list[i]
+      if (item.userId == userId) {
+        let userList = item.userList
+        for (let value of userList) {
+          if (value.key == key) {
+            return value.items
+          }
+        }
+      }
+    }
+  }
+
+  checkIsAdded(id, targetId) {
+    const list = this.getData()
+    const data = this.getItemById(list, id)
+    for (const value of data) {
+      if (value.id == targetId) {
+        return true
+      }
+    }
+    return false
+  }
+
   getItemById(list, userId) {
     const data = list.filter(p => p.userId == userId)
     return data
   }
-}
 
-module.exports = UserAndGoupList
+
+}
+const data = user.getData()
+const userAndGoupListPath = m.getPath('userAndGoupList')
+let userAndGoupList = new UserAndGoupList(data, userAndGoupListPath)
+
+module.exports = {
+  UserAndGoupList,
+  userAndGoupList
+}

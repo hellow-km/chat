@@ -1,8 +1,14 @@
 const path = require('path')
 const User = require('./User')
-const UserStatus = require('./UserStatus')
-const UserAndGoupList = require('./userAndGoupList')
-const AddUserSetting = require('./menu/setting')
+const {
+  UserStatus
+} = require('./UserStatus')
+const {
+  UserAndGoupList
+} = require('./userAndGoupList')
+const {
+  UserSetting
+} = require('./menu/setting')
 const groups = require('./groups/groups')
 const userAdd = require('./notice/userAdd')
 
@@ -16,7 +22,7 @@ const userAndGoupListPath = getPath('userAndGoupList')
 let userAndGoupList = new UserAndGoupList(data, userAndGoupListPath)
 
 const addUserSettingPath = getPath('addUserSetting')
-let addUserSetting = new AddUserSetting(data, addUserSettingPath)
+let addUserSetting = new UserSetting(data, addUserSettingPath)
 
 function getPath(name) {
   return path.join(__dirname, '../data/' + name + '.json')
@@ -29,7 +35,7 @@ function registerBack() {
   const data = user.getData()
   userStatus = new UserStatus(data, userStatusPath)
   userAndGoupList = new UserAndGoupList(data, userAndGoupListPath)
-  addUserSetting = new AddUserSetting(data, addUserSettingPath)
+  addUserSetting = new UserSetting(data, addUserSettingPath)
 }
 
 module.exports = {

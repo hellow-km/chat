@@ -34,4 +34,8 @@ export default class User {
   public blood: string = ''; // 血型
   public signature: string = ""; // 签名
   public name: string = ""; // 姓名
+  public active: boolean = false;
+  public gray: boolean = true; //离线
+  public red: boolean = false; //消息
+  public redCount: number = 0; //消息个数
 }

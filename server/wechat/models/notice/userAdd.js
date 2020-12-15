@@ -26,9 +26,9 @@ class UserAdd {
     const targetUserId = body.targetUserId || ""
     const verifyType = body.verifyType || ""
     let hasKey = false
+    body.handleType = "1"
+    body.handleTime = new Date().getTime()
     for (const value of this.data) {
-      body.handleType = 1
-      body.handleTime = new Date().getTime()
       if (value[targetUserId]) {
         const item = value[targetUserId]
         const isSend = item.some(p => p.sendUserId == sendUserId && p.targetUserId == targetUserId)
@@ -37,7 +37,6 @@ class UserAdd {
         }
         body.id = item.length + 1
         item.push(body)
-        value[targetUserId] = item
         hasKey = true
       }
     }
@@ -46,6 +45,16 @@ class UserAdd {
       this.data.push({
         [targetUserId]: [body]
       })
+    }
+    this.save()
+  }
+
+  setNoticeHandle(userId, id, handleType) {
+    this.data = this.getData()
+    for (const item of this.data) {
+      if (item.hasOwnProperty(userId)) {
+        item[userId][id - 1].handleType = handleType
+      }
     }
     this.save()
   }

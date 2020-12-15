@@ -17,7 +17,7 @@
         >
       </div>
       <div class="pane-name left">
-        <h4>{{data.name}}</h4>
+        <h4 :class="data.gray?'color-gray':''">{{data.remark||data.nickName}}</h4>
       </div>
     </div>
   </div>
@@ -28,14 +28,15 @@ import Vue from "vue";
 import { Component, Prop, Emit } from "vue-property-decorator";
 import ItemData from "@/views/common/list/ItemData";
 import ItemBox from "@/views/common/list/ItemBox";
+import User from "@/app/com/bean/User";
 @Component
 export default class ItemPane extends Vue {
   @Prop({
-    type: ItemData,
+    type: User,
     required: false,
-    default: new ItemData()
+    default: new User()
   })
-  private data!: any;
+  private data!: User;
 
   @Prop({
     type: ItemBox,

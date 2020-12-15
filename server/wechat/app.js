@@ -9,7 +9,7 @@ const {
   address,
   userSetting,
   menu,
-  userList,
+  userAndGoupList,
   find,
   modules,
   getSelect,
@@ -49,7 +49,7 @@ app.use('/', address)
 app.use('/client', log)
 app.use('/setting', userSetting)
 app.use('/menu', menu)
-app.use('/user', userList)
+app.use('/user', userAndGoupList)
 app.use('/find', find)
 app.use('/modules', modules)
 app.use('/getSelect', getSelect)

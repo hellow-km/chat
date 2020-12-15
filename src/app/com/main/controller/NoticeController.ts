@@ -4,14 +4,26 @@ import Message from '@/app/base/message/Message';
 
 export default class NoticeController extends AbstractMaterial {
   public addUserNotice(body: any, back: DataBackAction) {
-    const m = Message.build('post', '/notice/sendAddUser')
-    m.body = body
-    this.appContext.netServer.request(m, back)
+    this.request('post', '/notice/sendAddUser', body, back)
   }
 
   public getAddUserNotice(params: any, back: DataBackAction) {
-    const m: any = Message.build('get', '/notice/addUserNoctice')
-    m.params = params
-    this.appContext.netServer.request(m, back)
+    this.request('get', '/notice/addUserNoctice', params, back)
+  }
+
+  public acceptUser(body: any, back: DataBackAction) {
+    this.request("post", "/user/addUserToList", body, back)
+  }
+
+  private request(method: string, url: string, data: any, back: DataBackAction) {
+    if (method == "get") {
+      const m: any = Message.build(method, url)
+      m.params = data
+      this.appContext.netServer.request(m, back)
+    } else if (method == "post") {
+      const m: any = Message.build(method, url)
+      m.body = data
+      this.appContext.netServer.request(m, back)
+    }
   }
 }

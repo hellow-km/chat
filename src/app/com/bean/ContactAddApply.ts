@@ -8,7 +8,7 @@ export default class ContactAddApply {
   public static HANDLE_TYPE_REJECT: string = '3';
 
   public id: string = '';
-  public applyUserId: string = ''; // 添加联系人的请求用户
+  public sendUserId: string = ''; // 添加联系人的请求用户
   public targetUserId: string = ''; // 被添加的用户
   public categoryId: string = ''; // 分组id
   public remark: string = ''; // 备注名
@@ -16,6 +16,6 @@ export default class ContactAddApply {
   public question: string = ''; // 问题(当验证方式为回答问题时)
   public answer: string = ''; // 答案(当验证方式为回答问题时)
   public handleType: string = ''; // 处理结果：1:未处理 2:同意 3:拒绝
-  public handleDateTime: string = ''; // 处理时间
+  public handleTime: string = ''; // 处理时间
   public message: string = ''; // 附加消息
 }

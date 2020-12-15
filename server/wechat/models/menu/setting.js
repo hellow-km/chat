@@ -1,4 +1,10 @@
 const UserAccount = require('../UserAccount')
+const {
+  m
+} = require('../../util/util')
+const User = require('../User')
+const user = new User()
+const data = user.getData()
 
 class UserSetting extends UserAccount {
   constructor(list, path) {
@@ -94,4 +100,10 @@ class UserSetting extends UserAccount {
   }
 }
 
-module.exports = UserSetting
+const addUserSettingPath = m.getPath('addUserSetting')
+let addUserSetting = new UserSetting(data, addUserSettingPath)
+
+module.exports = {
+  UserSetting,
+  addUserSetting
+}

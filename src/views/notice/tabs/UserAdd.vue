@@ -57,10 +57,16 @@
                 <el-col :span="6">
                   <div class="opt">
                     <div v-if="item.apply.handleType=='1'">
-                      <el-button size="mini">
+                      <el-button
+                        size="mini"
+                        @click="accept(item.apply)"
+                      >
                         同意
                       </el-button>
-                      <el-button size="mini">
+                      <el-button
+                        size="mini"
+                        @click="refuse"
+                      >
                         拒绝
                       </el-button>
                     </div>
@@ -88,6 +94,10 @@
       >
       </el-pagination>
     </div>
+    <AcceptUserAdd
+      ref="acceptUserAdd"
+      @handleUpdate="getList"
+    ></AcceptUserAdd>
   </div>
 </template>
 
@@ -100,8 +110,14 @@ import NoticeController from "@/app/com/main/controller/NoticeController";
 import App from "@/app/App";
 import DataBackAction from "@/app/base/net/DataBackAction";
 import DataUtil from "@/app/lib/util/DataUtil";
+import AcceptUserAdd from "../add/AcceptUserAdd.vue";
+import ContactAddApply from "@/app/com/bean/ContactAddApply";
 
-@Component
+@Component({
+  components: {
+    AcceptUserAdd
+  }
+})
 export default class UserAdd extends Vue {
   private list: ContactAddApplyDetail[] = [];
   private page: Page = new Page();
@@ -123,6 +139,14 @@ export default class UserAdd extends Vue {
   private refresh() {
     this.getList();
   }
+
+  private accept(apply: ContactAddApply) {
+    const acceptUserAdd: any = this.$refs.acceptUserAdd;
+    acceptUserAdd.openDia();
+    acceptUserAdd.setSend(apply);
+  }
+
+  private refuse() {}
 
   private getList() {
     const back: DataBackAction = {

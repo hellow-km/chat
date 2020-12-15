@@ -1,4 +1,10 @@
 const UserAccount = require('./UserAccount')
+const {
+  m
+} = require('../util/util')
+const User = require('./User')
+const user = new User()
+const data = user.getData()
 
 class UserStatus extends UserAccount {
   constructor(list, path) {
@@ -27,6 +33,22 @@ class UserStatus extends UserAccount {
       this.save()
     }
   }
-}
 
-module.exports = UserStatus
+  getStatus(userId) {
+    const list = this.getData()
+    const data = list.filter(p => {
+      if (p.userId == userId) {
+        return true
+      } else {
+        return false
+      }
+    })
+    return data[0].isLogin
+  }
+}
+const userStatusPath = m.getPath('userStatus')
+let userStatus = new UserStatus(data, userStatusPath)
+module.exports = {
+  UserStatus,
+  userStatus
+}
