@@ -95,12 +95,15 @@ export default class AcceptUserAdd extends Vue {
     const back: DataBackAction = {
       back: (data: any) => {
         data.info && Prompt.message(data.info, "", "");
-        const addBack = () => {
-          const _this: any = this;
-          const bus: any = _this.$bus;
-          bus.$emit("addContactCategory");
-        };
-        InitializeData.setListData(this.acceptUserId, addBack);
+        setTimeout(() => {
+          const addBack = () => {
+            const _this: any = this;
+            const bus: any = _this.$bus;
+            bus.$emit("addContactCategory");
+          };
+          InitializeData.setListData(this.acceptUserId, addBack);
+        }, 200);
+
         this.handleUpdate();
         this.dialogVisible = false;
       }

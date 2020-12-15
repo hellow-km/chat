@@ -14,6 +14,8 @@ export default class PersonalListData extends AbstractMaterial {
             const groupList = body.groupList
             ListData.userNodes = userList
             ListData.groupNodes = groupList
+            console.log(1);
+
             addBack && addBack()
           }
         }

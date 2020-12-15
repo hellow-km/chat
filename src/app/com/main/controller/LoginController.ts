@@ -9,6 +9,7 @@ import ConnectService from '@/app/com/main/service/ConnectService';
 import store from '@/store/index'
 import InitializeData from '@/impl/initialize/InitializeData'
 import User from '@/app/com/bean/User';
+import Vue from 'vue'
 class LoginController extends AbstractMaterial {
 
   public login(account: string, password: string, back: (success: boolean, message?: string) => void) {
@@ -59,7 +60,6 @@ class LoginController extends AbstractMaterial {
           if (info.success && data.body) {
             const token = data.body.token;
             const user = data.body.user;
-
             mark = !BaseUtil.isEmpty(token);
             if (mark) {
               Auth.setToken(token);
@@ -88,7 +88,10 @@ class LoginController extends AbstractMaterial {
 
   private setData(user: User): void {
     InitializeData.setPersonalData(user)
-    InitializeData.setListData(user.id)
+    const addBack = () => {
+      Vue.prototype.$bus.$emit("addContactCategory");
+    };
+    InitializeData.setListData(user.id, addBack)
   }
 }
 

@@ -173,9 +173,8 @@ class UserAndGoupList extends UserAccount {
     const acceptKey = body.acceptKey
     const sendKey = body.sendKey
     const noticeId = body.noticeId
-    const isAdded = this.addUser(acceptUserId, sendUserId, acceptKey, acceptRemark)
+    const isAdded = this.addUser(acceptUserId, sendUserId, noticeId, acceptKey, acceptRemark)
     this.addUser(sendUserId, acceptUserId, noticeId, sendKey, sendRemark)
-    this.save()
     if (isAdded) {
       return isAdded
     }
@@ -205,6 +204,7 @@ class UserAndGoupList extends UserAccount {
         }
       }
     }
+    this.save()
   }
 
   getOnlineCount(userId, key) {

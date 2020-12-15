@@ -3,6 +3,7 @@ import User from '@/app/com/bean/User';
 import PersonalListData from '@/app/com/main/sender/PersonalListData'
 import App from '@/app/App';
 class InitializeData {
+
   public setPersonalData(user: User) {
     PersonalViewImpl.setUser(user)
   }
