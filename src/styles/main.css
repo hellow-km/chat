@@ -59,6 +59,15 @@ summary {
   -webkit-border-radius: 4px;
 }
 
+.main-page {
+  height: 100%;
+  display: flex;
+}
+
+.main-page .box {
+  margin: 5%;
+}
+
 .main_inner {
   height: 100%;
   margin: 0 auto;
@@ -123,7 +132,7 @@ summary {
 
 /*******************panel start**********************/
 .panel {
-  width: 300px;
+  flex: 2;
   background-color: #3c5574;
   height: 100%;
   overflow: hidden;
@@ -296,7 +305,7 @@ summary {
 
 
 
-/********************/
+/**********module menu**********/
 .contact-group-list {
   line-height: 50px;
   cursor: pointer;
@@ -338,10 +347,10 @@ summary {
   margin-bottom: 10px;
 }
 
-/********************/
+/**********module menu**********/
 /*******************panel end**********************/
 
-/*******notice s*******/
+/*******notice*******/
 .notice-user {
   margin-bottom: 15px;
 }
@@ -383,4 +392,59 @@ summary {
   color: #26292e;
 }
 
-/*******notice e*******/
+/*******notice*******/
+
+/**********page user**********/
+.user-info-pane {
+  height: 100%;
+  overflow: hidden;
+}
+
+.user-info-pane .page {
+  width: 35%;
+  text-align: center;
+  margin: 0 auto;
+  margin-top: 100px;
+}
+
+.user-info-pane .page .avatar {
+  height: 120px;
+  width: 100%;
+}
+
+.user-info-pane .page .message {
+  width: 120px;
+  margin: 0 auto;
+  white-space: nowrap;
+  margin-top: 40px;
+  font-size: 14px;
+  color: #888;
+  margin-bottom: 30px;
+}
+
+.user-info-pane .page .signature {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #888;
+}
+
+.user-info-pane .page .message .el-col:first-child {
+  text-align: right;
+}
+
+.user-info-pane .page .message .el-col:nth-child(2) {
+  text-align: left;
+}
+
+.user-info-pane .page .nickName {
+  font-size: 26px;
+}
+
+.user-info-pane .head {
+  line-height: 60px;
+  border-bottom: 1px solid #dcdfe6;
+  text-align: center;
+  color: #666
+}
+
+/**********page user**********/

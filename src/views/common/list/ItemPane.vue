@@ -63,6 +63,7 @@ export default class ItemPane extends Vue {
   @Emit("on-selected")
   private selected(data: User) {
     // 选中
+    return data;
   }
 
   @Emit("on-context-menu")

@@ -5,49 +5,54 @@
       :box="sideTabBox"
       @on-button-click="handleSetting"
     ></SideBar>
-    <div class="panel left">
-      <div class="panel-head clearfix">
-        <div class="panel-user">
-          <el-avatar
-            :src="PersonalData.avatar"
-            class="user-avatar"
-          >
-          </el-avatar>
-          <span class="user-name">{{PersonalData.name}}</span>
+    <div class="main-page">
+      <div class="panel left">
+        <div class="panel-head clearfix">
+          <div class="panel-user">
+            <el-avatar
+              :src="PersonalData.avatar"
+              class="user-avatar"
+            >
+            </el-avatar>
+            <span class="user-name">{{PersonalData.name}}</span>
+          </div>
+          <div class="user-add">
+            <MainMenu></MainMenu>
+          </div>
         </div>
-        <div class="user-add">
-          <MainMenu></MainMenu>
+        <SearchBar></SearchBar>
+        <div style="border:0;height:1px;background-color:#777"></div>
+        <div v-show="currentTab=='user_tab'">
+          <UserListPane
+            @on-node-context-menu='onUserNodeContextMenu'
+            @on-item-selected="onUserSelected"
+            @on-item-context-menu='onUserItemContextMenu'
+          ></UserListPane>
+        </div>
+        <div v-show="currentTab=='group_tab'">
+          <GroupListPane
+            @on-node-context-menu='onGroupNodeContextMenu'
+            @on-item-selected="onGroupSelected"
+            @on-item-context-menu='onGroupItemContextMenu'
+          ></GroupListPane>
+        </div>
+        <div v-show="currentTab=='module_tab'">
+          <ModuleMenu></ModuleMenu>
         </div>
       </div>
-      <SearchBar></SearchBar>
-      <div style="border:0;height:1px;background-color:#777"></div>
-      <div v-show="currentTab=='user_tab'">
-        <UserListPane
-          @on-node-context-menu='onUserNodeContextMenu'
-          @on-item-selected="onUserSelected"
-          @on-item-context-menu='onUserItemContextMenu'
-        ></UserListPane>
-      </div>
-      <div v-show="currentTab=='group_tab'">
-        <GroupListPane
-          @on-node-context-menu='onGroupNodeContextMenu'
-          @on-item-selected="onGroupSelected"
-          @on-item-context-menu='onGroupItemContextMenu'
-        ></GroupListPane>
-      </div>
-      <div v-show="currentTab=='module_tab'">
-        <ModuleMenu></ModuleMenu>
-      </div>
-    </div>
-    <div
-      class="left"
-      style="width:55%;margin:5% 0 0 5%"
-    >
       <div
-        class="box"
-        v-if="currentTab=='module_tab'"
+        class="left"
+        style="flex:7"
       >
-        <router-view></router-view>
+        <div v-if="currentTab=='user_tab'">
+          <UserInfoPane ref="userInfoPane"></UserInfoPane>
+        </div>
+        <div
+          class="box"
+          v-if="currentTab=='module_tab'"
+        >
+          <router-view></router-view>
+        </div>
       </div>
     </div>
     <SoundHandlerPane ref="mainSound"></SoundHandlerPane>
@@ -59,8 +64,7 @@
 import "../styles/layout.css";
 import "../styles/main.css";
 
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 
 import SoundHandlerPane from "@/views/main/SoundHandlerPane.vue";
 import SideBar from "@/views/main/SideBar.vue";
@@ -70,6 +74,7 @@ import GroupListPane from "./main/list/GroupListPane.vue";
 import ModuleMenu from "@/views/main/ModuleMenu.vue";
 import MainMenu from "@/views/main/MainMenu.vue";
 import SettingPane from "@/views/main/setting/SettingPane.vue";
+import UserInfoPane from "./main/pane/UserInfoPane.vue";
 
 import SoundType from "@/app/com/main/component/SoundType";
 import SideTabData from "@/views/main/SideTabData";
@@ -81,6 +86,8 @@ import PersonalBox from "@/app/com/main/box/PersonalBox";
 import App from "@/app/App";
 import PersonalData from "@/views/common/data/PersonalData";
 import personalDataBox from "@/impl/PersonalDataBox";
+import InitializeData from "@/impl/initialize/InitializeData";
+import User from "@/app/com/bean/User";
 
 @Component({
   components: {
@@ -91,7 +98,8 @@ import personalDataBox from "@/impl/PersonalDataBox";
     GroupListPane,
     ModuleMenu,
     MainMenu,
-    SettingPane
+    SettingPane,
+    UserInfoPane
   }
 })
 export default class Main extends Vue {
@@ -105,6 +113,23 @@ export default class Main extends Vue {
 
   private init(): void {
     this.initTabs();
+  }
+
+  @Watch("currentTab")
+  private currentChange(newVal: string, oldVal: string) {
+    if (newVal == "user_tab" || newVal == "group_tab") {
+      this.updateList();
+    }
+  }
+
+  private updateList() {
+    const addBack = () => {
+      const _this: any = this;
+      const bus: any = _this.$bus;
+      bus.$emit("addContactCategory");
+    };
+    const id = this.$store.state.userId;
+    InitializeData.setListData(id, addBack);
   }
 
   private initTabs(): void {
@@ -168,13 +193,11 @@ export default class Main extends Vue {
     // }
   }
 
-  private onUserSelected(data: ItemData) {
-    // if (data) {
-    //   const userId = data.key;
-    //   const userInfoPaneName = "userInfoPane";
-    //   const userInfoPane: any = this.$refs[userInfoPaneName];
-    //   userInfoPane.setUserId(userId);
-    // }
+  private onUserSelected(data: User) {
+    if (data) {
+      const userInfoPane: any = this.$refs.userInfoPane;
+      userInfoPane.setUser(data);
+    }
   }
 
   private onUserNodeContextMenu(e: MouseEvent, data: ItemData) {

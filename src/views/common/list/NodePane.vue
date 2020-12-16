@@ -30,6 +30,7 @@ import ItemBox from "@/views/common/list/ItemBox";
 import NodeData from "@/views/common/list/NodeData";
 import ItemData from "@/views/common/list/ItemData";
 import ItemPane from "./ItemPane.vue";
+import User from "@/app/com/bean/User";
 @Component({
   components: {
     ItemPane
@@ -70,7 +71,7 @@ export default class NodePane extends Vue {
   }
 
   @Emit("on-item-selected")
-  private onItemSelected(data: ItemData) {
+  private onItemSelected(data: User) {
     // 选中
   }
 

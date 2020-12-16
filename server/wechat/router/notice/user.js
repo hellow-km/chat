@@ -40,7 +40,7 @@ user.post('/sendAddUser', (req, res) => {
   if (txt) {
     return warningSend(res, txt)
   }
-  successSend(res, {}, "请求成功")
+  return successSend(res, {}, "请求成功")
   //} catch (e) {
   warningSend(res, "请求失败")
   //}

@@ -25,7 +25,6 @@ class UserAdd {
     this.data = this.getData()
     const sendUserId = body.sendUserId || ""
     const targetUserId = body.targetUserId || ""
-    const key = body.categoryId
     const verifyType = body.verifyType || ""
     let hasKey = false
     body.handleType = "1"

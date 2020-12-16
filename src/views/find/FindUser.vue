@@ -45,7 +45,6 @@
         <el-table-column
           prop="nativePlace"
           label="所在地"
-          width="180"
         >
         </el-table-column>
         <el-table-column label="操作">

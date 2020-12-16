@@ -88,11 +88,6 @@ class LoginController extends AbstractMaterial {
 
   private setData(user: User): void {
     InitializeData.setPersonalData(user)
-    const addBack = () => {
-      Vue.prototype.$bus.$emit("addContactCategory");
-      Vue.prototype.$bus.$emit("addGroupCategory");
-    };
-    InitializeData.setListData(user.id, addBack)
   }
 }
 
