@@ -7,8 +7,6 @@ export default class ItemBox {
   private itemData: User = null;
 
   public select(itemData: User): void {
-    console.log(itemData);
-
     if (this.itemData) {
       this.itemData.active = false;
     }

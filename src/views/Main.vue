@@ -22,22 +22,27 @@
         </div>
         <SearchBar></SearchBar>
         <div style="border:0;height:1px;background-color:#777"></div>
-        <div v-show="currentTab=='user_tab'">
-          <UserListPane
-            @on-node-context-menu='onUserNodeContextMenu'
-            @on-item-selected="onUserSelected"
-            @on-item-context-menu='onUserItemContextMenu'
-          ></UserListPane>
-        </div>
-        <div v-show="currentTab=='group_tab'">
-          <GroupListPane
-            @on-node-context-menu='onGroupNodeContextMenu'
-            @on-item-selected="onGroupSelected"
-            @on-item-context-menu='onGroupItemContextMenu'
-          ></GroupListPane>
-        </div>
-        <div v-show="currentTab=='module_tab'">
-          <ModuleMenu></ModuleMenu>
+        <div class="panel-list">
+          <div v-show="currentTab=='message_tab'">
+            <MessageListPane></MessageListPane>
+          </div>
+          <div v-show="currentTab=='user_tab'">
+            <UserListPane
+              @on-node-context-menu='onUserNodeContextMenu'
+              @on-item-selected="onUserSelected"
+              @on-item-context-menu='onUserItemContextMenu'
+            ></UserListPane>
+          </div>
+          <div v-show="currentTab=='group_tab'">
+            <GroupListPane
+              @on-node-context-menu='onGroupNodeContextMenu'
+              @on-item-selected="onGroupSelected"
+              @on-item-context-menu='onGroupItemContextMenu'
+            ></GroupListPane>
+          </div>
+          <div v-show="currentTab=='module_tab'">
+            <ModuleMenu></ModuleMenu>
+          </div>
         </div>
       </div>
       <div
@@ -45,7 +50,10 @@
         style="flex:7"
       >
         <div v-if="currentTab=='user_tab'">
-          <UserInfoPane ref="userInfoPane"></UserInfoPane>
+          <UserInfoPane
+            ref="userInfoPane"
+            @on-send="toMessage"
+          ></UserInfoPane>
         </div>
         <div
           class="box"
@@ -71,6 +79,7 @@ import SideBar from "@/views/main/SideBar.vue";
 import SearchBar from "@/views/main/SearchBar.vue";
 import UserListPane from "./main/list/UserListPane.vue";
 import GroupListPane from "./main/list/GroupListPane.vue";
+import MessageListPane from "./main/list/MessageListPane.vue";
 import ModuleMenu from "@/views/main/ModuleMenu.vue";
 import MainMenu from "@/views/main/MainMenu.vue";
 import SettingPane from "@/views/main/setting/SettingPane.vue";
@@ -88,6 +97,10 @@ import PersonalData from "@/views/common/data/PersonalData";
 import personalDataBox from "@/impl/PersonalDataBox";
 import InitializeData from "@/impl/initialize/InitializeData";
 import User from "@/app/com/bean/User";
+import DataUtil from "@/app/lib/util/DataUtil";
+import MessageListModel from "@/impl/data/MessageListModel";
+import BaseUtil from "@/app/lib/util/BaseUtil";
+import MessageController from "@/app/com/main/controller/MessageController";
 
 @Component({
   components: {
@@ -99,7 +112,8 @@ import User from "@/app/com/bean/User";
     ModuleMenu,
     MainMenu,
     SettingPane,
-    UserInfoPane
+    UserInfoPane,
+    MessageListPane
   }
 })
 export default class Main extends Vue {
@@ -119,6 +133,8 @@ export default class Main extends Vue {
   private currentChange(newVal: string, oldVal: string) {
     if (newVal == "user_tab" || newVal == "group_tab") {
       this.updateList();
+    } else if (newVal == "message_tab") {
+      this.getMessage();
     }
   }
 
@@ -132,6 +148,59 @@ export default class Main extends Vue {
     InitializeData.setListData(id, addBack);
   }
 
+  private toMessage(userId: string) {
+    this.selectedTab("message_tab");
+    this.addMessage();
+  }
+
+  private addMessage() {}
+
+  private getMessage() {
+    const back = {
+      back: (data: any) => {
+        if (DataUtil.isSuccess(data)) {
+          const body = DataUtil.getBody(data);
+          const userMessage = body.userMessage;
+          const groupMessage = body.groupMessage;
+          let messageList = [...userMessage, ...groupMessage];
+          messageList.sort(BaseUtil.compare("createTime", true));
+          for (const value of messageList) {
+            MessageListModel.addOrUpdateItem(
+              value.type,
+              value.id,
+              value.name,
+              value.avatar,
+              value.gray,
+              (id: string) => {},
+              (userId: string) => {
+                MessageListModel.removeItem(value.type, value.id);
+              }
+            );
+          }
+          const _this: any = this;
+          _this.$bus.$emit("setMessageList");
+        }
+      }
+    };
+    const userId = this.$store.state.userId;
+    const mcl: MessageController = App.appContext.getMaterial(
+      MessageController
+    );
+    mcl.getMessageList(userId, back);
+  }
+
+  private selectedTab(key: string): void {
+    if (this.currentTab === key) {
+      return;
+    }
+    for (const data of this.sideTabInfos) {
+      if (data.key === key) {
+        this.sideTabBox.select(data);
+        break;
+      }
+    }
+  }
+
   private initTabs(): void {
     const onTabSelected: (data: SideTabData) => void = (d: SideTabData) => {
       if (d) {
@@ -139,7 +208,6 @@ export default class Main extends Vue {
         this.onTabSelected(key);
       }
     };
-
     let data: SideTabData = new SideTabData();
     data.key = "message_tab";
     data.normalImage = "/assets/images/main/tab/message_normal.png";

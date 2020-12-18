@@ -13,7 +13,8 @@ const {
   find,
   modules,
   getSelect,
-  noticeUser
+  noticeUser,
+  message
 } = require('./router')
 
 app.use(bodyParser.json());
@@ -58,6 +59,7 @@ app.use('/find', find)
 app.use('/modules', modules)
 app.use('/getSelect', getSelect)
 app.use('/notice', noticeUser)
+app.use('/message', message)
 
 app.get('/resetJsonExUser', (req, res) => {
   resetJsonExUser()

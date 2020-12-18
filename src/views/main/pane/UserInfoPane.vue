@@ -6,7 +6,7 @@
       </div>
       <div
         class="page"
-        v-if="user.id"
+        v-if="showPane"
       >
         <div>
           <div class="avatar">
@@ -61,6 +61,7 @@
           <el-button
             type="success"
             style="width:70%"
+            @click="sendMessage"
           >发消息</el-button>
         </div>
       </div>
@@ -69,14 +70,25 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
+import { Vue, Component, Emit } from "vue-property-decorator";
 import User from "@/app/com/bean/User";
 @Component
 export default class UserInfoPane extends Vue {
   private user: User = new User();
+  private showPane: boolean = false;
 
   public setUser(user: User) {
     this.user = user;
+    this.showPane = true;
+  }
+
+  private sendMessage() {
+    this.send(this.user.id);
+  }
+
+  @Emit("on-send")
+  private send(userId: string) {
+    return userId;
   }
 }
 </script>

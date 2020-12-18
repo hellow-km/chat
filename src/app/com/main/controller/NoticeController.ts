@@ -1,6 +1,7 @@
 import AbstractMaterial from '@/app/base/AbstractMaterial';
 import DataBackAction from '@/app/base/net/DataBackAction';
 import Message from '@/app/base/message/Message';
+import HttpUtil from '@/app/lib/util/HttpUtil';
 
 export default class NoticeController extends AbstractMaterial {
   public addUserNotice(body: any, back: DataBackAction) {
@@ -16,14 +17,6 @@ export default class NoticeController extends AbstractMaterial {
   }
 
   private request(method: string, url: string, data: any, back: DataBackAction) {
-    if (method == "get") {
-      const m: any = Message.build(method, url)
-      m.params = data
-      this.appContext.netServer.request(m, back)
-    } else if (method == "post") {
-      const m: any = Message.build(method, url)
-      m.body = data
-      this.appContext.netServer.request(m, back)
-    }
+    HttpUtil.request(method, url, data, back)
   }
 }

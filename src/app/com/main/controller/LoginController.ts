@@ -87,7 +87,9 @@ class LoginController extends AbstractMaterial {
   }
 
   private setData(user: User): void {
+    const id = user.id
     InitializeData.setPersonalData(user)
+    InitializeData.setMessageList(id)
   }
 }
 

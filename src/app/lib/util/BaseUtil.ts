@@ -1,4 +1,5 @@
 import GUID from '../GUID';
+import moment from "moment";
 
 class BaseUtil {
 
@@ -184,6 +185,39 @@ class BaseUtil {
       url = url.replace('?&', '?');
     }
     return url;
+  }
+
+  public static dateFormat(str: number, format?: string) {
+    const time = new Date(str);
+    const now = new Date();
+    if (format) {
+      return moment(time).format(format)
+    }
+    if (time.getFullYear() == now.getFullYear()) {
+      if (time.getMonth() == now.getMonth()) {
+        if (time.getDay() == now.getDay()) {
+          return moment(time).format("HH:mm");
+        } else {
+          return moment(time).format("MM-DD");
+        }
+      }
+    } else {
+      return moment(time).format("YYYY-MM-DD");
+    }
+  }
+
+  public static compare(property: string, desc: boolean) {
+    return function (a: any, b: any) {
+      var value1 = a[property];
+      var value2 = b[property];
+      if (desc == true) {
+        // 升序排列
+        return value1 - value2;
+      } else {
+        // 降序排列
+        return value2 - value1;
+      }
+    }
   }
 }
 

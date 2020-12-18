@@ -11,6 +11,9 @@ const {
 } = require('./menu/setting')
 const groups = require('./groups/groups')
 const userAdd = require('./notice/userAdd')
+const {
+  Message
+} = require('./Message')
 
 let user = new User()
 const data = user.getData()
@@ -24,6 +27,9 @@ let userAndGoupList = new UserAndGoupList(data, userAndGoupListPath)
 const addUserSettingPath = getPath('addUserSetting')
 let addUserSetting = new UserSetting(data, addUserSettingPath)
 
+const messagePath = getPath('message')
+let message = new Message(data, messagePath)
+
 function getPath(name) {
   return path.join(__dirname, '../data/' + name + '.json')
 }
@@ -36,6 +42,7 @@ function registerBack() {
   userStatus = new UserStatus(data, userStatusPath)
   userAndGoupList = new UserAndGoupList(data, userAndGoupListPath)
   addUserSetting = new UserSetting(data, addUserSettingPath)
+  message = new Message(data, messagePath)
 }
 
 module.exports = {
@@ -45,5 +52,6 @@ module.exports = {
   registerBack,
   addUserSetting,
   //groups,
-  userAdd
+  userAdd,
+  message
 }

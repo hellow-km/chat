@@ -170,8 +170,6 @@ export default class UpdateUser extends Vue {
   private loadUser(): void {
     const ub: PersonalBox = App.appContext.getMaterial(PersonalBox);
     const user: User = ub.getUser();
-    console.log(user);
-
     this.user = user;
   }
 

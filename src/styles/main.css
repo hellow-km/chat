@@ -138,6 +138,11 @@ summary {
   overflow: hidden;
 }
 
+.panel-list {
+  overflow: hidden;
+  overflow-y: auto;
+}
+
 .user-avatar {
   border-radius: 50%;
   width: 40px;
@@ -259,16 +264,18 @@ summary {
 }
 
 .pane .pane-item:hover {
-  background-color: rgba(250, 250, 250, 0.3) !important;
+  background-color: rgba(250, 250, 250, 0.1) !important;
 }
 
 .pane-avatar img {
   vertical-align: middle;
   margin-left: 10px;
+  border-radius: 50%;
+
 }
 
 .pane-active {
-  background-color: rgba(250, 250, 250, 0.3) !important;
+  background-color: rgba(250, 250, 250, 0.1) !important;
 }
 
 .pane-item .pane-name h4 {
@@ -277,11 +284,11 @@ summary {
   font-weight: normal;
 }
 
-.pane-name .color-gray {
+.color-gray {
   color: gray !important;
 }
 
-.pane-avatar .gray {
+.gray {
   -webkit-filter: grayscale(100%);
   /*兼容google、opera*/
   -moz-filter: grayscale(100%);
@@ -448,3 +455,69 @@ summary {
 }
 
 /**********page user**********/
+
+/*********message panel**********/
+
+.message-item {
+  position: relative;
+  height: 75px;
+  cursor: pointer;
+
+}
+
+.message-item-active {
+  background-color: rgba(250, 250, 250, 0.1) !important;
+}
+
+.message-item:hover {
+  background-color: rgba(250, 250, 250, 0.1)
+}
+
+.message-item .message-item-avatar {
+  height: 75px;
+}
+
+.message-item .message-item-avatar .el-avatar {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+}
+
+.message-item .message-item-mes {
+  color: #eee;
+  position: absolute;
+  top: 50%;
+  left: 55px;
+  transform: translateY(-50%);
+  font-size: 13px;
+}
+
+.message-item-text {
+  color: #989898
+}
+
+.message-item .message-item-time {
+  position: absolute;
+  top: 20px;
+  right: 8px;
+  text-align: right;
+  white-space: nowrap;
+  max-width: 130px;
+  overflow: hidden;
+  color: #989898;
+  font-size: 13px;
+}
+
+.message-item-close {
+  position: absolute;
+  right: 7px;
+  bottom: 10px;
+}
+
+.message-item-close>.el-icon-circle-close {
+  color: #dcdfe6;
+  font-size: 20px;
+}
+
+/*********message panel**********/

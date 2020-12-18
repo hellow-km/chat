@@ -5,7 +5,7 @@ export default class Group {
   public number: number = 0; // 帐号
   public name: string = '';
   public head: string = ''; // 照片
-  public avatar: string = '/assets/images/common/head/user/1.png'; // 自定义照片，（当用户选择系统头像时为空）
+  public avatar: string = '/assets/images/main/pane/no-user.png'; // 自定义照片，（当用户选择系统头像时为空）
   public remark: string = '';
   public classification: string = ''; // 分类
   public publicNotice: string = ''; // 公告

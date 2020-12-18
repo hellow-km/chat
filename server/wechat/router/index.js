@@ -7,7 +7,7 @@ const find = require('./find')
 const modules = require('./modules')
 const getSelect = require('./getSelect')
 const noticeUser = require('./notice/user')
-
+const message = require('./message')
 module.exports = {
   log,
   address,
@@ -17,5 +17,6 @@ module.exports = {
   find,
   modules,
   getSelect,
-  noticeUser
+  noticeUser,
+  message
 }
