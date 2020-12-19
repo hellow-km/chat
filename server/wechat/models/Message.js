@@ -30,10 +30,10 @@ class Message extends UserAccount {
   }
 
   addUserMessage(userId, sendId) {
-    return this.addMessageById(userId, sendId)
+    return this.addUserMessageById(userId, sendId)
   }
 
-  addMessageById(userId, sendId) {
+  addUserMessageById(userId, sendId) {
     const data = this.getMessageById(userId)[0]
     const userMessage = data.userMessage
     const user = userAndGoupList.getUserById(userId, sendId)
@@ -43,6 +43,7 @@ class Message extends UserAccount {
     }
     const name = user.remark || user.nickName
     let obj = {
+      type: 'user',
       userId: user.id,
       active: true,
       key: userMessage.length + 1,

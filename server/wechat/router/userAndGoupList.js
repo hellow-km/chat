@@ -14,12 +14,14 @@ userList.get('/getUserList', (req, res) => {
   if (userId == "") {
     return warningSend(res, "参数错误")
   }
-  const data = userAndGoupList.getListById(userId)
-  if (data) {
-    return successSend(res, data)
-  } else {
-    return warningSend(res, "无数据")
-  }
+  m.tryDo(res, () => {
+    const data = userAndGoupList.getListById(userId)
+    if (data) {
+      return successSend(res, data)
+    } else {
+      return warningSend(res, "无数据")
+    }
+  })
 })
 
 userList.post('/addUserToList', (req, res) => {
@@ -34,10 +36,28 @@ userList.post('/addUserToList', (req, res) => {
   if (hasEmpty) {
     return warningSend(res, "参数错误")
   }
-  if (userAndGoupList.addUserToList(body)) {
-    return warningSend(res, "你已添加该用户")
+  m.tryDo(res, () => {
+    if (userAndGoupList.addUserToList(body)) {
+      return warningSend(res, "你已添加该用户")
+    }
+    return successSend(res, {}, "添加成功")
+  })
+})
+
+userList.post('/toggleClass', (req, res) => {
+  const body = m.getBody(req)
+  const userId = body.userId || ""
+  const key = body.key || ""
+  const type = body.type || ""
+  const isOpen = body.isOpen
+  const hasEmpty = m.hasEmpty(userId, key, isOpen)
+  if (hasEmpty) {
+    return warningSend(res, "参数错误")
   }
-  return successSend(res, {}, "添加成功")
+  m.tryDo(res, () => {
+    userAndGoupList.toggleClass(userId, type, key, isOpen)
+    successSend(res, {})
+  })
 })
 
 module.exports = userList

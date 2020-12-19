@@ -65,7 +65,7 @@ class M {
           empty = true
         }
       } else {
-        if (value.trim && value.trim() === '' || value === undefined || value === null || value === 'undefined' || value === 'null' || JSON.stringify(value) == "{}") {
+        if (value && value.trim && value.trim() === '' || value === undefined || value === null || value === 'undefined' || value === 'null' || JSON.stringify(value) == "{}") {
           empty = true
         }
       }

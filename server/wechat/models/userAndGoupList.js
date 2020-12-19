@@ -155,6 +155,19 @@ class UserAndGoupList extends UserAccount {
     })
   }
 
+  toggleClass(userId, type, key, isOpen) {
+    this.list = this.getData()
+    let listType = type == 'user' ? 'userList' : 'groupList'
+    const data = this.getItemById(this.list, userId)[0]
+    let values = data[listType]
+    values = values.map(p => {
+      if (p.key == key) {
+        p.isOpen = isOpen
+      }
+    })
+    this.save()
+  }
+
   addUserToList(body) {
     const sendRemark = body.sendRemark || ""
     const sendUserId = body.sendUserId

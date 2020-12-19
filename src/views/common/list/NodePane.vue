@@ -31,6 +31,9 @@ import NodeData from "@/views/common/list/NodeData";
 import ItemData from "@/views/common/list/ItemData";
 import ItemPane from "./ItemPane.vue";
 import User from "@/app/com/bean/User";
+import ContactCategoryController from "@/app/com/main/controller/ContactCategoryController";
+import App from "@/app/App";
+import DataBackAction from "@/app/base/net/DataBackAction";
 @Component({
   components: {
     ItemPane
@@ -58,11 +61,9 @@ export default class NodePane extends Vue {
       this.onContextMenu(e, this.data);
     }
   }
-
+  @Emit("on-toggle-class")
   private openList() {
-    if (this.data) {
-      this.data.isOpen = !this.data.isOpen;
-    }
+    return this.data;
   }
 
   @Emit("on-context-menu")

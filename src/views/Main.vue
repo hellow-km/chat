@@ -34,6 +34,7 @@
                 @on-node-context-menu='onUserNodeContextMenu'
                 @on-item-selected="onUserSelected"
                 @on-item-context-menu='onUserItemContextMenu'
+                @on-toggle-class="onToggleClass"
               ></UserListPane>
             </div>
             <div v-show="currentTab=='group_tab'">
@@ -41,6 +42,7 @@
                 @on-node-context-menu='onGroupNodeContextMenu'
                 @on-item-selected="onGroupSelected"
                 @on-item-context-menu='onGroupItemContextMenu'
+                @on-toggle-class="onToggleClass"
               ></GroupListPane>
             </div>
             <div v-show="currentTab=='module_tab'">
@@ -53,18 +55,18 @@
         class="left"
         style="flex:7"
       >
-        <div v-if="currentTab=='message_tab'">
+        <div v-show="currentTab=='message_tab'">
           <MessagePane ref="messagePane"></MessagePane>
         </div>
-        <div v-if="currentTab=='user_tab'">
+        <div v-show="currentTab=='user_tab'">
           <UserInfoPane
             ref="userInfoPane"
-            @on-send="toMessage"
+            @on-send="toUserMessage"
           ></UserInfoPane>
         </div>
         <div
           class="box"
-          v-if="currentTab=='module_tab'"
+          v-show="currentTab=='module_tab'"
         >
           <router-view></router-view>
         </div>
@@ -112,6 +114,7 @@ import MessageController from "@/app/com/main/controller/MessageController";
 import store from "@/store";
 import DataBackAction from "@/app/base/net/DataBackAction";
 import IconItemData from "@/views/common/list/IconItemData";
+import ContactCategoryController from "@/app/com/main/controller/ContactCategoryController";
 
 @Component({
   components: {
@@ -161,13 +164,44 @@ export default class Main extends Vue {
   }
 
   private setMessagePage(page: string) {
-    const messagePane: any = this.$refs.messagePane;
-    messagePane.setPage(page);
+    this.$nextTick(() => {
+      const messagePane: any = this.$refs.messagePane;
+      messagePane.setPage(page);
+    });
   }
 
-  private toMessage(userId: string) {
+  private onToggleClass(data: NodeData) {
+    if (data) {
+      data.isOpen = !data.isOpen;
+      const back: DataBackAction = {
+        back: (data: any) => {}
+      };
+      const ccl: ContactCategoryController = App.appContext.getMaterial(
+        ContactCategoryController
+      );
+      const userId = this.userId;
+      const key = data.key;
+      const isOpen = data.isOpen;
+      let type = "";
+      if (this.currentTab == "user_tab") {
+        type = "user";
+      } else if (this.currentTab == "group_tab") {
+        type = "group";
+      }
+      const body = {
+        type,
+        userId,
+        key,
+        isOpen
+      };
+      ccl.toggleClass(body, back);
+    }
+  }
+
+  private toUserMessage(userId: string) {
     this.selectedTab("message_tab");
     this.addUserMessage(userId);
+    this.setMessagePage("user_chat");
   }
 
   private addUserMessage(targetUserId: string) {
@@ -215,15 +249,16 @@ export default class Main extends Vue {
           let messageList = [...userMessage, ...groupMessage];
           messageList.sort(BaseUtil.compare("createTime", true));
           for (const value of messageList) {
+            const type = value.type;
             MessageListModel.addOrUpdateItem(
-              "user",
+              type,
               value.key,
               value.name,
               value.avatar,
               value.gray,
               (key: string) => {},
               (userId: string) => {
-                MessageListModel.removeItem(value.type, value.id);
+                // MessageListModel.removeItem(value.type, value.id);
               }
             );
           }

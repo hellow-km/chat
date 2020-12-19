@@ -7,6 +7,7 @@
       @on-node-context-menu='onNodeContextMenu'
       @on-item-selected="onItemSelected"
       @on-item-context-menu='onItemContextMenu'
+      @on-toggle-class="onToggleClass"
     ></RootPane>
   </div>
 </template>
@@ -50,6 +51,12 @@ export default class UserListPane extends Vue {
   @Emit("on-item-context-menu")
   private onItemContextMenu(e: MouseEvent, data: ItemData) {
     // 选中
+  }
+
+  @Emit("on-toggle-class")
+  private onToggleClass(e: MouseEvent, data: ItemData) {
+    // 折叠
+    return data
   }
 }
 </script>

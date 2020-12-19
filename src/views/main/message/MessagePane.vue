@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="showPage=='user_chat'">
-      u
+
     </div>
     <div
       v-if="showPage=='no'"
