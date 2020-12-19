@@ -52,7 +52,7 @@ class Message extends UserAccount {
       red: user.red,
       redCount: user.redCount,
       text: '',
-      time: '',
+      time: new Date().getTime(),
       createTime: new Date().getTime()
     }
     userMessage.push(obj)
@@ -60,9 +60,26 @@ class Message extends UserAccount {
     return obj
   }
 
+  removeUserMessage(userId, key) {
+    const data = this.getMessageById(userId)[0]
+    const userMessage = data.userMessage
+    userMessage.forEach((m, index) => {
+      if (m.key == key) {
+        userMessage.splice(index, 1)
+      }
+    })
+    this.save()
+  }
+
   getMessageById(userId) {
     this.list = this.getData()
     return this.list.filter(p => p.userId == userId)
+  }
+
+  getMessageItem(userId, key) {
+    const data = this.getMessageById(userId)
+    const userMessage = data.userMessage
+    return userMessage.filter(p => p.key == key)
   }
 
 }

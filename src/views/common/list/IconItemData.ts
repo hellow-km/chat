@@ -7,7 +7,7 @@ export default class IconItemData {
   public red: boolean = false;
   public redCount: number = 0;
   public text: string = '';
-  public time: number = new Date().getTime();
+  public time: number | string = '';
   public onSelect: any;
   public onDelete: any;
   private data: any;

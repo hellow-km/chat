@@ -10,12 +10,16 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
+import { Vue, Component, Emit } from "vue-property-decorator";
 
 import IconListPane from "../../common/list/IconListPane.vue";
 import IconItemData from "../../common/list/IconItemData";
 import messageListModel from "@/impl/data/MessageListModel";
 import IconItemBox from "@/views/common/list/IconItemBox";
+import MessageController from "@/app/com/main/controller/MessageController";
+import App from "@/app/App";
+import DataBackAction from "@/app/base/net/DataBackAction";
+import DataUtil from "@/app/lib/util/DataUtil";
 @Component({
   components: {
     IconListPane
@@ -37,8 +41,9 @@ export default class MessageListPane extends Vue {
     // TODO
   }
 
+  @Emit("on-item-deleted")
   private itemDeleted(data: IconItemData) {
-    messageListModel.removeItem("user", data.key);
+    return data;
   }
 }
 </script>

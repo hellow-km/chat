@@ -21,7 +21,7 @@ message_r.get('/getList', (req, res) => {
 })
 
 message_r.post('/addUserMessage', (req, res) => {
-  const body = req.body.body || {}
+  const body = m.getBody(req)
   const userId = body.userId || ""
   const sendId = body.sendId || ""
   const hasEmpty = m.hasEmpty(userId, sendId)
@@ -34,4 +34,17 @@ message_r.post('/addUserMessage', (req, res) => {
   })
 })
 
+message_r.post('/removeUserMessage', (req, res) => {
+  const body = m.getBody(req)
+  const userId = body.userId || ""
+  const key = body.key || ""
+  const hasEmpty = m.hasEmpty(userId, key)
+  if (hasEmpty) {
+    return warningSend(res, "参数错误")
+  }
+  m.tryDo(res, () => {
+    message.removeUserMessage(userId, key)
+    successSend(res, {})
+  })
+})
 module.exports = message_r

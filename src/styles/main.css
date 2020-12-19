@@ -523,3 +523,14 @@ summary {
 }
 
 /*********message panel**********/
+
+
+/**********message page*************/
+.message-pane-empty {
+  width: 200px;
+  margin: 200px auto;
+  text-align: center;
+  color: #989898;
+}
+
+/*********message page*************/

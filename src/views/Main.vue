@@ -27,7 +27,7 @@
         <div class="panel-list">
           <div>
             <div v-show="currentTab=='message_tab'">
-              <MessageListPane></MessageListPane>
+              <MessageListPane @on-item-deleted="removeMessage"></MessageListPane>
             </div>
             <div v-show="currentTab=='user_tab'">
               <UserListPane
@@ -53,6 +53,9 @@
         class="left"
         style="flex:7"
       >
+        <div v-if="currentTab=='message_tab'">
+          <MessagePane ref="messagePane"></MessagePane>
+        </div>
         <div v-if="currentTab=='user_tab'">
           <UserInfoPane
             ref="userInfoPane"
@@ -88,6 +91,7 @@ import ModuleMenu from "@/views/main/ModuleMenu.vue";
 import MainMenu from "@/views/main/MainMenu.vue";
 import SettingPane from "@/views/main/setting/SettingPane.vue";
 import UserInfoPane from "./main/pane/UserInfoPane.vue";
+import MessagePane from "@/views/main/message/MessagePane.vue";
 
 import SoundType from "@/app/com/main/component/SoundType";
 import SideTabData from "@/views/main/SideTabData";
@@ -107,6 +111,7 @@ import BaseUtil from "@/app/lib/util/BaseUtil";
 import MessageController from "@/app/com/main/controller/MessageController";
 import store from "@/store";
 import DataBackAction from "@/app/base/net/DataBackAction";
+import IconItemData from "@/views/common/list/IconItemData";
 
 @Component({
   components: {
@@ -119,7 +124,8 @@ import DataBackAction from "@/app/base/net/DataBackAction";
     MainMenu,
     SettingPane,
     UserInfoPane,
-    MessageListPane
+    MessageListPane,
+    MessagePane
   }
 })
 export default class Main extends Vue {
@@ -154,17 +160,24 @@ export default class Main extends Vue {
     InitializeData.setListData(this.userId, addBack);
   }
 
-  private toMessage(userId: string) {
-    this.selectedTab("message_tab");
-    this.adduserMessage(userId);
+  private setMessagePage(page: string) {
+    const messagePane: any = this.$refs.messagePane;
+    messagePane.setPage(page);
   }
 
-  private adduserMessage(targetUserId: string) {
+  private toMessage(userId: string) {
+    this.selectedTab("message_tab");
+    this.addUserMessage(userId);
+  }
+
+  private addUserMessage(targetUserId: string) {
     const back: DataBackAction = {
       back: (data: any) => {
         if (DataUtil.isSuccess(data)) {
           const body = DataUtil.getBody(data);
-          this.selectMessage("user", body.key);
+          this.getMessage(() => {
+            this.selectMessage("user", body.key);
+          });
         }
       }
     };
@@ -178,7 +191,21 @@ export default class Main extends Vue {
     MessageListModel.selectItem(type, key);
   }
 
-  private getMessage() {
+  private removeMessage(item: IconItemData) {
+    const back: DataBackAction = {
+      back: (data: any) => {
+        if (DataUtil.isSuccess(data)) {
+          MessageListModel.removeItem("user", item.key);
+        }
+      }
+    };
+    const mcl: MessageController = App.appContext.getMaterial(
+      MessageController
+    );
+    mcl.removeUserMessage(this.userId, item.key, back);
+  }
+
+  private getMessage(callback?: Function) {
     const back = {
       back: (data: any) => {
         if (DataUtil.isSuccess(data)) {
@@ -202,6 +229,7 @@ export default class Main extends Vue {
           }
           const _this: any = this;
           _this.$bus.$emit("setMessageList");
+          callback && callback();
         }
       }
     };
