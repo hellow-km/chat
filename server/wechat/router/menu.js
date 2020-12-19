@@ -61,8 +61,10 @@ menu.post('/updateHead', upload.single('file'), (req, res) => {
 menu.post('/updateUser', (req, res) => {
   const body = req.body.body || {}
   if (body && body.id) {
-    user.updateUser(body)
-    successSend(res, body, "修改成功")
+    m.tryDo(res, () => {
+      user.updateUser(body)
+      successSend(res, body, "修改成功")
+    })
   } else {
     return warningSend(res, "参数错误")
   }
@@ -76,12 +78,14 @@ menu.post('/changePassword', (req, res) => {
   if (!id || !password || !newPassword) {
     return warningSend(res, "参数错误")
   }
-  const success = user.changePassWord(id, password, newPassword)
-  if (success) {
-    successSend(res, {}, "修改成功")
-  } else {
-    return warningSend(res, "修改失败")
-  }
+  m.tryDo(res, () => {
+    const success = user.changePassWord(id, password, newPassword)
+    if (success) {
+      successSend(res, {}, "修改成功")
+    } else {
+      return warningSend(res, "修改失败")
+    }
+  })
 })
 
 module.exports = menu

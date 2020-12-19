@@ -16,8 +16,22 @@ message_r.get('/getList', (req, res) => {
   if (hasEmpty) {
     return warningSend(res, '参数错误')
   }
-  const list = message.getList(userId)
+  const list = message.getListById(userId)
   successSend(res, list)
+})
+
+message_r.post('/addUserMessage', (req, res) => {
+  const body = req.body.body || {}
+  const userId = body.userId || ""
+  const sendId = body.sendId || ""
+  const hasEmpty = m.hasEmpty(userId, sendId)
+  if (hasEmpty) {
+    return warningSend(res, "参数错误")
+  }
+  m.tryDo(res, () => {
+    const data = message.addUserMessage(userId, sendId)
+    successSend(res, data)
+  })
 })
 
 module.exports = message_r

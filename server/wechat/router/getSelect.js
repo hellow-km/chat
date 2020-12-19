@@ -14,8 +14,10 @@ getSelect.get('/getUserCategory', (req, res) => {
   if (!userId) {
     return warningSend(res, "参数错误")
   }
-  const data = userAndGoupList.getUserNameList(userId)
-  successSend(res, data)
+  m.tryDo(res, () => {
+    const data = userAndGoupList.getUserNameList(userId)
+    successSend(res, data)
+  })
 })
 
 getSelect.get('/getGroupCategory', (req, res) => {
@@ -24,8 +26,10 @@ getSelect.get('/getGroupCategory', (req, res) => {
   if (!userId) {
     return warningSend(res, "参数错误")
   }
-  const data = userAndGoupList.getGroupNameList(userId)
-  successSend(res, data)
+  m.tryDo(res, () => {
+    const data = userAndGoupList.getGroupNameList(userId)
+    successSend(res, data)
+  })
 })
 
 module.exports = getSelect

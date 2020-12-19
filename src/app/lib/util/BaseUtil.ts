@@ -187,9 +187,10 @@ class BaseUtil {
     return url;
   }
 
-  public static dateFormat(str: number, format?: string) {
+  public static dateFormat(str: number | string, format?: string) {
     const time = new Date(str);
     const now = new Date();
+    if (!str) return
     if (format) {
       return moment(time).format(format)
     }

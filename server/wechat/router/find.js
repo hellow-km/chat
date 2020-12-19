@@ -14,10 +14,12 @@ find.post('/searchUser', (req, res) => {
   if (text.trim() == "") {
     return warningSend(res, '参数错误')
   }
-  const data = user.getSearchUser(text)
-  if (data) {
-    successSend(res, data)
-  }
+  m.tryDo(res, () => {
+    const data = user.getSearchUser(text)
+    if (data) {
+      successSend(res, data)
+    }
+  })
 })
 
 module.exports = find

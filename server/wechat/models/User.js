@@ -46,18 +46,18 @@ class User {
   changePassWord(id, password, newPassword) {
     this.data = this.getData()
     let mark = true
-    this.data = this.getData()
-    this.data.map(p => {
-      if (p.id == id) {
-        if (p.password == password) {
-          p.password = newPassword
-        } else {
-          mark = false
-        }
-      }
-      return p
-    })
+    let p = this.getUserObjById(this.data, id)
+    if (p.password == password) {
+      p.password = newPassword
+      this.save()
+    } else {
+      mark = false
+    }
     return mark
+  }
+
+  save() {
+    m.writeFile(this.path, this.data)
   }
 
   getUserById(userId) {

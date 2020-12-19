@@ -2,7 +2,8 @@ const express = require('express')
 const modules = express.Router()
 const {
   successSend,
-  warningSend
+  warningSend,
+  m
 } = require('../util/util')
 const {
   userAndGoupList
@@ -15,8 +16,10 @@ modules.post('/addContactCategory', (req, res) => {
   if (!userId || !name) {
     return warningSend(res, "参数错误")
   }
-  userAndGoupList.addUserListById(userId, name)
-  successSend(res, {}, "添加成功")
+  m.tryDo(res, () => {
+    userAndGoupList.addUserListById(userId, name)
+    successSend(res, {}, "添加成功")
+  })
 })
 
 modules.post('/addGroupCategory', (req, res) => {
@@ -26,8 +29,10 @@ modules.post('/addGroupCategory', (req, res) => {
   if (!userId || !name) {
     return warningSend(res, "参数错误")
   }
-  userAndGoupList.addGroupListById(userId, name)
-  successSend(res, {}, "添加成功")
+  m.tryDo(res, () => {
+    userAndGoupList.addGroupListById(userId, name)
+    successSend(res, {}, "添加成功")
+  })
 })
 
 modules.post('/addGroup', (req, res) => {
@@ -35,7 +40,9 @@ modules.post('/addGroup', (req, res) => {
   if (JSON.stringify(group) == "{}" || !group.belongUserId || !group.name) {
     return warningSend(res, "参数错误")
   }
-  userAndGoupList.addGroup(group)
-  successSend(res, {}, "创建成功")
+  m.tryDo(res, () => {
+    userAndGoupList.addGroup(group)
+    successSend(res, {}, "创建成功")
+  })
 })
 module.exports = modules

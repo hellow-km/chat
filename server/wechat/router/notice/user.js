@@ -25,25 +25,23 @@ user.post('/sendAddUser', (req, res) => {
   if (sendUserId == targetUserId) {
     return warningSend(res, "不能添加自己为好友")
   }
-  if (verifyType == 3) {
-    const isRightAnswer = addUserSetting.checkSettingAnswer(targetUserId, answer)
-    if (!isRightAnswer) {
-      return warningSend(res, "答案错误")
+  m.tryDo(res, () => {
+    if (verifyType == 3) {
+      const isRightAnswer = addUserSetting.checkSettingAnswer(targetUserId, answer)
+      if (!isRightAnswer) {
+        return warningSend(res, "答案错误")
+      }
     }
-  }
-  const key = body.categoryId
-  if (userAndGoupList.checkIsAdded(sendUserId, targetUserId, key)) {
-    return warningSend(res, "他已经是你的好友")
-  }
-  //try {
-  const txt = userAdd.addUserNotice(body)
-  if (txt) {
-    return warningSend(res, txt)
-  }
-  return successSend(res, {}, "请求成功")
-  //} catch (e) {
-  warningSend(res, "请求失败")
-  //}
+    const key = body.categoryId
+    if (userAndGoupList.checkIsAdded(sendUserId, targetUserId, key)) {
+      return warningSend(res, "他已经是你的好友")
+    }
+    const txt = userAdd.addUserNotice(body)
+    if (txt) {
+      return warningSend(res, txt)
+    }
+    return successSend(res, {}, "请求成功")
+  })
 })
 
 user.get('/addUserNoctice', (req, res) => {
@@ -53,15 +51,12 @@ user.get('/addUserNoctice', (req, res) => {
   if (m.hasEmpty(userId, page)) {
     warningSend(res, "参数错误")
   }
-  // try{
-  const data = userAdd.getUserAddNotice(userId, page)
-  successSend(res, {
-    list: data
+  m.tryDo(res, () => {
+    const data = userAdd.getUserAddNotice(userId, page)
+    successSend(res, {
+      list: data
+    })
   })
-  // }
-  // catch(e){
-  //   warningSend(res,"请求失败")
-  // }
 })
 
 module.exports = user

@@ -67,6 +67,7 @@ class UserAndGoupList extends UserAccount {
       const onlineCount = this.getOnlineCount(data.userId, value.key)
       value.countText = `[${onlineCount}/${items.length}]`
     }
+    this.save()
     return data
   }
 
@@ -74,64 +75,53 @@ class UserAndGoupList extends UserAccount {
     this.list = this.getData()
     const belongUserId = group.belongUserId
     if (group) {
-      this.list.map(p => {
-        if (p.userId == belongUserId) {
-          const length = groups.getLength()
-          group.id = m.getId(length + 1)
-          group.number = m.getId(length)
-          const key = group.group
-          const count = p.groupList[key].items.length
-          p.groupList[key].countText = "[" + (count + 1) + "]"
-          p.groupList[key].items.push(group)
-          groups.addGroup(group)
-        }
-        return p
-      })
+      const p = this.getItemById(this.list, belongUserId)[0]
+      const length = groups.getLength()
+      group.id = m.getId(length + 1)
+      group.number = m.getId(length)
+      const key = group.group
+      const count = p.groupList[key].items.length
+      p.groupList[key].countText = "[" + (count + 1) + "]"
+      p.groupList[key].items.push(group)
+      groups.addGroup(group)
       this.save()
     }
   }
 
   addUserListById(userId, name) {
     this.list = this.getData()
-    this.list.map(p => {
-      if (p.userId == userId) {
-        const length = p.userList.length
-        let obj = {
-          name: name,
-          key: length,
-          rank: length,
-          countText: "[0/0]",
-          items: [],
-          isOpen: false,
-          red: false,
-          redCount: 0
-        }
-        p.userList.push(obj)
-      }
-      return p
-    })
+    const p = this.getItemById(this.list, userId)[0]
+    const length = p.userList.length
+    let obj = {
+      name: name,
+      key: length,
+      rank: length,
+      countText: "[0/0]",
+      items: [],
+      isOpen: false,
+      red: false,
+      redCount: 0
+    }
+    p.userList.push(obj)
     this.save()
   }
 
   addGroupListById(userId, name) {
     this.list = this.getData()
-    this.list.map(p => {
-      if (p.userId == userId) {
-        const length = p.groupList.length
-        let obj = {
-          name: name,
-          key: length,
-          rank: length,
-          countText: "[0]",
-          items: [],
-          isOpen: false,
-          red: false,
-          redCount: 0
-        }
-        p.groupList.push(obj)
-      }
-      return p
-    })
+    const p = this.getItemById(this.list, userId)[0]
+    const length = p.groupList.length
+    let obj = {
+      name: name,
+      key: length,
+      rank: length,
+      countText: "[0]",
+      items: [],
+      isOpen: false,
+      red: false,
+      redCount: 0
+    }
+    p.groupList.push(obj)
+
     this.save()
   }
 
@@ -185,23 +175,19 @@ class UserAndGoupList extends UserAccount {
     if (this.checkIsAdded(userId, addId, key)) {
       return true
     }
-    for (let i = 0; i < this.list.length; i++) {
-      let item = this.list[i]
-      if (item.userId == userId) {
-        let userList = item.userList
-        for (let value of userList) {
-          if (value.key == key) {
-            const userObj = user.getUserById(addId)
-            userObj.remark = remark
-            const isLogin = userStatus.getStatus(userObj.id)
-            userObj.gray = !isLogin
-            userAdd.setNoticeHandle(addId, noticeId, "2")
-            const items = value.items
-            items.push(userObj)
-            const onLineCounts = this.getOnlineCount(userId, key)
-            value.countText = `[${onLineCounts}/${items.length}]`
-          }
-        }
+    let item = this.getItemById(this.list, userId)[0]
+    let userList = item.userList
+    for (let value of userList) {
+      if (value.key == key) {
+        const userObj = user.getUserById(addId)
+        userObj.remark = remark
+        const isLogin = userStatus.getStatus(userObj.id)
+        userObj.gray = !isLogin
+        userAdd.setNoticeHandle(addId, noticeId, "2")
+        const items = value.items
+        items.push(userObj)
+        const onLineCounts = this.getOnlineCount(userId, key)
+        value.countText = `[${onLineCounts}/${items.length}]`
       }
     }
     this.save()
@@ -219,31 +205,21 @@ class UserAndGoupList extends UserAccount {
   }
 
   getUserListItems(userId, key) {
-    for (let i = 0; i < this.list.length; i++) {
-      let item = this.list[i]
-      if (item.userId == userId) {
-        let userList = item.userList
-        for (let value of userList) {
-          if (value.key == key) {
-            return value.items
-          }
-        }
-      }
-    }
+    const list = this.getData()
+    let item = this.getItemById(list, userId)[0]
+    let userList = item.userList
+    const items = this.getItems(userList, key)
+    return items
   }
 
   checkIsAdded(id, targetId, key) {
     const list = this.getData()
     const data = this.getItemById(list, id)[0]
     const userList = data.userList
-    for (const value of userList) {
-      if (value.key == key) {
-        const items = value.items
-        for (const item of items) {
-          if (item.id == targetId) {
-            return true
-          }
-        }
+    const items = this.getItems(userList, key)
+    for (const item of items) {
+      if (item.id == targetId) {
+        return true
       }
     }
     return false
@@ -254,6 +230,27 @@ class UserAndGoupList extends UserAccount {
     return data
   }
 
+  getItems(userList, key) {
+    for (let value of userList) {
+      if (value.key == key) {
+        return value.items
+      }
+    }
+  }
+
+  getUserById(userId, sendId) {
+    this.list = this.getData()
+    const data = this.getItemById(this.list, userId)[0]
+    const userList = data.userList
+    for (let value of userList) {
+      const items = value.items
+      for (const user of items) {
+        if (user.id == sendId) {
+          return user
+        }
+      }
+    }
+  }
 
 }
 const data = user.getData()

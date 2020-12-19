@@ -7,41 +7,45 @@
     ></SideBar>
     <div class="main-page">
       <div class="panel left">
-        <div class="panel-head clearfix">
-          <div class="panel-user">
-            <el-avatar
-              :src="PersonalData.avatar"
-              class="user-avatar"
-            >
-            </el-avatar>
-            <span class="user-name">{{PersonalData.name}}</span>
+        <div class="">
+          <div class="panel-head clearfix">
+            <div class="panel-user">
+              <el-avatar
+                :src="PersonalData.avatar"
+                class="user-avatar"
+              >
+              </el-avatar>
+              <span class="user-name">{{PersonalData.name}}</span>
+            </div>
+            <div class="user-add">
+              <MainMenu></MainMenu>
+            </div>
           </div>
-          <div class="user-add">
-            <MainMenu></MainMenu>
-          </div>
+          <SearchBar></SearchBar>
+          <div style="border:0;height:1px;background-color:#777"></div>
         </div>
-        <SearchBar></SearchBar>
-        <div style="border:0;height:1px;background-color:#777"></div>
         <div class="panel-list">
-          <div v-show="currentTab=='message_tab'">
-            <MessageListPane></MessageListPane>
-          </div>
-          <div v-show="currentTab=='user_tab'">
-            <UserListPane
-              @on-node-context-menu='onUserNodeContextMenu'
-              @on-item-selected="onUserSelected"
-              @on-item-context-menu='onUserItemContextMenu'
-            ></UserListPane>
-          </div>
-          <div v-show="currentTab=='group_tab'">
-            <GroupListPane
-              @on-node-context-menu='onGroupNodeContextMenu'
-              @on-item-selected="onGroupSelected"
-              @on-item-context-menu='onGroupItemContextMenu'
-            ></GroupListPane>
-          </div>
-          <div v-show="currentTab=='module_tab'">
-            <ModuleMenu></ModuleMenu>
+          <div>
+            <div v-show="currentTab=='message_tab'">
+              <MessageListPane></MessageListPane>
+            </div>
+            <div v-show="currentTab=='user_tab'">
+              <UserListPane
+                @on-node-context-menu='onUserNodeContextMenu'
+                @on-item-selected="onUserSelected"
+                @on-item-context-menu='onUserItemContextMenu'
+              ></UserListPane>
+            </div>
+            <div v-show="currentTab=='group_tab'">
+              <GroupListPane
+                @on-node-context-menu='onGroupNodeContextMenu'
+                @on-item-selected="onGroupSelected"
+                @on-item-context-menu='onGroupItemContextMenu'
+              ></GroupListPane>
+            </div>
+            <div v-show="currentTab=='module_tab'">
+              <ModuleMenu></ModuleMenu>
+            </div>
           </div>
         </div>
       </div>
@@ -101,6 +105,8 @@ import DataUtil from "@/app/lib/util/DataUtil";
 import MessageListModel from "@/impl/data/MessageListModel";
 import BaseUtil from "@/app/lib/util/BaseUtil";
 import MessageController from "@/app/com/main/controller/MessageController";
+import store from "@/store";
+import DataBackAction from "@/app/base/net/DataBackAction";
 
 @Component({
   components: {
@@ -121,6 +127,7 @@ export default class Main extends Vue {
   private sideTabBox: SideTabBox = new SideTabBox();
   private currentTab: string = "";
   private PersonalData: PersonalData = personalDataBox.personalData;
+  private userId: string = store.state.userId;
   public mounted() {
     this.init();
   }
@@ -144,34 +151,50 @@ export default class Main extends Vue {
       const bus: any = _this.$bus;
       bus.$emit("addContactCategory");
     };
-    const id = this.$store.state.userId;
-    InitializeData.setListData(id, addBack);
+    InitializeData.setListData(this.userId, addBack);
   }
 
   private toMessage(userId: string) {
     this.selectedTab("message_tab");
-    this.addMessage();
+    this.adduserMessage(userId);
   }
 
-  private addMessage() {}
+  private adduserMessage(targetUserId: string) {
+    const back: DataBackAction = {
+      back: (data: any) => {
+        if (DataUtil.isSuccess(data)) {
+          const body = DataUtil.getBody(data);
+          this.selectMessage("user", body.key);
+        }
+      }
+    };
+    const mcl: MessageController = App.appContext.getMaterial(
+      MessageController
+    );
+    mcl.addUserMessage(this.userId, targetUserId, back);
+  }
+
+  selectMessage(type: string, key: string) {
+    MessageListModel.selectItem(type, key);
+  }
 
   private getMessage() {
     const back = {
       back: (data: any) => {
         if (DataUtil.isSuccess(data)) {
-          const body = DataUtil.getBody(data);
+          const body = DataUtil.getBody(data)[0];
           const userMessage = body.userMessage;
           const groupMessage = body.groupMessage;
           let messageList = [...userMessage, ...groupMessage];
           messageList.sort(BaseUtil.compare("createTime", true));
           for (const value of messageList) {
             MessageListModel.addOrUpdateItem(
-              value.type,
-              value.id,
+              "user",
+              value.key,
               value.name,
               value.avatar,
               value.gray,
-              (id: string) => {},
+              (key: string) => {},
               (userId: string) => {
                 MessageListModel.removeItem(value.type, value.id);
               }
@@ -182,7 +205,7 @@ export default class Main extends Vue {
         }
       }
     };
-    const userId = this.$store.state.userId;
+    const userId = this.userId;
     const mcl: MessageController = App.appContext.getMaterial(
       MessageController
     );

@@ -16,14 +16,16 @@ settings.get('/getSetting', (req, res) => {
   if (userId == "") {
     return warningSend(res, "参数错误")
   }
-  const data = addUserSetting.getSettingByUserId(userId)
-  if (data) {
-    successSend(res, {
-      setting: data
-    })
-  } else {
-    return warningSend(res, "错误")
-  }
+  m.tryDo(res, () => {
+    const data = addUserSetting.getSettingByUserId(userId)
+    if (data) {
+      successSend(res, {
+        setting: data
+      })
+    } else {
+      return warningSend(res, "错误")
+    }
+  })
 })
 
 settings.post('/updateSetting', (req, res) => {
@@ -50,8 +52,10 @@ settings.get('/contactAddVerifySetting', (req, res) => {
   } else {
     return warningSend(res, '参数错误')
   }
-  const sendBody = userSetting.getSettingByUserId(userId)
-  successSend(res, sendBody)
+  m.tryDo(res, () => {
+    const sendBody = userSetting.getSettingByUserId(userId)
+    successSend(res, sendBody)
+  })
 })
 
 settings.get('/getAddUserSetting', (req, res) => {
@@ -61,8 +65,10 @@ settings.get('/getAddUserSetting', (req, res) => {
   if (hasEmpty) {
     return warningSend(res, "参数错误")
   }
-  const setting = addUserSetting.getAddUesrSettingByUserId(userId)
-  successSend(res, setting)
+  m.tryDo(res, () => {
+    const setting = addUserSetting.getAddUesrSettingByUserId(userId)
+    successSend(res, setting)
+  })
 })
 
 module.exports = settings

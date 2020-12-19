@@ -35,8 +35,8 @@ class UserStatus extends UserAccount {
   }
 
   getStatus(userId) {
-    const list = this.getData()
-    const data = list.filter(p => {
+    this.list = this.getData()
+    const data = this.list.filter(p => {
       if (p.userId == userId) {
         return true
       } else {

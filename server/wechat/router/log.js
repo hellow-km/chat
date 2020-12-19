@@ -28,19 +28,21 @@ log.post('/login', (req, res) => {
   if (account.trim() == '' || password.trim() == '') {
     return warningSend(res, '用户名和密码不能为空')
   }
-  let user = getUserByLogin(account, password)
-  if (user) {
-    userStatus.setUserIsLogin(account, true)
-    global.account = account
-    //todo token 
-    const data = {
-      token: '123456',
-      user: user
+  m.tryDo(res, () => {
+    let user = getUserByLogin(account, password)
+    if (user) {
+      userStatus.setUserIsLogin(account, true)
+      global.account = account
+      //todo token 
+      const data = {
+        token: '123456',
+        user: user
+      }
+      successSend(res, data)
+    } else {
+      return warningSend(res, '用户名或密码错误')
     }
-    successSend(res, data)
-  } else {
-    return warningSend(res, '用户名或密码错误')
-  }
+  })
 })
 
 log.post('/existAccount', (req, res) => {
@@ -49,57 +51,63 @@ log.post('/existAccount', (req, res) => {
   if (!account) {
     return warningSend(res, '参数错误')
   }
-  const hasUserAccount = checkAccount(account)
-  if (hasUserAccount) {
-    const data = {
-      exist: true
+  m.tryDo(res, () => {
+    const hasUserAccount = checkAccount(account)
+    if (hasUserAccount) {
+      const data = {
+        exist: true
+      }
+      return warningSend(res, '用户名已存在', data)
+    } else {
+      const data = {
+        exist: false
+      }
+      successSend(res, data)
     }
-    return warningSend(res, '用户名已存在', data)
-  } else {
-    const data = {
-      exist: false
-    }
-    successSend(res, data)
-  }
+  })
 })
 
 log.post('/register', (req, res) => {
   const body = req.body.body || {}
   const user = body.user || {}
   const questions = body.questions || []
-  if (user.account && user.password && user.nickName) {
-    if (checkQuestions(questions)) {
-      user.questions = questions
+  m.tryDo(res, () => {
+    if (user.account && user.password && user.nickName) {
+      if (checkQuestions(questions)) {
+        user.questions = questions
+      } else {
+        return warningSend(res, '问题或者答案不能为空')
+      }
+      const id = ('00000' + (userList.length + 1)).slice(-6);
+      user.id = id
+      addUserList(user)
+      writeUser()
+      registerBack()
+      const data = {
+        exist: false
+      }
+      successSend(res, data)
     } else {
-      return warningSend(res, '问题或者答案不能为空')
+      return warningSend(res, '参数错误')
     }
-    const id = ('00000' + (userList.length + 1)).slice(-6);
-    user.id = id
-    addUserList(user)
-    writeUser()
-    registerBack()
-    const data = {
-      exist: false
-    }
-    successSend(res, data)
-  } else {
-    return warningSend(res, '参数错误')
-  }
+  })
 })
 
 log.post('/getQuestionList', (req, res) => {
   const body = req.body
   const params = body.body
   const account = params.account
-  const questions = getUserQuestions(account)
-  if (questions) {
-    const data = {
-      userQuestions: questions
+  m.tryDo(res, () => {
+    const questions = getUserQuestions(account)
+    if (questions) {
+      const data = {
+        userQuestions: questions
+      }
+      successSend(res, data)
+    } else {
+      return warningSend(res, '用户不存在')
     }
-    successSend(res, data)
-  } else {
-    return warningSend(res, '用户不存在')
-  }
+  })
 })
 
 log.post('/checkAnswer', (req, res) => {
@@ -109,11 +117,13 @@ log.post('/checkAnswer', (req, res) => {
   if (!account || questions.length == 0) {
     return warningSend(res, '错误参数')
   }
-  if (checkQuestionAnswer(account, questions)) {
-    successSend(res, {})
-  } else {
-    return warningSend(res, '答案错误')
-  }
+  m.tryDo(res, () => {
+    if (checkQuestionAnswer(account, questions)) {
+      successSend(res, {})
+    } else {
+      return warningSend(res, '答案错误')
+    }
+  })
 })
 
 log.post('/changePassword', (req, res) => {
@@ -123,11 +133,13 @@ log.post('/changePassword', (req, res) => {
   if (!account || !newPassword) {
     return warningSend(res, '参数错误')
   }
-  if (changePassword(account, newPassword)) {
-    successSend(res, {})
-  } else {
-    return warningSend(res, '找不到用户')
-  }
+  m.tryDo(res, () => {
+    if (changePassword(account, newPassword)) {
+      successSend(res, {})
+    } else {
+      return warningSend(res, '找不到用户')
+    }
+  })
 })
 
 function addUserList(data) {
