@@ -16,6 +16,7 @@ class MessageListModel {
       this.map.set(id, item);
       this.list.push(item);
     }
+    item.type = type
     item.key = key;
     item.name = name;
     item.avatar = avatar;
@@ -31,7 +32,7 @@ class MessageListModel {
     if (item) {
       show = item.active;
     }
-    return false;
+    return show;
   }
 
   public removeItem(type: string, key: string): void {

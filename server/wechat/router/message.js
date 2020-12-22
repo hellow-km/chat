@@ -34,16 +34,17 @@ message_r.post('/addUserMessage', (req, res) => {
   })
 })
 
-message_r.post('/removeUserMessage', (req, res) => {
+message_r.post('/removeMessage', (req, res) => {
   const body = m.getBody(req)
   const userId = body.userId || ""
   const key = body.key || ""
-  const hasEmpty = m.hasEmpty(userId, key)
+  const type = body.type || ""
+  const hasEmpty = m.hasEmpty(userId, type, key)
   if (hasEmpty) {
     return warningSend(res, "参数错误")
   }
   m.tryDo(res, () => {
-    message.removeUserMessage(userId, key)
+    message.removeMessage(userId, type, key)
     successSend(res, {})
   })
 })

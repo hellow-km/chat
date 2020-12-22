@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="showPage=='user_chat'">
-
+      <UserChatPane></UserChatPane>
     </div>
     <div
       v-if="showPage=='no'"
@@ -19,7 +19,13 @@
 
 <script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
-@Component
+import UserChatPane from "./chat/UserChatPane.vue";
+
+@Component({
+  components: {
+    UserChatPane
+  }
+})
 export default class MessagePane extends Vue {
   private showPage: string = "no";
 

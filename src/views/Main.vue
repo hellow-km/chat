@@ -27,7 +27,10 @@
         <div class="panel-list">
           <div>
             <div v-show="currentTab=='message_tab'">
-              <MessageListPane @on-item-deleted="removeMessage"></MessageListPane>
+              <MessageListPane
+                @on-item-deleted="removeMessage"
+                @on-item-selected="selectItemMessage"
+              ></MessageListPane>
             </div>
             <div v-show="currentTab=='user_tab'">
               <UserListPane
@@ -210,7 +213,7 @@ export default class Main extends Vue {
         if (DataUtil.isSuccess(data)) {
           const body = DataUtil.getBody(data);
           this.getMessage(() => {
-            this.selectMessage("user", body.key);
+            this.selectMessage(body.type, body.key);
           });
         }
       }
@@ -221,23 +224,13 @@ export default class Main extends Vue {
     mcl.addUserMessage(this.userId, targetUserId, back);
   }
 
-  selectMessage(type: string, key: string) {
+  private selectItemMessage(data: IconItemData) {}
+
+  private selectMessage(type: string, key: string) {
     MessageListModel.selectItem(type, key);
   }
 
-  private removeMessage(item: IconItemData) {
-    const back: DataBackAction = {
-      back: (data: any) => {
-        if (DataUtil.isSuccess(data)) {
-          MessageListModel.removeItem("user", item.key);
-        }
-      }
-    };
-    const mcl: MessageController = App.appContext.getMaterial(
-      MessageController
-    );
-    mcl.removeUserMessage(this.userId, item.key, back);
-  }
+  private removeMessage(item: IconItemData) {}
 
   private getMessage(callback?: Function) {
     const back = {
@@ -256,9 +249,29 @@ export default class Main extends Vue {
               value.name,
               value.avatar,
               value.gray,
-              (key: string) => {},
+              (key: string) => {
+                const chatTpye = type == "user" ? "user_chat" : "group_chat";
+                this.setMessagePage(chatTpye);
+              },
               (userId: string) => {
-                // MessageListModel.removeItem(value.type, value.id);
+                const back: DataBackAction = {
+                  back: (data: any) => {
+                    if (DataUtil.isSuccess(data)) {
+                      const isSelect = MessageListModel.isItemShowing(
+                        type,
+                        value.key
+                      );
+                      MessageListModel.removeItem(type, value.key);
+                      if (isSelect) {
+                        this.setMessagePage("no");
+                      }
+                    }
+                  }
+                };
+                const mcl: MessageController = App.appContext.getMaterial(
+                  MessageController
+                );
+                mcl.removeMessage(this.userId, type, value.key, back);
               }
             );
           }
@@ -300,8 +313,6 @@ export default class Main extends Vue {
     data.selectedImage = "/assets/images/main/tab/message_selected.png";
     data.prompt = "消息列表";
     data.selected = true;
-    // data.red = true;
-    // data.redCount = 22;
     data.setOnSelected(onTabSelected);
     this.sideTabInfos.push(data);
 
@@ -338,14 +349,7 @@ export default class Main extends Vue {
     this.currentTab = key;
   }
 
-  private onUserItemContextMenu(e: MouseEvent, data: ItemData) {
-    // if (data) {
-    //   const userId = data.key;
-    //   const menuName = "userContextMenu";
-    //   const menu: any = this.$refs[menuName];
-    //   menu.show(e, userId);
-    // }
-  }
+  private onUserItemContextMenu(e: MouseEvent, data: ItemData) {}
 
   private onUserSelected(data: User) {
     if (data) {
@@ -354,42 +358,10 @@ export default class Main extends Vue {
     }
   }
 
-  private onUserNodeContextMenu(e: MouseEvent, data: ItemData) {
-    // if (data) {
-    //   const id = data.key;
-    //   const menuName = "userNodeContextMenu";
-    //   const menu: any = this.$refs[menuName];
-    //   menu.show(e, id);
-    // }
-  }
-  private onGroupItemContextMenu(e: MouseEvent, data: ItemData) {
-    // if (data) {
-    //   const groupId = data.key;
-    //   const groupContextMenuName = "groupContextMenu";
-    //   const groupContextMenu: any = this.$refs[groupContextMenuName];
-    //   groupContextMenu.show(e, groupId);
-    // }
-  }
-  private onGroupSelected(data: ItemData) {
-    // if (data) {
-    //   const groupId = data.key;
-    //   const groupInfoPaneName = "groupInfoPane";
-    //   const groupInfoPane: any = this.$refs[groupInfoPaneName];
-    //   groupInfoPane.setGroupId(groupId);
-    //   const groupMemberListController: GroupMemberListController = app.appContext.getMaterial(
-    //     GroupMemberListController
-    //   );
-    //   groupMemberListController.loadMemberListByGroupId(groupId);
-    // }
-  }
-  private onGroupNodeContextMenu(e: MouseEvent, data: NodeData) {
-    // if (data) {
-    //   const id = data.key;
-    //   const menuName = "groupNodeContextMenu";
-    //   const menu: any = this.$refs[menuName];
-    //   menu.show(e, id);
-    // }
-  }
+  private onUserNodeContextMenu(e: MouseEvent, data: ItemData) {}
+  private onGroupItemContextMenu(e: MouseEvent, data: ItemData) {}
+  private onGroupSelected(data: ItemData) {}
+  private onGroupNodeContextMenu(e: MouseEvent, data: NodeData) {}
 
   private handleSetting() {
     const settingPane: any = this.$refs.settingPane;

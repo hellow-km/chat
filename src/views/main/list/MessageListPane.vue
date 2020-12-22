@@ -36,9 +36,10 @@ export default class MessageListPane extends Vue {
       this.items = messageListModel.list;
     });
   }
-
+  @Emit("on-item-selected")
   public onItemSelected(data: IconItemData) {
     // TODO
+    return data;
   }
 
   @Emit("on-item-deleted")

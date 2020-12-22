@@ -25,7 +25,7 @@
       <div class="message-item-close">
         <i
           class="el-icon-circle-close"
-          @click="onDelete"
+          @click.prevent="onDelete"
         ></i>
       </div>
     </div>
@@ -91,6 +91,7 @@ export default class IconItem extends Vue {
   @Emit("on-selected")
   private selected(data: IconItemData) {
     // 选中
+    return data;
   }
 
   @Emit("on-deleted")

@@ -61,12 +61,13 @@ class Message extends UserAccount {
     return obj
   }
 
-  removeUserMessage(userId, key) {
+  removeMessage(userId, type, key) {
     const data = this.getMessageById(userId)[0]
-    const userMessage = data.userMessage
-    userMessage.forEach((m, index) => {
+    let mesType = type == 'user' ? 'userMessage' : 'groupMessage'
+    const mes = data[mesType]
+    mes.forEach((m, index) => {
       if (m.key == key) {
-        userMessage.splice(index, 1)
+        mes.splice(index, 1)
       }
     })
     this.save()

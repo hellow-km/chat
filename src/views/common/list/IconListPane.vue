@@ -45,6 +45,7 @@ export default class IconListPane extends Vue {
   @Emit("on-item-selected")
   private selected(data: IconItemData) {
     // 选中
+    return data;
   }
 
   @Emit("on-deleted")

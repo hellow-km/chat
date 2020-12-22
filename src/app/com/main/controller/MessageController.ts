@@ -12,11 +12,13 @@ export default class MessageController extends AbstractMaterial {
     this.request('post', '/message/addUserMessage', { userId, sendId }, back, true)
   }
 
-  public removeUserMessage(userId: string, key: string, back: DataBackAction) {
+  public removeMessage(userId: string, type: string, key: string, back: DataBackAction) {
     const data = {
-      userId, key
+      userId,
+      key,
+      type
     }
-    this.request('post', '/message/removeUserMessage', data, back, false)
+    this.request('post', '/message/removeMessage', data, back, false)
   }
 
   private request(method: string, url: string, data: any, back: DataBackAction, prompt: boolean) {
