@@ -118,6 +118,7 @@ import store from "@/store";
 import DataBackAction from "@/app/base/net/DataBackAction";
 import IconItemData from "@/views/common/list/IconItemData";
 import ContactCategoryController from "@/app/com/main/controller/ContactCategoryController";
+import UserChatViewModel from '@/impl/data/UserChatViewModel';
 
 @Component({
   components: {
@@ -252,6 +253,7 @@ export default class Main extends Vue {
               (key: string) => {
                 const chatTpye = type == "user" ? "user_chat" : "group_chat";
                 this.setMessagePage(chatTpye);
+                UserChatViewModel.setName(value.name)
               },
               (userId: string) => {
                 const back: DataBackAction = {

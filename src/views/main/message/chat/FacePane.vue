@@ -2,7 +2,8 @@
   <div
     class="face-pane"
     v-show="showPane"
-    @blur="onPaneBlur"
+    onmousedown="return false;"
+    unselectable="on"
   >
     <div class="face-tab">
       <div class="bar">
@@ -10,11 +11,13 @@
           class="left tab-item"
           :class="{'active':currentTab=='face'}"
           @click="setTabShow('face')"
+          name="face-tab"
         >表情</div>
         <div
           class="left tab-item"
           :class="{'active':currentTab=='strFace'}"
           @click="setTabShow('strFace')"
+          name="face-tab"
         >字符表情</div>
       </div>
     </div>
@@ -29,7 +32,10 @@
             :title="item.text"
             @click="onFace(item)"
           >
-            <img :src="'/assets/images/common/face/classical/png/'+item.key+'.png'" />
+            <img
+              :src="'/assets/images/common/face/classical/png/'+item.key+'.png'"
+              name="face-item"
+            />
           </a>
         </div>
       </div>
@@ -42,7 +48,10 @@
           :title="item.key"
           @click="onClick(item)"
         >
-          <img :src="'assets/images/common/face/emoji/'+item.picture" />
+          <img
+            :src="'assets/images/common/face/emoji/'+item.picture"
+            name="face-item"
+          />
         </a>
       </div>
       <div class="face-arrow"></div>
@@ -51,7 +60,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
+import { Vue, Component, Emit } from "vue-property-decorator";
 import FaceValue from "@/app/com/data/chat/content/item/FaceValue";
 import FaceBox from "./FaceBox";
 import EmojiImageBox from "./EmojiImageBox";
@@ -63,7 +72,7 @@ export default class FacePane extends Vue {
   private faceList: FaceValue[] = [];
   private list: Array<{ code: string; key: string; picture: string }> = [];
 
-  mounted() {
+  private mounted() {
     this.init();
   }
 
@@ -81,10 +90,21 @@ export default class FacePane extends Vue {
     this.showPane = is;
   }
 
-  private onFace() {}
+  private onClick(value: { code: string; key: string; picture: string }) {
+    this.selected("emoji", value.key);
+  }
+
+  private onFace(value: FaceValue) {
+    this.selected(value.categoryId, value.key);
+  }
 
   private onPaneBlur() {
     this.setPaneShow(false);
+  }
+
+  @Emit("on-selected")
+  private selected(categoryId: string, value: string) {
+    // 选中
   }
 }
 </script>

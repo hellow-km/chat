@@ -12,7 +12,8 @@
     </div>
     <FacePane
       ref="facePane"
-      @blur.native="closeFace"
+      name="face-pane"
+      @on-selected="onFaceSelect"
     ></FacePane>
     <div class="chat-write-box">
       <div class="chat-menu">
@@ -24,6 +25,7 @@
       </div>
       <div class="chat-write">
         <ChatInput
+          ref="chatInput"
           v-model="cacheData.data.html"
           @on-send="onInputSend"
           @on-key-press="onKeyPress"
@@ -39,6 +41,9 @@ import UserChatMenu from "./UserChatMenu.vue";
 import FacePane from "./FacePane.vue";
 import ChatInput from "./ChatInput.vue";
 import UserChatViewModel from "@/impl/data/UserChatViewModel";
+import FaceBox from "./FaceBox";
+import EmojiImageBox from "./EmojiImageBox";
+import FaceValue from "@/app/com/data/chat/content/item/FaceValue";
 
 @Component({
   components: {
@@ -53,6 +58,34 @@ export default class UserChatPane extends Vue {
   private cacheData = UserChatViewModel.cacheData;
   private faceShow: boolean = false;
 
+  public mounted() {
+    this.blurFacePaneEvent();
+  }
+
+  private blurFacePaneEvent() {
+    document.addEventListener(
+      "click",
+      e => {
+        if (this.faceShow) {
+          if (e.target instanceof Element) {
+            const n = e.target as Element;
+            const name = n.getAttribute("name");
+            if (name !== "face-item" && name !== "face-tab") {
+              this.faceShow = false;
+              const facePane: any = this.$refs.facePane;
+              facePane.setPaneShow(this.faceShow);
+            }
+          } else {
+            this.faceShow = false;
+            const facePane: any = this.$refs.facePane;
+            facePane.setPaneShow(this.faceShow);
+          }
+        }
+      },
+      true
+    );
+  }
+
   private onToggleFace() {
     this.faceShow = !this.faceShow;
     const facePane: any = this.$refs.facePane;
@@ -65,6 +98,11 @@ export default class UserChatPane extends Vue {
 
   private onKeyPress(e: KeyboardEvent, input: Element) {
     this.cacheData.data.html = input.innerHTML;
+  }
+
+  private onFaceSelect(categoryId: string, value: string) {
+    const chatInput: any = this.$refs.chatInput;
+    chatInput.faceSelect(categoryId, value);
   }
 
   private onInputSend() {
