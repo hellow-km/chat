@@ -61,6 +61,15 @@ class UserAndGoupList extends UserAccount {
     for (const value of userList) {
       const items = value.items
       for (const item of items) {
+        const id = item.id
+        const u = user.getUserById(id)
+        for (const key in item) {
+          if (item.hasOwnProperty(key)) {
+            if (u[key]) {
+              item[key] = u[key]
+            }
+          }
+        }
         const isOnline = userStatus.getStatus(item.id)
         item.gray = !isOnline
       }

@@ -118,7 +118,7 @@ import store from "@/store";
 import DataBackAction from "@/app/base/net/DataBackAction";
 import IconItemData from "@/views/common/list/IconItemData";
 import ContactCategoryController from "@/app/com/main/controller/ContactCategoryController";
-import UserChatViewModel from '@/impl/data/UserChatViewModel';
+import UserChatViewModel from "@/impl/data/UserChatViewModel";
 
 @Component({
   components: {
@@ -171,6 +171,13 @@ export default class Main extends Vue {
     this.$nextTick(() => {
       const messagePane: any = this.$refs.messagePane;
       messagePane.setPage(page);
+    });
+  }
+
+  private setMessagePageUserId(userId: string) {
+    this.$nextTick(() => {
+      const messagePane: any = this.$refs.messagePane;
+      messagePane.setUserId(userId);
     });
   }
 
@@ -252,8 +259,9 @@ export default class Main extends Vue {
               value.gray,
               (key: string) => {
                 const chatTpye = type == "user" ? "user_chat" : "group_chat";
+                this.setMessagePageUserId(value.userId);
                 this.setMessagePage(chatTpye);
-                UserChatViewModel.setName(value.name)
+                UserChatViewModel.setName(value.name);
               },
               (userId: string) => {
                 const back: DataBackAction = {

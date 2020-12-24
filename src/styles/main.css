@@ -310,6 +310,10 @@ summary {
   float: left;
 }
 
+.right {
+  float: right;
+}
+
 /*****searchList****/
 
 
@@ -548,14 +552,73 @@ summary {
   line-height: 80px;
 }
 
-.chat-message-box {}
+.chat-message-box {
+  position: absolute;
+  top: 81px;
+  left: 0;
+  right: 0;
+  bottom: 201px;
+  overflow: hidden;
+  overflow-y: auto;
+}
+
+.chat-message-box-item {}
+
+.chat-message-box-item:first-child>.left {
+  padding: 15px 0 0 10px;
+}
+
+.chat-message-box-item:first-child>.right {
+  padding: 15px 10px 0 0;
+}
+
+.chat-message-box-item-context>.left {
+  margin-left: 5px;
+}
+
+.chat-message-box-item-context>.right {
+  margin-left: 5px;
+}
+
+.chat-message-box-item-context .item-context-message {
+  position: relative;
+  padding: 10px 5px;
+  border-radius: 5px;
+  margin: 0 5px;
+  background-color: #dcdfe6;
+}
+
+.chat-message-box-item-context .left-arrow {
+  position: absolute;
+  width: 0;
+  height: 0;
+  font-size: 0;
+  border: solid 10px;
+  left: -20px;
+  border-color: transparent #dcdfe6 transparent transparent;
+}
+
+.chat-message-box-item-context .right-arrow {
+  position: absolute;
+  width: 0;
+  height: 0;
+  font-size: 0;
+  border: solid 10px;
+  right: -20px;
+  border-color: transparent transparent transparent #dcdfe6;
+}
+
+.chat-box {
+  height: 100%;
+  width: 100%;
+}
 
 .chat-write-box {
   position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
-  height: 150px;
+  height: 200px;
   overflow: hidden;
   overflow-y: auto;
   border-top: 1px solid #dcdfe6;
@@ -595,7 +658,7 @@ summary {
 }
 
 .content {
-  height: 70px;
+  height: 130px;
   overflow-y: auto;
   overflow-x: hidden;
   cursor: text;
@@ -609,7 +672,7 @@ summary {
 
 .input-pane .input-opt {
   position: absolute;
-  right: 10px;
+  right: 20px;
   bottom: -35px;
 }
 
@@ -620,9 +683,9 @@ summary {
 
 .face-pane {
   position: absolute;
-  z-index: 99999;
+  z-index: 99;
   width: 420px;
-  top: 280px;
+  bottom: 187px;
   left: 10px;
 }
 
@@ -670,11 +733,12 @@ summary {
 }
 
 .face-pane .face-arrow {
+  margin-left: 3px;
   width: 0;
   height: 0;
   font-size: 0;
   border: solid 10px;
-  border-color: #f5f9fd transparent transparent transparent;
+  border-color: #f2f2f2 transparent transparent transparent;
 }
 
 /******chat******/

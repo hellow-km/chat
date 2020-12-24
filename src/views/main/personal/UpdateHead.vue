@@ -46,7 +46,7 @@ export default class UpdateHead extends Vue {
   }
 
   private beforeAvatarUpload(file: File) {
-    const isJPNG = file.type === "image/jpeg" || file.type === "image/png";
+    const isJPNG = file.type.includes("image");
     const isLt3M = file.size / 1024 / 1024 < 3;
 
     if (!isJPNG) {

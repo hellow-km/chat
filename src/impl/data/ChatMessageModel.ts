@@ -15,17 +15,14 @@ export default class ChatMessageModel {
       key: '1',
       showName: 'aaa',
       user: {
-        nickname: 'kio'
+        nickName: 'kio'
       },
       content: {
         key: '1',
-        sections: [{
-          items: [{
-            value: '123456'
-          }]
-        }]
+        html: '123456'
       },
-      status: 0
+      status: 0,
+      isOwn: false
     }] as ContentData[],
   };
 

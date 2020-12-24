@@ -9,11 +9,12 @@ export default class Content {
   /**
    * 字体信息
    */
-  public font: Font = new Font();
+  //public font: Font = new Font();
   /**
-   * 段落，段落是指聊天内容有换行分段
+   * 段落，段落是指聊天内容有换行分段 
    */
-  public sections: Section[] = [];
+  // public sections: Section[] = [];
+  public html: string = ''
   /**
    * 发送的时间戳
    */

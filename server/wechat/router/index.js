@@ -8,6 +8,7 @@ const modules = require('./modules')
 const getSelect = require('./getSelect')
 const noticeUser = require('./notice/user')
 const message = require('./message')
+const chat = require('./chat')
 module.exports = {
   log,
   address,
@@ -18,5 +19,6 @@ module.exports = {
   modules,
   getSelect,
   noticeUser,
-  message
+  message,
+  chat
 }

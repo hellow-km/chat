@@ -14,7 +14,8 @@ const {
   modules,
   getSelect,
   noticeUser,
-  message
+  message,
+  chat
 } = require('./router')
 
 app.use(bodyParser.json());
@@ -60,6 +61,7 @@ app.use('/modules', modules)
 app.use('/getSelect', getSelect)
 app.use('/notice', noticeUser)
 app.use('/message', message)
+app.use('/chat', chat)
 
 app.get('/resetJsonExUser', (req, res) => {
   resetJsonExUser()

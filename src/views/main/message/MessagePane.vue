@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="showPage=='user_chat'">
-      <UserChatPane></UserChatPane>
+      <UserChatPane :sendUserId="userId"></UserChatPane>
     </div>
     <div
       v-if="showPage=='no'"
@@ -28,9 +28,14 @@ import UserChatPane from "./chat/UserChatPane.vue";
 })
 export default class MessagePane extends Vue {
   private showPage: string = "no";
+  private userId: string = "";
 
   public setPage(page: string) {
     this.showPage = page;
+  }
+
+  public setUserId(userId: string) {
+    this.userId = userId;
   }
 }
 </script>

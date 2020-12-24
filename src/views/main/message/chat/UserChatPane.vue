@@ -7,7 +7,10 @@
     </div>
     <div class="chat-message-box">
       <div class="chat-box">
-
+        <MessageBox
+          ref="messageBox"
+          :data="messageInfo.list"
+        ></MessageBox>
       </div>
     </div>
     <FacePane
@@ -36,23 +39,35 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
+import { Vue, Component, Prop } from "vue-property-decorator";
 import UserChatMenu from "./UserChatMenu.vue";
 import FacePane from "./FacePane.vue";
 import ChatInput from "./ChatInput.vue";
+import MessageBox from "./MessageBox.vue";
+
 import UserChatViewModel from "@/impl/data/UserChatViewModel";
 import FaceBox from "./FaceBox";
 import EmojiImageBox from "./EmojiImageBox";
 import FaceValue from "@/app/com/data/chat/content/item/FaceValue";
+import DocumentUtil from "@/app/common/util/DocumentUtil";
+import ChatController from "@/app/com/main/controller/ChatController";
 
 @Component({
   components: {
     UserChatMenu,
     ChatInput,
-    FacePane
+    FacePane,
+    MessageBox
   }
 })
 export default class UserChatPane extends Vue {
+  @Prop({
+    type: String,
+    required: false,
+    default: ""
+  })
+  private sendUserId!: string;
+
   private chatData = UserChatViewModel.chatData;
   private messageInfo = UserChatViewModel.messageInfo;
   private cacheData = UserChatViewModel.cacheData;
@@ -94,7 +109,11 @@ export default class UserChatPane extends Vue {
 
   private onOpenFile() {}
 
-  private onOpenPicture() {}
+  private onOpenPicture(html: string) {
+    const chatInput: any = this.$refs.chatInput;
+    const inputArea: any = chatInput.$refs.inputArea;
+    DocumentUtil.inserNode(inputArea, html);
+  }
 
   private onKeyPress(e: KeyboardEvent, input: Element) {
     this.cacheData.data.html = input.innerHTML;
@@ -106,7 +125,21 @@ export default class UserChatPane extends Vue {
   }
 
   private onInputSend() {
-    console.log(this.cacheData.data.html);
+    let html = this.cacheData.data.html;
+    if (html == "") {
+      return;
+    }
+
+    const messageBox: any = this.$refs.messageBox;
+    const back = {
+      back: (data: any) => {}
+    };
+    const body = {
+      html,
+      targetId: this.sendUserId,
+      id: this.$store.state.userId
+    };
+    ChatController.sendMessage(html, back);
   }
 }
 </script>

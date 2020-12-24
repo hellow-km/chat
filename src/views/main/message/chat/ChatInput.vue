@@ -7,7 +7,6 @@
       <pre
         ref='inputArea'
         @keypress="onKeyPress"
-        @keyup="onKeyup"
         class="flex edit_area"
         contenteditable="true"
       ></pre>
@@ -36,14 +35,13 @@ export default class ChatInput extends Vue {
       this.send();
     }
   }
-  private onKeyup() {}
   private iptFocus() {
     const inputArea: any = this.getInputRef();
     inputArea.focus();
   }
   private send() {
     const inputArea: any = this.getInputRef();
-    this.onSend(inputArea as Element);
+    this.onSend(inputArea);
   }
 
   private getInputRef() {
@@ -79,11 +77,6 @@ export default class ChatInput extends Vue {
 
   @Emit("on-key-press")
   private keyPress(evt: KeyboardEvent, e: Element) {
-    // no
-  }
-
-  @Emit("on-key-up")
-  private keyup(evt: KeyboardEvent, e: Element) {
     // no
   }
 }
