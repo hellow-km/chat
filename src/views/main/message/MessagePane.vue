@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="showPage=='user_chat'">
-      <UserChatPane :sendUserId="userId"></UserChatPane>
+      <UserChatPane :data="data"></UserChatPane>
     </div>
     <div
       v-if="showPage=='no'"
@@ -20,6 +20,7 @@
 <script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
 import UserChatPane from "./chat/UserChatPane.vue";
+import IconItemData from "@/views/common/list/IconItemData";
 
 @Component({
   components: {
@@ -28,14 +29,14 @@ import UserChatPane from "./chat/UserChatPane.vue";
 })
 export default class MessagePane extends Vue {
   private showPage: string = "no";
-  private userId: string = "";
+  private data: any = {};
 
   public setPage(page: string) {
     this.showPage = page;
   }
 
-  public setUserId(userId: string) {
-    this.userId = userId;
+  public setData(data: any) {
+    this.data = data;
   }
 }
 </script>

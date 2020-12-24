@@ -9,14 +9,5 @@ export default class ChatViewModel extends ChatMessageModel {
     key: '1',
   };
 
-  public setUser(user: User) {
-    const userId = (user) ? user.id : '';
-    this.setChat(userId);
-  }
-
-
-  public setName(name: string) {
-    this.chatData.name = name;
-  }
 }
 

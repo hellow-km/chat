@@ -174,10 +174,10 @@ export default class Main extends Vue {
     });
   }
 
-  private setMessagePageUserId(userId: string) {
+  private setMessagePageData(data: any) {
     this.$nextTick(() => {
       const messagePane: any = this.$refs.messagePane;
-      messagePane.setUserId(userId);
+      messagePane.setUserId(data);
     });
   }
 
@@ -259,7 +259,7 @@ export default class Main extends Vue {
               value.gray,
               (key: string) => {
                 const chatTpye = type == "user" ? "user_chat" : "group_chat";
-                this.setMessagePageUserId(value.userId);
+                this.setMessagePageData(value);
                 this.setMessagePage(chatTpye);
                 UserChatViewModel.setName(value.name);
               },

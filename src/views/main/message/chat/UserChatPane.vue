@@ -62,11 +62,11 @@ import ChatController from "@/app/com/main/controller/ChatController";
 })
 export default class UserChatPane extends Vue {
   @Prop({
-    type: String,
+    type: Object,
     required: false,
-    default: ""
+    default: {}
   })
-  private sendUserId!: string;
+  private data!: any;
 
   private chatData = UserChatViewModel.chatData;
   private messageInfo = UserChatViewModel.messageInfo;
@@ -74,10 +74,10 @@ export default class UserChatPane extends Vue {
   private faceShow: boolean = false;
 
   public mounted() {
-    this.blurFacePaneEvent();
+    this.init();
   }
 
-  private blurFacePaneEvent() {
+  private init() {
     document.addEventListener(
       "click",
       e => {
@@ -99,6 +99,7 @@ export default class UserChatPane extends Vue {
       },
       true
     );
+    UserChatViewModel.setName(this.data.name);
   }
 
   private onToggleFace() {
@@ -134,9 +135,12 @@ export default class UserChatPane extends Vue {
     const back = {
       back: (data: any) => {}
     };
+    const data = this.data;
     const body = {
       html,
-      targetId: this.sendUserId,
+      targetId: data.userId,
+      key: data.key,
+      type: data.type,
       id: this.$store.state.userId
     };
     ChatController.sendMessage(html, back);

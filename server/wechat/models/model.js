@@ -14,6 +14,9 @@ const userAdd = require('./notice/userAdd')
 const {
   Message
 } = require('./Message')
+const {
+  chatMessage
+} = require('./ChatMessage')
 
 let user = new User()
 const data = user.getData()
@@ -53,5 +56,6 @@ module.exports = {
   addUserSetting,
   //groups,
   userAdd,
-  message
+  message,
+  chatMessage
 }

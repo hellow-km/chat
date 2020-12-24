@@ -6,15 +6,9 @@ import ChatViewModel from '@/impl/data/ChatViewModel';
 
 class UserChatViewModel extends ChatViewModel {
 
-    public setUser(user: User) {
-        const userId = (user) ? user.id : '';
-        this.setChat(userId);
-        this.chatData.key = userId;
-    }
-
-    public setName(name: string) {
-        this.chatData.name = name;
-    }
+  public setName(name: string) {
+    this.chatData.name = name;
+  }
 }
 
 export default new UserChatViewModel();
