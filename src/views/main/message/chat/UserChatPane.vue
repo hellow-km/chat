@@ -82,6 +82,7 @@ export default class UserChatPane extends Vue {
   @Watch("data")
   private u() {
     this.getMessageInfor();
+    UserChatViewModel.setName(this.data.name);
   }
 
   private init() {
@@ -107,7 +108,6 @@ export default class UserChatPane extends Vue {
       true
     );
     this.getMessageInfor();
-    UserChatViewModel.setName(this.data.name);
   }
 
   private getMessageInfor() {
