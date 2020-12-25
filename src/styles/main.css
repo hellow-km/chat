@@ -564,11 +564,11 @@ summary {
 
 .chat-message-box-item {}
 
-.chat-message-box-item:first-child>.left {
+.chat-message-box-item>.left {
   padding: 15px 0 0 10px;
 }
 
-.chat-message-box-item:first-child>.right {
+.chat-message-box-item>.right {
   padding: 15px 10px 0 0;
 }
 

@@ -35,6 +35,7 @@ class Message extends UserAccount {
 
   addUserMessageById(userId, sendId) {
     const data = this.getMessageById(userId)[0]
+    console.log(userId);
     const userMessage = data.userMessage
     const user = userAndGoupList.getUserById(userId, sendId)
     const m = userMessage.filter(p => p.userId == user.id)

@@ -33,19 +33,65 @@ class ChatMessage extends UserAccount {
     this.save()
   }
 
-  add(id, key, targetId) {
-    const roomData = this.getChatRoomByKey(id, key)
-    message.addUserMessage(targetId, id)
+  getList(userId, key) {
+    const roomData = this.getOrCreateChatRoomByKey(userId, key)
+    return roomData
+  }
 
+  sendMessage(id, key, targetId, html) {
+    const data = this.add(id, key, targetId, html, true)
+    this.add(id, key, targetId, html, false)
+    this.save()
+    return data
+  }
+
+  add(id, key, targetId, html, isOwn) {
+    let roomData;
+    if (!isOwn) {
+      message.addUserMessage(targetId, id)
+      roomData = this.getOrCreateChatRoomByKey(targetId, key)
+    } else {
+      roomData = this.getOrCreateChatRoomByKey(id, key)
+    }
+    const chatList = roomData.chatList
+    const u = user.getUserById(id)
+    const showName = u.remark ? u.remark : u.nickName
+    const obj = {
+      id,
+      targetId,
+      key: key,
+      user: u,
+      showName,
+      isOwn,
+      context: {
+        html: html,
+        timestamp: new Date().getTime()
+      }
+    }
+    chatList.push(obj)
+    return obj
   }
 
   getItemById(id) {
     return this.list.filter(p => p.userId == id)[0]
   }
 
-  getChatRoomByKey(id, key) {
+  getOrCreateChatRoomByKey(id, key) {
     const data = this.getItemById(id)
-    return data.allChatList.filter(p => p.key == key)[0]
+    const allChatList = data.allChatList
+    const list = allChatList.filter(p => p.key == key)
+    if (list.length) {
+      return list[0]
+    } else {
+      if (!allChatList) {
+        allChatList = []
+      }
+      allChatList.push({
+        key: key,
+        chatList: []
+      })
+      return allChatList[allChatList.length - 1]
+    }
   }
 }
 

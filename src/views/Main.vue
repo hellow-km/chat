@@ -177,7 +177,7 @@ export default class Main extends Vue {
   private setMessagePageData(data: any) {
     this.$nextTick(() => {
       const messagePane: any = this.$refs.messagePane;
-      messagePane.setUserId(data);
+      messagePane.setData(data);
     });
   }
 

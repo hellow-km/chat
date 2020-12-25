@@ -23,7 +23,7 @@
         >
           <div class="item-context-message">
             <div :class="item.isOwn?'right-arrow':'left-arrow'"></div>
-            <div v-html="item.content.html"></div>
+            <div v-html="item.context.html"></div>
           </div>
         </div>
       </div>
@@ -44,6 +44,10 @@ export default class MessageBox extends Vue {
     default: () => new Array<ContentData>()
   })
   private data!: ContentData[];
+
+  private mounted() {
+    console.log(this.data);
+  }
 }
 </script>
 

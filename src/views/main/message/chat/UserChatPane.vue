@@ -9,7 +9,7 @@
       <div class="chat-box">
         <MessageBox
           ref="messageBox"
-          :data="messageInfo.list"
+          :data="messageInfo.chatList"
         ></MessageBox>
       </div>
     </div>
@@ -39,7 +39,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
+import { Vue, Component, Prop, Watch } from "vue-property-decorator";
 import UserChatMenu from "./UserChatMenu.vue";
 import FacePane from "./FacePane.vue";
 import ChatInput from "./ChatInput.vue";
@@ -51,6 +51,8 @@ import EmojiImageBox from "./EmojiImageBox";
 import FaceValue from "@/app/com/data/chat/content/item/FaceValue";
 import DocumentUtil from "@/app/common/util/DocumentUtil";
 import ChatController from "@/app/com/main/controller/ChatController";
+import DataUtil from "@/app/lib/util/DataUtil";
+import DataBackAction from "@/app/base/net/DataBackAction";
 
 @Component({
   components: {
@@ -77,6 +79,11 @@ export default class UserChatPane extends Vue {
     this.init();
   }
 
+  @Watch("data")
+  private u() {
+    this.getMessageInfor();
+  }
+
   private init() {
     document.addEventListener(
       "click",
@@ -100,6 +107,23 @@ export default class UserChatPane extends Vue {
       true
     );
     UserChatViewModel.setName(this.data.name);
+  }
+
+  private getMessageInfor() {
+    const back: DataBackAction = {
+      back: (data: any) => {
+        if (DataUtil.isSuccess(data)) {
+          const body = DataUtil.getBody(data);
+          UserChatViewModel.messageInfo = body;
+          this.messageInfo = body;
+        }
+      }
+    };
+    const data = {
+      userId: this.$store.state.userId,
+      key: this.data.key
+    };
+    ChatController.getMessage(data, back);
   }
 
   private onToggleFace() {
@@ -132,10 +156,15 @@ export default class UserChatPane extends Vue {
     }
 
     const messageBox: any = this.$refs.messageBox;
-    const back = {
-      back: (data: any) => {}
+    const back: DataBackAction = {
+      back: (data: any) => {
+        if (DataUtil.isSuccess(data)) {
+          this.getMessageInfor();
+        }
+      }
     };
     const data = this.data;
+
     const body = {
       html,
       targetId: data.userId,
@@ -143,7 +172,7 @@ export default class UserChatPane extends Vue {
       type: data.type,
       id: this.$store.state.userId
     };
-    ChatController.sendMessage(html, back);
+    ChatController.sendMessage(body, back);
   }
 }
 </script>

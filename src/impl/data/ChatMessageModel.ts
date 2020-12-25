@@ -9,21 +9,7 @@ export default class ChatMessageModel {
 
   public messageInfo = {
     key: '1',
-    showPrompt: true,
-    prompt: '123',
-    list: [{
-      key: '1',
-      showName: 'aaa',
-      user: {
-        nickName: 'kio'
-      },
-      content: {
-        key: '1',
-        html: '123456'
-      },
-      status: 0,
-      isOwn: false
-    }] as ContentData[],
+    chatList: [] as ContentData[],
   };
 
   public cacheData = {
