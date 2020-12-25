@@ -7,8 +7,8 @@ import Prompt from '@/components/common/Prompt';
 Vue.use(VueRouter)
 
 const options: RouterOptions = {
-  mode: 'history',
-  base: process.env.BASE_URL,
+  mode: 'hash',
+  base: '/',
   routes: RouteConfigBox.getRoutes()
 }
 

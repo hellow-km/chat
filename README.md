@@ -14,6 +14,7 @@ npm run serve
 ```
 npm run build
 ```
+
 ### 启动后端
 ```
 cd server/wechat

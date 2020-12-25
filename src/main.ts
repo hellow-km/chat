@@ -7,7 +7,9 @@ import 'element-ui/lib/theme-chalk/index.css';
 import '@/assets/icon/iconfont.css'
 
 Vue.use(ElementUI);
-Vue.config.productionTip = true
+//Vue.config.silent = true
+Vue.config.productionTip = false
+//Vue.config.devtools = false
 
 Vue.filter('gender', function (v: string) {
   if (!v) return ''
