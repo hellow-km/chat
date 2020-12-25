@@ -10,6 +10,11 @@ npm install
 npm run serve
 ```
 
+### 运行gui
+```
+npm run dev
+```
+
 ### 打包
 ```
 npm run build

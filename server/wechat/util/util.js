@@ -92,15 +92,15 @@ class M {
   }
 
   tryDo(res, fn) {
-    // try {
-    fn && fn()
-    /*} catch (e) {
+    try {
+      fn && fn()
+    } catch (e) {
       this.warningSend(res, "请求失败")
       const date = new Date()
       const time = moment(date).format('YYYY-MM-DD HH:mm:ss')
       const text = `${time} ${e.fileName} ${e.message} ${e.name} ${e.lineNumber}\r\n`
       this.writeFile(path.join(__dirname, '../error/err.txt'), text)
-    }*/
+    }
   }
 }
 
