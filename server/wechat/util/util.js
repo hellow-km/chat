@@ -58,19 +58,18 @@ class M {
   }
 
   hasEmpty(...data) {
-    let empty = false;
     for (const value of data) {
       if (value instanceof Array) {
         if (value.length <= 0) {
-          empty = true
+          return true
         }
       } else {
-        if (value && value.trim && value.trim() === '' || value === undefined || value === null || value === 'undefined' || value === 'null' || JSON.stringify(value) == "{}") {
-          empty = true
+        if (value.toString().trim() === '' || value === undefined || value === null || value === 'undefined' || value === 'null' || JSON.stringify(value) == "{}") {
+          return true
         }
       }
     }
-    return empty;
+    return false;
   }
 
   getDataObjById(list, userId) {

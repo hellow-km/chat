@@ -221,7 +221,7 @@ export default class Main extends Vue {
         if (DataUtil.isSuccess(data)) {
           const body = DataUtil.getBody(data);
           this.getMessage(() => {
-            this.selectMessage(body.type, body.key);
+            this.selectMessage(body);
           });
         }
       }
@@ -234,8 +234,9 @@ export default class Main extends Vue {
 
   private selectItemMessage(data: IconItemData) {}
 
-  private selectMessage(type: string, key: string) {
-    MessageListModel.selectItem(type, key);
+  private selectMessage(body: any) {
+    MessageListModel.selectItem(body.type, body.key);
+    this.setMessagePageData(body);
   }
 
   private removeMessage(item: IconItemData) {}

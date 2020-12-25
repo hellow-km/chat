@@ -25,29 +25,36 @@ class Message extends UserAccount {
   }
 
   getListById(userId) {
+    this.list = this.getData()
     const data = this.getMessageById(userId)
     return data
   }
 
   addUserMessage(userId, sendId) {
+    this.list = this.getData()
     return this.addUserMessageById(userId, sendId)
   }
 
   addUserMessageById(userId, sendId) {
     const data = this.getMessageById(userId)[0]
-    console.log(userId);
     const userMessage = data.userMessage
     const user = userAndGoupList.getUserById(userId, sendId)
     const m = userMessage.filter(p => p.userId == user.id)
     if (m.length == 1) {
       return m[0]
     }
+    let key
+    if (this.hasMessage(userId, sendId)) {
+      key = sendId + userId
+    } else {
+      key = userId + sendId
+    }
     const name = user.remark || user.nickName
     let obj = {
       type: 'user',
       userId: user.id,
       active: true,
-      key: userMessage.length + 1,
+      key: key,
       name,
       avatar: user.avatar,
       gray: user.gray,
@@ -63,6 +70,7 @@ class Message extends UserAccount {
   }
 
   removeMessage(userId, type, key) {
+    this.list = this.getData()
     const data = this.getMessageById(userId)[0]
     let mesType = type == 'user' ? 'userMessage' : 'groupMessage'
     const mes = data[mesType]
@@ -75,7 +83,6 @@ class Message extends UserAccount {
   }
 
   getMessageById(userId) {
-    this.list = this.getData()
     return this.list.filter(p => p.userId == userId)
   }
 
@@ -85,6 +92,16 @@ class Message extends UserAccount {
     return userMessage.filter(p => p.key == key)
   }
 
+  hasMessage(userId, sendId) {
+    const data = this.getMessageById(sendId)[0]
+    const userMessage = data.userMessage
+    for (const item of userMessage) {
+      if (item.userId == userId) {
+        return true
+      }
+    }
+    return false
+  }
 }
 const data = user.getData()
 const messagePath = m.getPath('message')

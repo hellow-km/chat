@@ -45,9 +45,7 @@ export default class MessageBox extends Vue {
   })
   private data!: ContentData[];
 
-  private mounted() {
-    console.log(this.data);
-  }
+  private mounted() {}
 }
 </script>
 

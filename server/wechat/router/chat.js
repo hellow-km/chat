@@ -15,7 +15,9 @@ chat.post('/sendMessage', (req, res) => {
   const targetId = body.targetId || ""
   const html = body.html || ""
   const key = body.key || ""
-  if (m.hasEmpty(id, key, targetId, html)) {
+  const hasEmpty = m.hasEmpty(id, key, targetId, html)
+
+  if (hasEmpty) {
     return warningSend(res, "参数错误")
   }
   m.tryDo(res, () => {

@@ -31,7 +31,7 @@
           ref="chatInput"
           v-model="cacheData.data.html"
           @on-send="onInputSend"
-          @on-key-press="onKeyPress"
+          @on-key-up="onKeyUp"
         ></ChatInput>
       </div>
     </div>
@@ -106,6 +106,7 @@ export default class UserChatPane extends Vue {
       },
       true
     );
+    this.getMessageInfor();
     UserChatViewModel.setName(this.data.name);
   }
 
@@ -138,15 +139,17 @@ export default class UserChatPane extends Vue {
     const chatInput: any = this.$refs.chatInput;
     const inputArea: any = chatInput.$refs.inputArea;
     DocumentUtil.inserNode(inputArea, html);
+    this.cacheData.data.html = inputArea.innerHTML;
   }
 
-  private onKeyPress(e: KeyboardEvent, input: Element) {
+  private onKeyUp(e: KeyboardEvent, input: Element) {
     this.cacheData.data.html = input.innerHTML;
   }
-
   private onFaceSelect(categoryId: string, value: string) {
     const chatInput: any = this.$refs.chatInput;
     chatInput.faceSelect(categoryId, value);
+    const inputArea: any = chatInput.$refs.inputArea;
+    this.cacheData.data.html = inputArea.innerHTML;
   }
 
   private onInputSend() {
@@ -154,12 +157,12 @@ export default class UserChatPane extends Vue {
     if (html == "") {
       return;
     }
-
     const messageBox: any = this.$refs.messageBox;
     const back: DataBackAction = {
       back: (data: any) => {
         if (DataUtil.isSuccess(data)) {
           this.getMessageInfor();
+          this.cacheData.data.html = "";
         }
       }
     };
@@ -169,7 +172,6 @@ export default class UserChatPane extends Vue {
       html,
       targetId: data.userId,
       key: data.key,
-      type: data.type,
       id: this.$store.state.userId
     };
     ChatController.sendMessage(body, back);
