@@ -8,6 +8,6 @@ export default class ChatController {
   }
 
   public static getMessage(data: any, back: DataBackAction) {
-    HttpUtil.request('get', '/chat/getMessage', data, back, true)
+    HttpUtil.request('get', '/chat/getMessage', data, back, false)
   }
 }

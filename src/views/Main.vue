@@ -163,6 +163,7 @@ export default class Main extends Vue {
       const _this: any = this;
       const bus: any = _this.$bus;
       bus.$emit("addContactCategory");
+      bus.$emit("addGroupCategory");
     };
     InitializeData.setListData(this.userId, addBack);
   }
