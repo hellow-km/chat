@@ -26,12 +26,12 @@ cd server/wechat
 node app
 ```
 
-![登录](https://gitee.com/unamerrr/chat-room/tree/master/img/login.png "登录")
-![注册](https://gitee.com/unamerrr/chat-room/tree/master/img/register.png "注册")
-![主页面](https://gitee.com/unamerrr/chat-room/tree/master/img/main.png "主页面")
-![聊天室](https://gitee.com/unamerrr/chat-room/tree/master/img/chat.png "聊天室")
-![用户修改资料](https://gitee.com/unamerrr/chat-room/tree/master/img/edit.png "用户修改资料")
-![添加信息](https://gitee.com/unamerrr/chat-room/tree/master/img/nitice.png "添加信息")
-![重置密码](https://gitee.com/unamerrr/chat-room/tree/master/img/resetPassword.png "重置密码")
-![搜索用户](https://gitee.com/unamerrr/chat-room/tree/master/img/searchUser.png "搜索用户")
-![用户资料](https://gitee.com/unamerrr/chat-room/tree/master/img/userInfo.png "用户资料")
+![登录](https://images.gitee.com/uploads/images/2020/1231/182859_28d52ea4_5277559.png "login.png")
+![注册](https://images.gitee.com/uploads/images/2020/1231/182958_0141595e_5277559.png "register.png")
+![重置密码](https://images.gitee.com/uploads/images/2020/1231/182936_9e8e9802_5277559.png "resetPassword.png")
+![主页面](https://images.gitee.com/uploads/images/2020/1231/183106_38cbbc85_5277559.png "main.png")
+![聊天室](https://images.gitee.com/uploads/images/2020/1231/182832_359e1a4f_5277559.png "chat.png")
+![修改信息](https://images.gitee.com/uploads/images/2020/1231/182919_c9cf2ebe_5277559.png "edit.png")
+![查找用户](https://images.gitee.com/uploads/images/2020/1231/183018_8e9599f5_5277559.png "searchUser.png")
+![请求信息](https://images.gitee.com/uploads/images/2020/1231/183031_50beb35e_5277559.png "nitice.png")
+![用户信息](https://images.gitee.com/uploads/images/2020/1231/183047_8209db58_5277559.png "userInfo.png")
