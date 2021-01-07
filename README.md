@@ -43,3 +43,5 @@ node app
 ![请求信息](https://images.gitee.com/uploads/images/2020/1231/183031_50beb35e_5277559.png "nitice.png")
 #### 用户信息
 ![用户信息](https://images.gitee.com/uploads/images/2020/1231/183047_8209db58_5277559.png "userInfo.png")
+#### 用户设置
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0107/181335_01c74990_5277559.png "截图1610014349.png")
