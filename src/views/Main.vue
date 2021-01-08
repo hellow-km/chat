@@ -243,6 +243,7 @@ export default class Main extends Vue {
   private removeMessage(item: IconItemData) {}
 
   private getMessage(callback?: Function) {
+    MessageListModel.clear();
     const back = {
       back: (data: any) => {
         if (DataUtil.isSuccess(data)) {
