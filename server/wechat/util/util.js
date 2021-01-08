@@ -95,7 +95,7 @@ class M {
     try {
       fn && fn()
     } catch (e) {
-      this.warningSend(res, "请求失败")
+      warningSend(res, "请求失败")
       const date = new Date()
       const time = moment(date).format('YYYY-MM-DD HH:mm:ss')
       const text = `${time} ${e.fileName} ${e.message} ${e.name} ${e.lineNumber}\r\n`

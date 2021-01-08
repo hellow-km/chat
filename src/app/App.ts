@@ -9,25 +9,26 @@ import PersonalBox from '@/app/com/main/box/PersonalBox';
 import User from '@/app/com/bean/User';
 import NodeData from '@/views/common/list/NodeData';
 import GroupNodeData from "@/views/common/list/GroupNodeData";
+import MessageListModel from '@/impl/data/MessageListModel';
 
 class App {
-  public appContext: AppContext = new AppContext()
-  public logout(): void {
-    auth.setLogin(false)
-    auth.setToken('')
+    public appContext: AppContext = new AppContext()
+    public logout(): void {
+        auth.setLogin(false)
+        auth.setToken('')
+        MessageListModel.clear();
+        this.appContext.netServer.closeNetSocket();
+        this.appContext = new AppContext();
+        this.initialize()
+    }
 
-    this.appContext.netServer.closeNetSocket();
-    this.appContext = new AppContext();
-    this.initialize()
-  }
-
-  private initialize(): void {
-    const pb: PersonalBox = this.appContext.getMaterial(PersonalBox);
-    const user = new User()
-    pb.setUser(user)
-    ListData.userNodes = new Array<NodeData>()
-    ListData.groupNodes = new Array<GroupNodeData>()
-  }
+    private initialize(): void {
+        const pb: PersonalBox = this.appContext.getMaterial(PersonalBox);
+        const user = new User()
+        pb.setUser(user)
+        ListData.userNodes = new Array<NodeData>()
+        ListData.groupNodes = new Array<GroupNodeData>()
+    }
 }
 
 export default new App();
